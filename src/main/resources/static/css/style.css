@@ -145,7 +145,9 @@ button {
 }
 
 input {
-  border-style: none;
+  border-radius:4px;
+  margin-bottom: 5px;
+  border: 1px solid black;
 }
 
 a {
@@ -285,8 +287,9 @@ body {
 }
 .btn.primary {
   color: #fff;
-  border: 1px solid var(--color-blue);
-  background-color: var(--color-blue);
+  border: 1px solid #2C83E9;
+  background-color: #2C83E9;
+  width:270px;
 }
 .btn.secondary {
   color: var(--color-default);
