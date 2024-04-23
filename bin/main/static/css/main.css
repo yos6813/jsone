@@ -7,6 +7,7 @@
     text-align: center;
 }
 
+/* 로그인 */
 .wrapper .login-title {
     padding-bottom: 200px;
     padding-top: 100px;
@@ -26,4 +27,39 @@
 
 .warning {
     color: red;
+}
+
+.login_btn {
+    width:330px;
+}
+
+/* 비밀번호 재설정 */
+.wrapper .resetPw-head {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50px;
+    padding-top: 20px;
+}
+
+.resetPw-head h1 {
+    font-size: large;
+}
+
+.resetPw-head .btn-close {
+    position: absolute;
+    right: 25px;
+    padding-top: 2px;
+}
+
+.resetPw-body .input-area {
+    margin-bottom: 50px;
+}
+
+.resetPw-body {
+    padding-top: 50px;
+}
+
+#resetPw .btn-area .btn{
+    width:163px;
 }
