@@ -11,6 +11,7 @@ import com.jsone.approval.service.ApprovalService;
 import lombok.RequiredArgsConstructor;
 
 
+
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -30,9 +31,13 @@ public class HomeController {
 	}
 
 	@GetMapping("/resetPassword")
-	public String getMethodName() {
+	public String resetPassword() {
 		return "resetPassword";
 	}
 	
+	@GetMapping("/dashboard")
+	public String dashboard() {
+		return "dashboard";
+	}
 
 }

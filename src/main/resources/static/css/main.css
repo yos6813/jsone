@@ -7,10 +7,84 @@
     text-align: center;
 }
 
+.main-header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 40px;
+    padding-top: 20px;
+    text-align: center;
+    background-color: #2C83E9;
+    color: #FFFFFF;
+}
+
+.main-header .btn-logout {
+    position: absolute;
+    right: 25px;
+}
+
+.main-header h1 {
+    font-size: large;
+}
+
+.bg-blue1 {
+    background-color: #3856B6;
+    color: #FFFFFF;
+}
+
+.bg-blue2 {
+    background-color: #4D6ED6;
+    color: #FFFFFF
+}
+
+.bg-blue3 {
+    background-color: #5374E4;
+    color: #FFFFFF
+}
+
+.bg-blue4 {
+    background-color: #718EF0;
+    color: #FFFFFF
+}
+
+.bg-blue5 {
+    background-color: #97A0D1;
+    color: #FFFFFF
+}
+
+.bg-blue6 {
+    background-color: #AAB4F1;
+    color: #FFFFFF
+}
+
+/* 메인 메뉴 */
+.tab-nav-wrap .tab-nav {
+    display: ruby-text;
+    padding-top: 5px;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.tab-nav-wrap .tab-nav li {
+    padding: 0px 15px;
+    height: 32px;
+    line-height: 30px;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.tab-nav-wrap .tab-nav li.on {
+    border-bottom: 2px solid #2C83E9;
+    color: #2C83E9;
+}
+
 /* 로그인 */
 .wrapper .login-title {
     padding-bottom: 200px;
     padding-top: 100px;
+}
+
+.wrapper .login-title img {
+    width: 100%
 }
 
 .wrapper .login-body {
@@ -62,4 +136,29 @@
 
 #resetPw .btn-area .btn{
     width:163px;
+}
+
+/* 대시보드 */
+.dashboard-body {
+    padding-top: 50px;
+}
+
+.dashboard-body .btn-box {
+    display: ruby;
+}
+
+.dashboard-body .btn-box .approval-box {
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+}
+
+.dashboard-body .btn-box .approval-box span {
+    width: 100%;
+}
+
+.dashboard-body .btn-box .approval-box span:first-child {
+    padding-top: 45px;
 }
