@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <title>서류보기</title>
+        <div th:replace="fragments/header::header"></div>
+    </head>
+    <div class="wrapper">
+        <div class="view-head">
+            <h1>서류보기</h1>
+            <span class="btn-close"></span>
+        </div>
+        <div id="view">
+            <div class="view-body">
+                <div class="body-top">
+                    <select class="input-text xs" name="">
+                        <option>결재</option>
+                    </select>
+                    <select class="input-text xs">
+                        <option>공람</option>
+                    </select>
+                    <button type="button" class="btn primary">회수</button>
+                </div>
+                <div class="body-middle">
+                    <div class="info-box">
+                        <span class="title">22.01.03 일계표 및 회계전표(반려문서 수정후 재결재)</span>
+                        <div class="info">
+                            <div>
+                                <span class="text-title">문서번호</span>
+                                <span>202201-004-5582</span>
+                            </div>
+                            <div>
+                                <span class="text-title">작성일자</span>
+                                <span>2022-01-04 12:45:27</span>
+                            </div>
+                            <div>
+                                <span class="text-title">작성자</span>
+                                <span class="half-width">경리계장A</span>
+                                <span class="text-title">작성자</span>
+                                <span>경리계장A</span>
+                            </div>
+                            <div>
+                                <span class="text-title">문서종류</span>
+                                <span class="half-width">보고문서</span>
+                                <span class="text-title">문서상태</span>
+                                <span>진행중</span>
+                            </div>
+                            <div>
+                                <span class="text-title">반려</span>
+                                <span class="yellow-txt">202201-004-5582</span>
+                            </div>
+                            <div>
+                                <span class="text-title">문서번호</span>
+                                <span class="green-txt">202201-004-5582</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <span>내용</span>
+                        <div>
+                            <span>반려문서</span>
+                            <span>22.01.03 일계표</span>
+                        </div>
+                    </div>
+                    <div class="comments">
+                        <span>대화</span>
+                        <div class="comment-list">
+
+                        </div>
+                        <div>
+                            <input type="text" class="input-text s" />
+                            <button type="button" class="btn secondary">전송</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>

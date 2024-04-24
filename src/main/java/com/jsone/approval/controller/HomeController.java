@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 
 
 
+
+
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -44,37 +46,47 @@ public class HomeController {
 	@GetMapping("/sign")
 	public String sign(Model model) {
 		model.addAttribute("title", "전자결재");
-		return "sign";
+		return "list";
 	}
 
 	@GetMapping("/signDoc")
 	public String signDoc(Model model) {
 		model.addAttribute("title", "결재문서");
-		return "sign";
+		return "list";
 	}
 
 	@GetMapping("/announcementCheck")
 	public String announcementCheck(Model model) {
 		model.addAttribute("title", "공람확인");
-		return "sign";
+		return "list";
 	}
 
 	@GetMapping("/announcementDoc")
 	public String announcementDoc(Model model) {
 		model.addAttribute("title", "공람문서");
-		return "sign";
+		return "list";
 	}
 
 	@GetMapping("/personalDoc")
 	public String personalDoc(Model model) {
 		model.addAttribute("title", "개인서류");
-		return "sign";
+		return "list";
 	}
 
 	@GetMapping("/prograssDoc")
 	public String prograssDoc(Model model) {
 		model.addAttribute("title", "진행서류");
-		return "prograssDoc";
+		return "list";
 	}
 
+	@GetMapping("/view")
+	public String view() {
+		return "view";
+	}
+	
+	@GetMapping("/edit")
+	public String edit() {
+		return "edit";
+	}
+	
 }

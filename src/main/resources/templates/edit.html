@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <title>서류편집</title>
+        <div th:replace="fragments/header::header"></div>
+        <script th:src="@{/js/edit.js}"></script>
+    </head>
+    <div class="wrapper">
+        <div class="view-head">
+            <h1>서류편집(임시저장)</h1>
+            <span class="btn-close"></span>
+        </div>
+        <div id="edit">
+            <div class="edit-head">
+                <button class="btn primary">저장</button>
+                <button class="btn tertiary">결재</button>
+                <button class="btn secondary">삭제</button>
+            </div>
+            <div class="edit-body">
+                <div class="body-top">
+                    <div class="info-box">
+                        <input type="text" class="input-text" />
+                        <div class="info">
+                            <div>
+                                <span class="text-title">문서번호</span>
+                                <span>202201-004-5582</span>
+                            </div>
+                            <div>
+                                <span class="text-title">작성일자</span>
+                                <span>2022-01-04 12:45:27</span>
+                            </div>
+                            <div>
+                                <span class="text-title">작성자</span>
+                                <span class="half-width">경리계장A</span>
+                                <span class="text-title">작성자</span>
+                                <span>경리계장A</span>
+                            </div>
+                            <div>
+                                <span class="text-title">문서종류</span>
+                                <span class="half-width">보고문서</span>
+                                <span class="text-title">문서상태</span>
+                                <span>진행중</span>
+                            </div>
+                            <div>
+                                <span class="text-title">반려</span>
+                                <span class="yellow-txt">202201-004-5582</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="body-middle">
+                    <div class="approval-box">
+                        <select class="input-text approval">
+                            <option>결재</option>
+                        </select>
+                        <select class="input-text announcement">
+                            <option>공람(모든 공람 선택/해제)</option>
+                        </select>
+                    </div>
+                    <div class="content">
+                        <span class="title">내용</span>
+                        <textarea id="content"></textarea>
+                    </div>
+                </div>
+                <div class="body-bottom">
+                    <div class="title-box">
+                        <span class="title">첨부파일</span>
+                        <span class="title-icon"><i class="fa-solid fa-plus"></i></span>
+                    </div>
+                    <div class="file-box">
+                        <span class="filename">1 file uploaded</span>
+                        <span class="plus-icon"><i class="fa-solid fa-circle-plus"></i></span>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="file-box">
+                        <span class="filename">file_name.jpg</span>
+                        <span class="plus-icon"><i class="fa-solid fa-circle-plus"></i>3Mb</span>
+                        <div class="file-bottom">
+                            <span>Uploaded</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>

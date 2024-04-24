@@ -15,6 +15,10 @@
 
         $('.approval-box').click(function(){
             location.href = $(this).attr('id');
-        })
+        });
+
+        $('.list').click(function(){
+            location.href = "/view";
+        });
     });
 })(jQuery)

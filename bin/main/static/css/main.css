@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 40px;
+    height: 55px;
     padding-top: 20px;
     text-align: center;
     background-color: #2C83E9;
@@ -62,6 +62,14 @@
 .bg-blue6 {
     background-color: #AAB4F1;
     color: #FFFFFF
+}
+
+.yellow-txt {
+    color: #DAA836;
+}
+
+.green-txt {
+    color: #107B68;
 }
 
 /* 메인 메뉴 */
@@ -172,7 +180,7 @@
 
 /* 전자결재 */
 .sign-head {
-    height: 25px;
+    height: 35px;
     background-color: #EEEEEE;
     padding-top: 10px;
 }
@@ -193,9 +201,9 @@
 
 .sign-body .search-box .condition-box {
     height: 25px;
-    text-align: justify;
-    padding-left: 15px;
     padding-top: 5px;
+    text-align: center;
+    margin-left: -25vw;
 }
 
 .sign-body .search-box .condition-box .text {
@@ -209,11 +217,6 @@
     height: 20px;
 }
 
-.sign-body .list-box {
-    padding-left: 15px;
-    margin-top: 20px;
-}
-
 .sign-body .list-box .list {
     border: 1px solid #EEEEEE;
     width: 323px;
@@ -222,7 +225,7 @@
     text-align: left;
     font-size: 13px;
     padding: 10px;
-    margin-bottom: 15px;
+    margin: 15px auto;
 }
 
 .sign-body .list-box .list span:first-child {
@@ -242,12 +245,12 @@
 
 .sign-bottom span {
     position: fixed;
-    bottom: 15px;
-    right: 20px;
-}
-
-.sign-bottom .svg-inline--fa {
-    height: 25px;
+    bottom: 10px;
+    right: 15px;
+    border: 1px solid #999999;
+    width: 15px;
+    padding: 10px;
+    border-radius: 50%;
 }
 
 /* 개인서류 nav */
@@ -267,4 +270,205 @@
     line-height: unset;
     text-align: justify;
     padding: 5px 5px;
+}
+
+/* view */
+.wrapper .view-head {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50px;
+    padding-top: 20px;
+}
+
+.view-head h1 {
+    font-size: large;
+}
+
+.view-head .btn-close {
+    position: absolute;
+    right: 25px;
+    padding-top: 2px;
+}
+
+.view-body {
+    padding-top: 20px;
+}
+
+.view-body .body-middle .info-box {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+}
+
+.view-body .body-middle .info-box .title {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.view-body .body-middle .info-box .info {
+    text-align: justify;
+    padding-top: 10px;
+}
+
+.view-body .body-middle .info-box .info div {
+    margin-bottom: 10px;
+}
+
+.view-body .body-middle .info-box .info .text-title {
+    color: #999999;
+    margin-right: 10px;
+    width: 50px;
+}
+
+.view-body .body-middle .info-box .info .half-width {
+    width: 115px;
+}
+
+.view-body .body-middle .content {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+.view-body .body-middle .content div {
+    margin-top: 10px;
+}
+
+.view-body .body-middle .content > span {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.view-body .body-middle .comments {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+    text-align: justify;
+}
+
+.view-body .body-middle .comments > span {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.view-body .body-middle .comments .comment-list {
+    height: 100px;
+}
+
+.view-body .body-middle .comments button {
+    padding: 0 15px;
+    font-weight: normal;
+}
+
+/* 편집 */
+.edit-head {
+    padding-top: 20px;
+}
+
+.edit-head button {
+    width: 110px;
+}
+
+.edit-body .body-top .info-box {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+}
+
+.edit-body .body-top .info-box input {
+    width: 100%;
+}
+
+.edit-body .body-top .info-box .info {
+    text-align: justify;
+    padding-top: 10px;
+    border-top: 1px solid #EEEEEE;
+}
+
+.edit-body .body-top .info-box .info div {
+    margin-bottom: 10px;
+}
+
+.edit-body .body-top .info-box .info .text-title {
+    color: #999999;
+    margin-right: 10px;
+    width: 50px;
+}
+
+.edit-body .body-top .info-box .info .half-width {
+    width: 70px;
+}
+
+.edit-body .body-middle .approval-box .approval {
+    width: 125px;
+}
+
+.edit-body .body-middle .approval-box .announcement {
+    width: 200px;
+    margin-left: 5px;
+}
+
+.edit-body .body-middle .content {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+    text-align: justify;
+}
+
+.edit-body .body-middle .content .title {
+    width: 100%;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.edit-body .body-middle .content textarea {
+    width: 100%;
+    height: 150px;
+}
+
+.edit-body .body-bottom {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+}
+
+.edit-body .body-bottom .title-box {
+    width: 100%;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 5px;
+    text-align: justify;
+}
+
+.edit-body .body-bottom .file-box {
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 5px;
+    padding-top: 10px;
+}
+
+.edit-body .body-bottom .filename {
+    width: 100%;
+    text-align: justify;
+}
+
+.edit-body .body-bottom .plus-icon {
+    position: absolute;
+    margin-left: -15px;
 }
