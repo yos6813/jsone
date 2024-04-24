@@ -4,9 +4,17 @@
             history.back();
         });
 
-        $('.second-nav').hide();
-        $('.sec-nav').click(function(){
-            $('.second-nav').slideToggle();
+        $('.login_btn').click(function(){
+            location.href = "/dashboard";
+        })
+
+        $('.personal-nav').hide();
+        $('.sub-title').click(function(){
+            $('.personal-nav').slideToggle();
         });
+
+        $('.approval-box').click(function(){
+            location.href = $(this).attr('id');
+        })
     });
 })(jQuery)

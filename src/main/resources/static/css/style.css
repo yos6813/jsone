@@ -147,7 +147,7 @@ button {
 input {
   border-radius:4px;
   margin-bottom: 5px;
-  border: 1px solid #aeaeae;
+  border: 1px solid #EEEEEE;
 }
 
 a {
@@ -501,13 +501,13 @@ body {
   width: 330px;
 }
 .input-text.xs {
-  width: 151px;
+  width: 165px;
 }
 .input-text.sm {
   width: 165px;
 }
 .input-text.lg {
-  width: 445px;
+  width: 345px;
 }
 .input-text.xlg {
   width: 544px;

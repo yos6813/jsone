@@ -18,9 +18,16 @@
     color: #FFFFFF;
 }
 
+.main-header .company {
+    position: absolute;
+    left: 15px;
+    padding-top: 2px;
+}
+
 .main-header .btn-logout {
     position: absolute;
     right: 25px;
+    padding-top: 2px;
 }
 
 .main-header h1 {
@@ -75,25 +82,6 @@
 .tab-nav-wrap .tab-nav > li.on {
     border-bottom: 2px solid #2C83E9;
     color: #2C83E9;
-}
-
-.second-nav {
-    width: 65px;
-    position: absolute;
-    z-index: 10;
-    left: 25vw;
-    background-color: #FFFFFF;
-    margin-top: 10px;
-    border: 1px solid #EEEEEE;
-    padding: 10px;
-    font-size: 12px;
-    color: black;
-}
-
-.second-nav li {
-    line-height: unset;
-    text-align: justify;
-    padding: 5px 5px;
 }
 
 /* 로그인 */
@@ -180,4 +168,103 @@
 
 .dashboard-body .btn-box .approval-box span:first-child {
     padding-top: 50px;
+}
+
+/* 전자결재 */
+.sign-head {
+    height: 25px;
+    background-color: #EEEEEE;
+    padding-top: 10px;
+}
+
+.sign-head .sub-title {
+    position: absolute;
+    left: 15px;
+}
+
+.sign-head .sub-nav {
+    position: absolute;
+    right: 15px;
+}
+
+.sign-body .search-box {
+    padding-top: 25px;
+}
+
+.sign-body .search-box .condition-box {
+    height: 25px;
+    text-align: justify;
+    padding-left: 15px;
+    padding-top: 5px;
+}
+
+.sign-body .search-box .condition-box .text {
+    padding-left: 5px;
+    margin-right: 35px;
+    vertical-align: 4px;
+}
+
+.sign-body .search-box .condition-box .svg-inline--fa {
+    color: #CCCCCC;
+    height: 20px;
+}
+
+.sign-body .list-box {
+    padding-left: 15px;
+    margin-top: 20px;
+}
+
+.sign-body .list-box .list {
+    border: 1px solid #EEEEEE;
+    width: 323px;
+    border-radius: 4px;
+    color: #999999;
+    text-align: left;
+    font-size: 13px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.sign-body .list-box .list span:first-child {
+    color: black;
+}
+
+.sign-body .list-box .list span {
+    padding-bottom: 5px;
+}
+
+.sign-body .list-box .list .second-line {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.sign-bottom span {
+    position: fixed;
+    bottom: 15px;
+    right: 20px;
+}
+
+.sign-bottom .svg-inline--fa {
+    height: 25px;
+}
+
+/* 개인서류 nav */
+.personal-nav {
+    width: 65px;
+    position: absolute;
+    z-index: 10;
+    left: 23vw;
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    padding: 10px;
+    font-size: 12px;
+    color: black;
+}
+
+.personal-nav li {
+    line-height: unset;
+    text-align: justify;
+    padding: 5px 5px;
 }
