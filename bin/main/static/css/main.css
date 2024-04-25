@@ -72,6 +72,16 @@
     color: #107B68;
 }
 
+.progress, .progress-stacked {
+    --bs-progress-bar-bg: #107B68;
+}
+
+.line {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 /* 메인 메뉴 */
 .tab-nav-wrap .tab-nav {
     display: ruby-text;
@@ -219,7 +229,7 @@
 
 .sign-body .list-box .list {
     border: 1px solid #EEEEEE;
-    width: 323px;
+    width: 340px;
     border-radius: 4px;
     color: #999999;
     text-align: left;
@@ -412,6 +422,13 @@
     width: 70px;
 }
 
+.edit-body .body-middle .approval-box button {
+    font-weight: normal;
+    font-size: 12px;
+    text-align: justify;
+    padding: 0 20px;
+}
+
 .edit-body .body-middle .approval-box .approval {
     width: 125px;
 }
@@ -419,6 +436,58 @@
 .edit-body .body-middle .approval-box .announcement {
     width: 200px;
     margin-left: 5px;
+}
+
+.edit-body .body-middle .approval-box .approval .btn-txt {
+    width: 65px;
+}
+
+.edit-body .body-middle .approval-box .announcement .btn-txt {
+    width: 140px;
+}
+
+.edit-body .body-middle .toggle-box {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+    text-align: justify;
+}
+
+.edit-body .body-middle .toggle-box .title {
+    width: 100%;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.edit-body .body-middle .toggle-box .title .title-txt {
+    width:290px;
+}
+
+.edit-body .body-middle .toggle-box div {
+    border: 1px solid #EEEEEE;
+    border-radius: 4px;
+    width: 70px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.edit-body .body-middle .toggle-box div span:first-child {
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.edit-body .body-middle .toggle-box div span:last-child {
+    color: #CCCCCC;
+}
+
+.edit-body .body-middle .toggle-box div span {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .edit-body .body-middle .content {
@@ -470,5 +539,13 @@
 
 .edit-body .body-bottom .plus-icon {
     position: absolute;
-    margin-left: -15px;
+    margin-left: -50px;
+    width: 50px;
+    text-align: right;
+}
+
+.edit-body .body-bottom .file-bottom {
+    text-align: left;
+    padding-top: 5px;
+    font-size: 12px;
 }

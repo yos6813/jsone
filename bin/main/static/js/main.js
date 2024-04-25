@@ -4,6 +4,10 @@
             history.back();
         });
 
+        $('.close-btn').click(function(){
+            history.back();
+        });
+
         $('.login_btn').click(function(){
             location.href = "/dashboard";
         })

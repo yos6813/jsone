@@ -49,12 +49,63 @@
                 </div>
                 <div class="body-middle">
                     <div class="approval-box">
-                        <select class="input-text approval">
-                            <option>결재</option>
-                        </select>
-                        <select class="input-text announcement">
-                            <option>공람(모든 공람 선택/해제)</option>
-                        </select>
+                        <button type="button" class="btn secondary approval">
+                            <span class="btn-txt">결재</span>
+                            <span><i class="fa-solid fa-chevron-down"></i></span>
+                        </button>
+                        <button type="button" class="btn secondary announcement">
+                            <span class="btn-txt">공람(모든 공람 선택/해제)</span>
+                            <span><i class="fa-solid fa-chevron-down"></i></span>
+                        </button>
+                    </div>
+                    <div class="approval-toggle toggle-box">
+                        <span class="title">
+                            <span class="title-txt">결재</span>
+                            <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                        </span>
+                        <div>
+                            <span>차장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>부장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>사장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                    </div>
+                    <div class="announcement-toggle toggle-box">
+                        <span class="title">
+                            <span class="title-txt">공람(모든 공람 선택/해제)</span>
+                            <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                        </span>
+                        <div>
+                            <span>배차차장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>배차부장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>정비과장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>정비차장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <span class="line"></span>
+                        <div>
+                            <span>경리이사</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>경리계장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
                     </div>
                     <div class="content">
                         <span class="title">내용</span>
@@ -68,16 +119,24 @@
                     </div>
                     <div class="file-box">
                         <span class="filename">1 file uploaded</span>
-                        <span class="plus-icon"><i class="fa-solid fa-circle-plus"></i></span>
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        <span class="plus-icon">
+                            <i class="fa-solid fa-circle-plus"></i>
+                            <span class="file-size"></span>
+                        </span>
+                        <div class="file-bottom">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="file-box">
                         <span class="filename">file_name.jpg</span>
-                        <span class="plus-icon"><i class="fa-solid fa-circle-plus"></i>3Mb</span>
+                        <span class="plus-icon">
+                            <i class="fa-solid fa-circle-plus"></i>
+                            <span class="file-size">3Mb</span>
+                        </span>
                         <div class="file-bottom">
-                            <span>Uploaded</span>
+                            <span class="green-txt">Uploaded</span>
                         </div>
                     </div>
                 </div>
