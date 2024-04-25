@@ -4,6 +4,8 @@
         $(window).scroll(function(){
             if($(this).scrollTop() != 0) {
                 $('.sign-bottom span').show();
+            } else {
+                $('.sign-bottom span').hide();
             }
         });
 
