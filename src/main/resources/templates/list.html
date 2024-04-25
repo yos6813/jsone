@@ -16,13 +16,17 @@
                 </div>
                 <div class="sign-body">
                     <div class="search-box">
-                        <input type="date" name="startDate"  class="input-text sm datepicker" placeholder="YYYY-MM-DD" /> ~ 
-                        <input type="date" name="endDate" class="input-text sm datepicker" placeholder="YYYY-MM-DD" />
-                        <input type="text" name="search" class="input-text lg search" placeholder="검색" />
-                        <div class="condition-box">
-                            <span><i class="fa-regular fa-square-check"></i><span class="text">신규메시지</span></span>
-                            <span><i class="fa-regular fa-square-check"></i><span class="text">완료문서제외</span></span>
-                        </div>
+                        <form>
+                            <input type="date" name="startDate" class="input-text sm datepicker" placeholder="YYYY-MM-DD" />
+                            <span class="middle-txt">~</span>
+                            <input type="date" name="endDate" class="input-text sm datepicker" placeholder="YYYY-MM-DD" />
+                            <input type="text" name="search" class="input-text lg search" placeholder="검색" />
+                            <button type="button" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
+                            <div class="condition-box">
+                                <span><i class="fa-regular fa-square-check"></i><span class="text">신규메시지</span></span>
+                                <span><i class="fa-regular fa-square-check"></i><span class="text">완료문서제외</span></span>
+                            </div>
+                        </form>
                     </div>
                     <div class="list-box">
                         <div class="list">
@@ -57,5 +61,6 @@
                 </div>
             </div>
         </div>
+        <script th:src="@{/js/list.js}"></script>
     </div>
 </html>

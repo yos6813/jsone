@@ -10,7 +10,7 @@
 
         $('.login_btn').click(function(){
             location.href = "/dashboard";
-        })
+        });
 
         $('.personal-nav').hide();
         $('.sub-title').click(function(){
@@ -23,6 +23,10 @@
 
         $('.list').click(function(){
             location.href = "/view";
+        });
+
+        $('.sign-bottom span').click(function(){
+
         });
     });
 })(jQuery)

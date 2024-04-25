@@ -209,6 +209,17 @@
     padding-top: 25px;
 }
 
+.sign-body .search-box .middle-txt {
+    padding-top: 15px;
+}
+
+.sign-body .search-box .search-btn {
+    position: absolute;
+    margin-left: -35px;
+    margin-top: 12px;
+    z-index: 10;
+}
+
 .sign-body .search-box .condition-box {
     height: 25px;
     padding-top: 5px;
@@ -258,14 +269,14 @@
     bottom: 10px;
     right: 15px;
     border: 1px solid #999999;
-    width: 15px;
+    width: 40px;
     padding: 10px;
     border-radius: 50%;
 }
 
 /* 개인서류 nav */
 .personal-nav {
-    width: 65px;
+    width: 75px;
     position: absolute;
     z-index: 10;
     left: 23vw;
