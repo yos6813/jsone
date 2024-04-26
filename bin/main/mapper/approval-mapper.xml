@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Approval">
+        <select id="login" resultType="Long">
+                select emp_id from t_emp where mbl_tel_no = "#{mbl_tel_no}"
+        </select>
+        <select id="list" resultType="map">
+                select docid, empid, title, contents, contents_text, create_date
+                from t_approval_document order by create_date desc
+        </select>
+</mapper>

@@ -4,5 +4,6 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.jsone.approval.dto.LoginDTO" alias="login"></typeAlias>
+        <typeAlias type="com.jsone.approval.dto.ListDTO" alias="sign"></typeAlias>
     </typeAliases>
 </configuration>

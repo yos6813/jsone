@@ -1,0 +1,562 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+}
+
+.main-header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 55px;
+    padding-top: 20px;
+    text-align: center;
+    background-color: #2C83E9;
+    color: #FFFFFF;
+}
+
+.main-header .company {
+    position: absolute;
+    left: 15px;
+    padding-top: 2px;
+}
+
+.main-header .btn-logout {
+    position: absolute;
+    right: 25px;
+    padding-top: 2px;
+}
+
+.main-header h1 {
+    font-size: large;
+}
+
+.bg-blue1 {
+    background-color: #3856B6;
+    color: #FFFFFF;
+}
+
+.bg-blue2 {
+    background-color: #4D6ED6;
+    color: #FFFFFF
+}
+
+.bg-blue3 {
+    background-color: #5374E4;
+    color: #FFFFFF
+}
+
+.bg-blue4 {
+    background-color: #718EF0;
+    color: #FFFFFF
+}
+
+.bg-blue5 {
+    background-color: #97A0D1;
+    color: #FFFFFF
+}
+
+.bg-blue6 {
+    background-color: #AAB4F1;
+    color: #FFFFFF
+}
+
+.yellow-txt {
+    color: #DAA836;
+}
+
+.green-txt {
+    color: #107B68;
+}
+
+.progress, .progress-stacked {
+    --bs-progress-bar-bg: #107B68;
+}
+
+.line {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* 메인 메뉴 */
+.tab-nav-wrap .tab-nav {
+    display: ruby-text;
+    padding-top: 5px;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.tab-nav-wrap .tab-nav > li {
+    padding: 0px 15px;
+    height: 32px;
+    line-height: 30px;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.tab-nav-wrap .tab-nav > li.on {
+    border-bottom: 2px solid #2C83E9;
+    color: #2C83E9;
+}
+
+/* 로그인 */
+.wrapper .login-title {
+    padding-bottom: 200px;
+    padding-top: 100px;
+}
+
+.wrapper .login-title img {
+    width: 100%
+}
+
+.wrapper .login-body {
+    margin: -20vh auto 0;
+}
+
+.wrapper .login-bottom {
+    padding-top: 15px;
+}
+
+.span-area {
+    margin-bottom: 10px;
+}
+
+.warning {
+    color: red;
+}
+
+.login_btn {
+    width:330px;
+}
+
+/* 비밀번호 재설정 */
+.wrapper .resetPw-head {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50px;
+    padding-top: 20px;
+}
+
+.resetPw-head h1 {
+    font-size: large;
+}
+
+.resetPw-head .btn-close {
+    position: absolute;
+    right: 25px;
+    padding-top: 2px;
+}
+
+.resetPw-body .input-area {
+    margin-bottom: 50px;
+}
+
+.resetPw-body {
+    padding-top: 50px;
+}
+
+#resetPw .btn-area .btn{
+    width:163px;
+}
+
+/* 대시보드 */
+.dashboard-body {
+    padding-top: 50px;
+}
+
+.dashboard-body .btn-box {
+    display: ruby;
+}
+
+.dashboard-body .btn-box .approval-box {
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+}
+
+.dashboard-body .btn-box .approval-box span {
+    width: 100%;
+}
+
+.dashboard-body .btn-box .approval-box span:first-child {
+    padding-top: 50px;
+}
+
+/* 전자결재 */
+.sign-head {
+    height: 35px;
+    background-color: #EEEEEE;
+    padding-top: 10px;
+}
+
+.sign-head .sub-title {
+    position: absolute;
+    left: 15px;
+}
+
+.sign-head .sub-nav {
+    position: absolute;
+    right: 15px;
+}
+
+.sign-body .search-box {
+    padding-top: 25px;
+}
+
+.sign-body .search-box .middle-txt {
+    padding-top: 15px;
+}
+
+.sign-body .search-box .search-btn {
+    position: absolute;
+    margin-left: -35px;
+    margin-top: 12px;
+    z-index: 10;
+}
+
+.sign-body .search-box .condition-box {
+    height: 25px;
+    padding-top: 5px;
+    text-align: center;
+    margin-left: -25vw;
+}
+
+.sign-body .search-box .condition-box .text {
+    padding-left: 5px;
+    margin-right: 35px;
+    vertical-align: 4px;
+}
+
+.sign-body .search-box .condition-box .svg-inline--fa {
+    color: #CCCCCC;
+    height: 20px;
+}
+
+.sign-body .list-box .list {
+    border: 1px solid #EEEEEE;
+    width: 340px;
+    border-radius: 4px;
+    color: #999999;
+    text-align: left;
+    font-size: 13px;
+    padding: 10px;
+    margin: 15px auto;
+}
+
+.sign-body .list-box .list span:first-child {
+    color: black;
+}
+
+.sign-body .list-box .list span {
+    padding-bottom: 5px;
+}
+
+.sign-body .list-box .list .second-line {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.sign-bottom span {
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    border: 1px solid #999999;
+    width: 40px;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+/* 개인서류 nav */
+.personal-nav {
+    width: 75px;
+    position: absolute;
+    z-index: 10;
+    left: 23vw;
+    background-color: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    padding: 10px;
+    font-size: 12px;
+    color: black;
+}
+
+.personal-nav li {
+    line-height: unset;
+    text-align: justify;
+    padding: 5px 5px;
+}
+
+/* view */
+.wrapper .view-head {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50px;
+    padding-top: 20px;
+}
+
+.view-head h1 {
+    font-size: large;
+}
+
+.view-head .btn-close {
+    position: absolute;
+    right: 25px;
+    padding-top: 2px;
+}
+
+.view-body {
+    padding-top: 20px;
+}
+
+.view-body .body-middle .info-box {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+}
+
+.view-body .body-middle .info-box .title {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.view-body .body-middle .info-box .info {
+    text-align: justify;
+    padding-top: 10px;
+}
+
+.view-body .body-middle .info-box .info div {
+    margin-bottom: 10px;
+}
+
+.view-body .body-middle .info-box .info .text-title {
+    color: #999999;
+    margin-right: 10px;
+    width: 50px;
+}
+
+.view-body .body-middle .info-box .info .half-width {
+    width: 115px;
+}
+
+.view-body .body-middle .content {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+.view-body .body-middle .content div {
+    margin-top: 10px;
+}
+
+.view-body .body-middle .content > span {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.view-body .body-middle .comments {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+    text-align: justify;
+}
+
+.view-body .body-middle .comments > span {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.view-body .body-middle .comments .comment-list {
+    height: 100px;
+}
+
+.view-body .body-middle .comments button {
+    padding: 0 15px;
+    font-weight: normal;
+}
+
+/* 편집 */
+.edit-head {
+    padding-top: 20px;
+}
+
+.edit-head button {
+    width: 110px;
+}
+
+.edit-body .body-top .info-box {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+}
+
+.edit-body .body-top .info-box input {
+    width: 100%;
+}
+
+.edit-body .body-top .info-box .info {
+    text-align: justify;
+    padding-top: 10px;
+    border-top: 1px solid #EEEEEE;
+}
+
+.edit-body .body-top .info-box .info div {
+    margin-bottom: 10px;
+}
+
+.edit-body .body-top .info-box .info .text-title {
+    color: #999999;
+    margin-right: 10px;
+    width: 50px;
+}
+
+.edit-body .body-top .info-box .info .half-width {
+    width: 70px;
+}
+
+.edit-body .body-middle .approval-box button {
+    font-weight: normal;
+    font-size: 12px;
+    text-align: justify;
+    padding: 0 20px;
+}
+
+.edit-body .body-middle .approval-box .approval {
+    width: 125px;
+}
+
+.edit-body .body-middle .approval-box .announcement {
+    width: 200px;
+    margin-left: 5px;
+}
+
+.edit-body .body-middle .approval-box .approval .btn-txt {
+    width: 65px;
+}
+
+.edit-body .body-middle .approval-box .announcement .btn-txt {
+    width: 140px;
+}
+
+.edit-body .body-middle .toggle-box {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+    text-align: justify;
+}
+
+.edit-body .body-middle .toggle-box .title {
+    width: 100%;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.edit-body .body-middle .toggle-box .title .title-txt {
+    width:290px;
+}
+
+.edit-body .body-middle .toggle-box div {
+    border: 1px solid #EEEEEE;
+    border-radius: 4px;
+    width: 70px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.edit-body .body-middle .toggle-box div span:first-child {
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.edit-body .body-middle .toggle-box div span:last-child {
+    color: #CCCCCC;
+}
+
+.edit-body .body-middle .toggle-box div span {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.edit-body .body-middle .content {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+    text-align: justify;
+}
+
+.edit-body .body-middle .content .title {
+    width: 100%;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.edit-body .body-middle .content textarea {
+    width: 100%;
+    height: 150px;
+}
+
+.edit-body .body-bottom {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 25px auto;
+}
+
+.edit-body .body-bottom .title-box {
+    width: 100%;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 5px;
+    text-align: justify;
+}
+
+.edit-body .body-bottom .file-box {
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 5px;
+    padding-top: 10px;
+}
+
+.edit-body .body-bottom .filename {
+    width: 100%;
+    text-align: justify;
+}
+
+.edit-body .body-bottom .plus-icon {
+    position: absolute;
+    margin-left: -50px;
+    width: 50px;
+    text-align: right;
+}
+
+.edit-body .body-bottom .file-bottom {
+    text-align: left;
+    padding-top: 5px;
+    font-size: 12px;
+}

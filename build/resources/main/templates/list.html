@@ -1,0 +1,46 @@
+<html xmlns:th="http//www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/default_layout">
+    <div layout:fragment="content">
+        <div class="wrapper">
+            <div id="sign">
+                <div class="sign-head">
+                    <span class="sub-title">[[${title}]] <i class="fa-solid fa-chevron-right"></i></span>
+                    <ul th:if="${title == '개인서류'}" class="personal-nav">
+                        <li>전체</li>
+                        <li>임시저장</li>
+                        <li>진행중</li>
+                        <li>반려</li>
+                        <li>반려보관</li>
+                        <li>완료</li>
+                    </ul>
+                    <span class="sub-nav">[[${title}]]/전체(0)</span>
+                </div>
+                <div class="sign-body">
+                    <div class="search-box">
+                        <form>
+                            <input type="date" name="startDate" class="input-text sm datepicker" placeholder="YYYY-MM-DD" />
+                            <span class="middle-txt">~</span>
+                            <input type="date" name="endDate" class="input-text sm datepicker" placeholder="YYYY-MM-DD" />
+                            <input type="text" name="search" class="input-text lg search" placeholder="검색" />
+                            <button type="button" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
+                            <div class="condition-box">
+                                <span><i class="fa-regular fa-square-check"></i><span class="text">신규메시지</span></span>
+                                <span><i class="fa-regular fa-square-check"></i><span class="text">완료문서제외</span></span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="list-box">
+                        <div class="list" th:each="list: ${approvalList}">
+                            <span th:text="${list.title}"> <i class="fa-regular fa-file-lines"></i></span>
+                            <span class="second-line" th:text="${list.date}"></span>
+                            <span th:text="${list.contents}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="sign-bottom">
+                    <span><i class="fa-solid fa-arrow-up"></i></span>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/js/list.js}"></script>
+    </div>
+</html>

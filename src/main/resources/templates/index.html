@@ -9,13 +9,15 @@
                 <img th:src="@{/images/logo.png}" />
             </div>
             <div class="login-body">
-                <div class="input-area">
-                    <input type="text" name="mbl_tel_no" placeholder="휴대폰번호" class="input-text" />
-                    <input type="password" name="passwd" placeholder="비밀번호(4자이상)" class="input-text" />
-                </div>
-                <div class="btn-area">
-                    <button class="btn primary login_btn" type="button">Login</button>
-                </div>
+                <form action="/login" method="POST">
+                    <div class="input-area">
+                        <input type="text" name="mbl_tel_no" placeholder="휴대폰번호" class="input-text" />
+                        <input type="password" name="passwd" placeholder="비밀번호(4자이상)" class="input-text" />
+                    </div>
+                    <div class="btn-area">
+                        <button class="btn primary login_btn" type="button">Login</button>
+                    </div>
+                </form>
             </div>
             <div class="login-bottom">
                 <div class="span-area">

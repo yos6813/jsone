@@ -29,30 +29,10 @@
                         </form>
                     </div>
                     <div class="list-box">
-                        <div class="list">
-                            <span>5583 / 22.01.03 수입금 <i class="fa-regular fa-file-lines"></i></span>
-                            <span class="second-line">1. 2022-01-14 12:48 /임시저장 /보고문서 /경리계장A</span>
-                            <span>갑근세, 주민세, 사업소세 000,000,000원 4대보험 111,000,000원입니다.</span>
-                        </div>
-                        <div class="list">
-                            <span>5583 / 22.01.03 수입금 <i class="fa-regular fa-file-lines"></i></span>
-                            <span class="second-line">1. 2022-01-14 12:48 /임시저장 /보고문서 /경리계장A</span>
-                            <span>갑근세, 주민세, 사업소세 000,000,000원 4대보험 111,000,000원입니다.</span>
-                        </div>
-                        <div class="list">
-                            <span>5583 / 22.01.03 수입금 <i class="fa-regular fa-file-lines"></i></span>
-                            <span class="second-line">1. 2022-01-14 12:48 /임시저장 /보고문서 /경리계장A</span>
-                            <span>갑근세, 주민세, 사업소세 000,000,000원 4대보험 111,000,000원입니다.</span>
-                        </div>
-                        <div class="list">
-                            <span>5583 / 22.01.03 수입금 <i class="fa-regular fa-file-lines"></i></span>
-                            <span class="second-line">1. 2022-01-14 12:48 /임시저장 /보고문서 /경리계장A</span>
-                            <span>갑근세, 주민세, 사업소세 000,000,000원 4대보험 111,000,000원입니다.</span>
-                        </div>
-                        <div class="list">
-                            <span>5583 / 22.01.03 수입금 <i class="fa-regular fa-file-lines"></i></span>
-                            <span class="second-line">1. 2022-01-14 12:48 /임시저장 /보고문서 /경리계장A</span>
-                            <span>갑근세, 주민세, 사업소세 000,000,000원 4대보험 111,000,000원입니다.</span>
+                        <div class="list" th:each="list: ${approvalList}">
+                            <span th:text="${list.title}"> <i class="fa-regular fa-file-lines"></i></span>
+                            <span class="second-line" th:text="${list.create_date}"></span>
+                            <span th:text="${list.contents_text}"></span>
                         </div>
                     </div>
                 </div>

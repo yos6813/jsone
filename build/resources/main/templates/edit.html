@@ -1,0 +1,146 @@
+<html>
+    <head>
+        <title>서류편집</title>
+        <div th:replace="fragments/header::header"></div>
+        <script th:src="@{/js/edit.js}"></script>
+    </head>
+    <div class="wrapper">
+        <div class="view-head">
+            <h1>서류편집(임시저장)</h1>
+            <span class="btn-close"></span>
+        </div>
+        <div id="edit">
+            <div class="edit-head">
+                <button class="btn primary">저장</button>
+                <button class="btn tertiary">결재</button>
+                <button class="btn secondary">삭제</button>
+            </div>
+            <div class="edit-body">
+                <div class="body-top">
+                    <div class="info-box">
+                        <input type="text" class="input-text" />
+                        <div class="info">
+                            <div>
+                                <span class="text-title">문서번호</span>
+                                <span>202201-004-5582</span>
+                            </div>
+                            <div>
+                                <span class="text-title">작성일자</span>
+                                <span>2022-01-04 12:45:27</span>
+                            </div>
+                            <div>
+                                <span class="text-title">작성자</span>
+                                <span class="half-width">경리계장A</span>
+                                <span class="text-title">작성자</span>
+                                <span>경리계장A</span>
+                            </div>
+                            <div>
+                                <span class="text-title">문서종류</span>
+                                <span class="half-width">보고문서</span>
+                                <span class="text-title">문서상태</span>
+                                <span>진행중</span>
+                            </div>
+                            <div>
+                                <span class="text-title">반려</span>
+                                <span class="yellow-txt">202201-004-5582</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="body-middle">
+                    <div class="approval-box">
+                        <button type="button" class="btn secondary approval">
+                            <span class="btn-txt">결재</span>
+                            <span><i class="fa-solid fa-chevron-down"></i></span>
+                        </button>
+                        <button type="button" class="btn secondary announcement">
+                            <span class="btn-txt">공람(모든 공람 선택/해제)</span>
+                            <span><i class="fa-solid fa-chevron-down"></i></span>
+                        </button>
+                    </div>
+                    <div class="approval-toggle toggle-box">
+                        <span class="title">
+                            <span class="title-txt">결재</span>
+                            <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                        </span>
+                        <div>
+                            <span>차장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>부장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>사장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                    </div>
+                    <div class="announcement-toggle toggle-box">
+                        <span class="title">
+                            <span class="title-txt">공람(모든 공람 선택/해제)</span>
+                            <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                        </span>
+                        <div>
+                            <span>배차차장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>배차부장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>정비과장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>정비차장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <span class="line"></span>
+                        <div>
+                            <span>경리이사</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                        <div>
+                            <span>경리계장</span>
+                            <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <span class="title">내용</span>
+                        <textarea id="content"></textarea>
+                    </div>
+                </div>
+                <div class="body-bottom">
+                    <div class="title-box">
+                        <span class="title">첨부파일</span>
+                        <span class="title-icon"><i class="fa-solid fa-plus"></i></span>
+                    </div>
+                    <div class="file-box">
+                        <span class="filename">1 file uploaded</span>
+                        <span class="plus-icon">
+                            <i class="fa-solid fa-circle-plus"></i>
+                            <span class="file-size"></span>
+                        </span>
+                        <div class="file-bottom">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-box">
+                        <span class="filename">file_name.jpg</span>
+                        <span class="plus-icon">
+                            <i class="fa-solid fa-circle-plus"></i>
+                            <span class="file-size">3Mb</span>
+                        </span>
+                        <div class="file-bottom">
+                            <span class="green-txt">Uploaded</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>
