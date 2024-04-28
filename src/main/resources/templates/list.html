@@ -1,4 +1,4 @@
-<html xmlns:th="http//www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/default_layout">
+<html xmlns:th="http//www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
     <div layout:fragment="content">
         <div class="wrapper">
             <div id="sign">
@@ -16,12 +16,23 @@
                 </div>
                 <div class="sign-body">
                     <div class="search-box">
-                        <form>
-                            <input type="date" name="startDate" class="input-text sm datepicker" placeholder="YYYY-MM-DD" />
+                        <form th:if="!${#maps.isEmpty(map)}">
+                            <input type="date" name="startDate" class="input-text sm datepicker" th:value="${map.startDate}" th:placeholder="YYYY-MM-DD" />
                             <span class="middle-txt">~</span>
-                            <input type="date" name="endDate" class="input-text sm datepicker" placeholder="YYYY-MM-DD" />
+                            <input type="date" name="endDate" th:value="${map.endDate}" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
+                            <input type="text" name="search" th:value="${map.search}" class="input-text lg search" placeholder="검색" />
+                            <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
+                            <div class="condition-box">
+                                <span><i class="fa-regular fa-square-check"></i><span class="text">신규메시지</span></span>
+                                <span><i class="fa-regular fa-square-check"></i><span class="text">완료문서제외</span></span>
+                            </div>
+                        </form>
+                        <form th:unless="!${#maps.isEmpty(map)}">
+                            <input type="date" name="startDate" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
+                            <span class="middle-txt">~</span>
+                            <input type="date" name="endDate" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
                             <input type="text" name="search" class="input-text lg search" placeholder="검색" />
-                            <button type="button" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
+                            <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
                             <div class="condition-box">
                                 <span><i class="fa-regular fa-square-check"></i><span class="text">신규메시지</span></span>
                                 <span><i class="fa-regular fa-square-check"></i><span class="text">완료문서제외</span></span>
@@ -29,10 +40,13 @@
                         </form>
                     </div>
                     <div class="list-box">
-                        <div class="list" th:each="list: ${approvalList}">
+                        <div class="list" th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
                             <span th:text="${list.title}"> <i class="fa-regular fa-file-lines"></i></span>
                             <span class="second-line" th:text="${list.create_date}"></span>
                             <span th:text="${list.contents_text}"></span>
+                        </div>
+                        <div class="list" th:unless="!${#lists.isEmpty(approvalList)}">
+                            <span>결재 문서가 없습니다.</span>
                         </div>
                     </div>
                 </div>

@@ -6,8 +6,24 @@
         <select id="login" resultType="Long">
                 select emp_id from t_emp where mbl_tel_no = "#{mbl_tel_no}"
         </select>
-        <select id="list">
-                select docid, empid, title, contents, contents_text, date_format(create_date, "%Y-%m-%d") as date
-                from t_approval_document order by create_date desc
+        <select id="list" resultType="map" parameterType="map">
+                SELECT docid, empid, title, contents, contents_text, create_date
+                FROM t_approval_document WHERE 1=1
+                <if test="startDate != null">
+                        <if test="startDate != ''">
+                                AND create_date <![CDATA[>=]]> '${startDate}'
+                        </if>
+                </if>
+                <if test="endDate != null">
+                        <if test="endDate != ''">
+                                AND create_date <![CDATA[<=]]> '${endDate}'
+                        </if>
+                </if>
+                <if test="search != null">
+                        <if test="search != ''">
+                                AND (title LIKE '%${search}%' OR contents_text LIKE '%${search}%')
+                        </if>
+                </if>
+                order by create_date desc
         </select>
 </mapper>

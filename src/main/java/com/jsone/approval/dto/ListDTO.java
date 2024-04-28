@@ -14,4 +14,7 @@ public class ListDTO {
     private String contents;
     private String contents_text;
     private String create_date;
+    private String startDate;
+    private String endDate;
+    private String search;
 }

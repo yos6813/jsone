@@ -1,12 +1,14 @@
 package com.jsone.approval.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
@@ -46,40 +48,68 @@ public class HomeController {
 	}
 
 	@GetMapping("/sign")
-	public String sign(@ModelAttribute ListDTO listDTO, Model model) {
+	public String sign(@RequestParam Map<String, String> map, @ModelAttribute ListDTO listDTO, Model model) {
 		model.addAttribute("title", "전자결재");
-		List<ListDTO> listDTOList = approvalService.list();
+		model.addAttribute("map", map);
+
+		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
+
 		return "list";
 	}
 
 	@GetMapping("/signDoc")
-	public String signDoc(Model model) {
+	public String signDoc(@RequestParam Map<String, String> map, Model model) {
 		model.addAttribute("title", "결재문서");
+		model.addAttribute("map", map);
+		
+		List<ListDTO> listDTOList = approvalService.list(map);
+        model.addAttribute("approvalList", listDTOList);
+
 		return "list";
 	}
 
 	@GetMapping("/announcementCheck")
-	public String announcementCheck(Model model) {
+	public String announcementCheck(@RequestParam Map<String, String> map, Model model) {
 		model.addAttribute("title", "공람확인");
+		model.addAttribute("map", map);
+		
+		List<ListDTO> listDTOList = approvalService.list(map);
+        model.addAttribute("approvalList", listDTOList);
+
 		return "list";
 	}
 
 	@GetMapping("/announcementDoc")
-	public String announcementDoc(Model model) {
+	public String announcementDoc(@RequestParam Map<String, String> map, Model model) {
 		model.addAttribute("title", "공람문서");
+		model.addAttribute("map", map);
+		
+		List<ListDTO> listDTOList = approvalService.list(map);
+        model.addAttribute("approvalList", listDTOList);
+
 		return "list";
 	}
 
 	@GetMapping("/personalDoc")
-	public String personalDoc(Model model) {
+	public String personalDoc(@RequestParam Map<String, String> map, Model model) {
 		model.addAttribute("title", "개인서류");
+		model.addAttribute("map", map);
+		
+		List<ListDTO> listDTOList = approvalService.list(map);
+        model.addAttribute("approvalList", listDTOList);
+
 		return "list";
 	}
 
 	@GetMapping("/prograssDoc")
-	public String prograssDoc(Model model) {
+	public String prograssDoc(@RequestParam Map<String, String> map, Model model) {
 		model.addAttribute("title", "진행서류");
+		model.addAttribute("map", map);
+		
+		List<ListDTO> listDTOList = approvalService.list(map);
+        model.addAttribute("approvalList", listDTOList);
+		
 		return "list";
 	}
 

@@ -1,6 +1,7 @@
 package com.jsone.approval.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class ApprovalService {
 		approvalRepository.loginProcess(loginDTO);
 	}
 
-	public List<ListDTO> list () {
-		return approvalRepository.list();
+	public List<ListDTO> list (Map<String, String> param) {
+		return approvalRepository.list(param);
 	}
 
 }

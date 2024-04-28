@@ -6,13 +6,13 @@ server:
 spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://175.126.176.188:3341;databaseName=demo
+    url: jdbc:sqlserver://175.126.176.188:3341;databaseName=demo;encrypt=true;trustServerCertificate=true;
     username: sa
     password: test123!
 
 # mybatis
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/approval-mapper.xml
   config-location: classpath:mybatis-config.xml
 
 

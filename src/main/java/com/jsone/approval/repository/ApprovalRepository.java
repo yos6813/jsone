@@ -1,6 +1,7 @@
 package com.jsone.approval.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,8 +22,8 @@ public class ApprovalRepository {
         return loginDTO;
     }
 
-    public List<ListDTO> list () {
-        return sql.selectList("Approval.list");
+    public List<ListDTO> list (Map<String, String> param) {
+        return sql.selectList("Approval.list", param);
     }
 
 }
