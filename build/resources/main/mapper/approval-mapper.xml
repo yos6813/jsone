@@ -26,4 +26,13 @@
                 </if>
                 order by create_date desc
         </select>
+        <select id="view" resultType="view" parameterType="Long">
+                SELECT e.emp_nm, d.docid, d.empid, d.title, d.contents, d.contents_text, FORMAT(d.create_date, 'yyyy-MM-dd H:m:s') as create_date, d.reference_docid
+                FROM t_approval_document as d
+                LEFT OUTER JOIN t_emp as e ON d.empid = e.emp_id
+                WHERE d.docid = ${id}
+        </select>
+        <select id="chat" resultType="chat" parameterType="Long">
+                SELECT * FROM t_approval_document_chat WHERE docid = ${id}
+        </select>
 </mapper>

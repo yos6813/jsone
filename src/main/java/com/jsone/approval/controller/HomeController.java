@@ -7,11 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.jsone.approval.dto.ChatDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
+import com.jsone.approval.dto.ViewDTO;
 import com.jsone.approval.service.ApprovalService;
 
 import lombok.RequiredArgsConstructor;
@@ -113,8 +116,14 @@ public class HomeController {
 		return "list";
 	}
 
-	@GetMapping("/view")
-	public String view() {
+	@GetMapping("/{id}")
+	public String view(@PathVariable Long id, Model model) {
+		ViewDTO view = approvalService.view(id);
+		List<ChatDTO> chat = approvalService.chat(id);
+
+		model.addAttribute("view", view);
+		model.addAttribute("chatList", chat);
+		
 		return "view";
 	}
 	

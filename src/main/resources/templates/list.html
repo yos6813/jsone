@@ -40,7 +40,7 @@
                         </form>
                     </div>
                     <div class="list-box">
-                        <div class="list" th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
+                        <div class="list" th:attr="data-href=${list.docid}" th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
                             <span th:text="${list.title}"> <i class="fa-regular fa-file-lines"></i></span>
                             <span class="second-line" th:text="${list.create_date}"></span>
                             <span th:text="${list.contents_text}"></span>

@@ -9,6 +9,10 @@
             }
         });
 
+        $('.list').click(function(){
+            location.href = "/" + $(this).data('href');
+        });
+
         $('.sign-bottom span').click(function(){
             $(window).scrollTop(0);
         })

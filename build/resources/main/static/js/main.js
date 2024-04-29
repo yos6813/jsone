@@ -21,10 +21,6 @@
             location.href = $(this).attr('id');
         });
 
-        $('.list').click(function(){
-            location.href = "/view";
-        });
-
         $('.sign-bottom span').click(function(){
 
         });

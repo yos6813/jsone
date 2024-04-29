@@ -1,7 +1,7 @@
-<html>
+<html xmlns:th="http//www.thymeleaf.org">
     <head>
         <title>서류보기</title>
-        <div th:replace="fragments/header::header"></div>
+        <div th:replace="~{fragments/header::header}"></div>
     </head>
     <div class="wrapper">
         <div class="view-head">
@@ -21,7 +21,7 @@
                 </div>
                 <div class="body-middle">
                     <div class="info-box">
-                        <span class="title">22.01.03 일계표 및 회계전표(반려문서 수정후 재결재)</span>
+                        <span class="title">[[${view.title}]]</span>
                         <div class="info">
                             <div>
                                 <span class="text-title">문서번호</span>
@@ -29,13 +29,13 @@
                             </div>
                             <div>
                                 <span class="text-title">작성일자</span>
-                                <span>2022-01-04 12:45:27</span>
+                                <span>[[${view.create_date}]]</span>
                             </div>
                             <div>
                                 <span class="text-title">작성자</span>
-                                <span class="half-width">경리계장A</span>
+                                <span class="half-width">[[${view.emp_nm}]]</span>
                                 <span class="text-title">작성자</span>
-                                <span>경리계장A</span>
+                                <span>[[${view.emp_nm}]]</span>
                             </div>
                             <div>
                                 <span class="text-title">문서종류</span>
@@ -45,25 +45,26 @@
                             </div>
                             <div>
                                 <span class="text-title">반려</span>
-                                <span class="yellow-txt">202201-004-5582</span>
+                                <span class="yellow-txt">[[${view.reference_docid}]]</span>
                             </div>
                             <div>
                                 <span class="text-title">문서번호</span>
-                                <span class="green-txt">202201-004-5582</span>
+                                <span class="green-txt">[[${view.docid}]]</span>
                             </div>
                         </div>
                     </div>
                     <div class="content">
                         <span>내용</span>
                         <div>
-                            <span>반려문서</span>
-                            <span>22.01.03 일계표</span>
+                            [(${view.contents})]
                         </div>
                     </div>
                     <div class="comments">
                         <span>대화</span>
                         <div class="comment-list">
-
+                            <div th:if="!${#lists.isEmpty(chatList)}" th:each="list: ${chatList}">
+                                <span th:text="${list.contents}"></span>
+                            </div>
                         </div>
                         <div>
                             <input type="text" class="input-text s" />

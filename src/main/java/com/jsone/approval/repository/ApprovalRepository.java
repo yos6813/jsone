@@ -6,8 +6,10 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.jsone.approval.dto.ChatDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
+import com.jsone.approval.dto.ViewDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,4 +28,11 @@ public class ApprovalRepository {
         return sql.selectList("Approval.list", param);
     }
 
+    public ViewDTO view (Long id) {
+        return sql.selectOne("Approval.view", id);
+    }
+
+    public List<ChatDTO> chat (Long id) {
+        return sql.selectList("Approval.chat", id);
+    }
 }
