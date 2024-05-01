@@ -6,6 +6,12 @@
         <select id="login" resultType="login" parameterType="map">
                 SELECT empid, custid FROM t_login WHERE loginid = '${loginid}' AND passwd = '${passwd}'
         </select>
+        <select id="findUser" resultType="Long" parameterType="map">
+                SELECT empid FROM t_login WHERE loginid = '${loginid}'
+        </select>
+        <update id="resetPw" parameterType="map">
+                update t_login set passwd = '${passwd}' where loginid = '${loginid}'
+        </update>
         <select id="use" parameterType="String">
                 use ${dbname}
         </select>
@@ -31,6 +37,11 @@
                 <if test="search != null">
                         <if test="search != ''">
                                 AND (title LIKE '%${search}%' OR contents_text LIKE '%${search}%')
+                        </if>
+                </if>
+                <if test="empid != null">
+                        <if test="empid != ''">
+                                AND empid <![CDATA[=]]> '${empid}'
                         </if>
                 </if>
                 order by create_date desc

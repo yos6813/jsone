@@ -25,6 +25,14 @@ public class ApprovalRepository {
         return sql.selectOne("Approval.login", param);
     }
 
+    public Long findUser(Map<String, Object> map) {
+        return sql.selectOne("Approval.findUser", map);
+    }
+
+    public void resetPw (Map<String, Object> map) {
+        sql.update("Approval.resetPw", map);
+    }
+
     public void use(String dbname) {
         sql.selectOne("Approval.use", dbname);
     }
@@ -37,7 +45,7 @@ public class ApprovalRepository {
         return sql.selectOne("Approval.user", param);
     }
 
-    public List<ListDTO> list (Map<String, String> param) {
+    public List<ListDTO> list (Map<String, Object> param) {
         return sql.selectList("Approval.list", param);
     }
 

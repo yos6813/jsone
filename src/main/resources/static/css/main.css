@@ -82,6 +82,13 @@
     margin-bottom: 10px;
 }
 
+.alert-danger {
+    position: fixed;
+    width: 100vw;
+    text-align: center;
+    z-index: 10;
+}
+
 /* 메인 메뉴 */
 .tab-nav-wrap .tab-nav {
     display: ruby-text;

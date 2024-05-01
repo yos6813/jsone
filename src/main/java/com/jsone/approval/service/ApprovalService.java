@@ -25,6 +25,14 @@ public class ApprovalService {
 		return approvalRepository.loginProcess(param);
 	}
 
+	public Long findUser (Map<String, Object> map) {
+		return approvalRepository.findUser(map);
+	}
+
+	public void resetPw (Map<String, Object> map) {
+		approvalRepository.resetPw(map);
+	}
+
 	public void use (String dbname) {
 		approvalRepository.use(dbname);
 	}
@@ -37,7 +45,7 @@ public class ApprovalService {
 		return approvalRepository.user(param);
 	}
 
-	public List<ListDTO> list (Map<String, String> param) {
+	public List<ListDTO> list (Map<String, Object> param) {
 		return approvalRepository.list(param);
 	}
 

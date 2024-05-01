@@ -26,6 +26,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 
+
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -33,30 +34,44 @@ public class HomeController {
 	private final ApprovalService approvalService;
 	
 	@GetMapping("/")
-    public String index() {
+    public String index(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+
+		if(session != null) {
+			model.addAttribute("error", session.getAttribute("error_message"));
+		}
+
         return "index";
     }
 	
 	@PostMapping("/login")
-	public String loginProcess(@RequestParam Map<String, String> map, HttpServletRequest request) {
+	public String loginProcess(@RequestParam Map<String, String> map, HttpServletRequest request, Model model) {
 		LoginDTO login = approvalService.loginProcess(map);
-		CustDTO cust = approvalService.customer(login.getCustid());
 
-		Map<String, String> user = new HashMap<String, String>();
-		user.put("dbname", cust.getDb_nm());
-		user.put("empid", login.getEmpid());
+		if(login == null) {
+			model.addAttribute("loginError", "ID 또는 비밀번호가 틀렸습니다.");
 
-		UserDTO userDTO = approvalService.user(user);
-		HttpSession session = request.getSession();
+			return "index";
+        } else {
+			CustDTO cust = approvalService.customer(login.getCustid());
 
-		session.setAttribute("manager_nm", cust.getManager_nm());
-		session.setAttribute("empid", login.getEmpid());
-		session.setAttribute("emp_nm", userDTO.getEmp_nm());
-		session.setMaxInactiveInterval(-1);
+			Map<String, String> user = new HashMap<String, String>();
+			user.put("dbname", cust.getDb_nm());
+			user.put("empid", login.getEmpid());
 
-		approvalService.use(cust.getDb_nm());
+			UserDTO userDTO = approvalService.user(user);
 
-		return "redirect:/dashboard";
+			HttpSession session = request.getSession();
+
+			session.setAttribute("manager_nm", cust.getManager_nm());
+			session.setAttribute("empid", login.getEmpid());
+			session.setAttribute("emp_nm", userDTO.getEmp_nm());
+			session.setMaxInactiveInterval(-1);
+
+			approvalService.use(cust.getDb_nm());
+
+			return "redirect:/dashboard";
+		}
 	}
 
 	@PostMapping("/logout")
@@ -75,6 +90,22 @@ public class HomeController {
 	public String resetPassword() {
 		return "resetPassword";
 	}
+
+	@PostMapping("/resetPassword")
+	public String postMethodName(@RequestParam Map<String, Object> map, Model model) {
+		Long findUser = approvalService.findUser(map);
+
+		if(findUser != null) {
+			approvalService.resetPw(map);
+
+			return "redirect:/";
+		} else {
+			model.addAttribute("error", "없는 사용자입니다.");
+
+			return "resetPassword";
+		}
+	}
+	
 	
 	@GetMapping("/dashboard")
 	public String dashboard(Model model, HttpServletRequest request) {
@@ -86,7 +117,7 @@ public class HomeController {
 	}
 
 	@GetMapping("/sign")
-	public String sign(@RequestParam Map<String, String> map, @ModelAttribute ListDTO listDTO, Model model, HttpServletRequest request) {
+	public String sign(@RequestParam Map<String, Object> map, @ModelAttribute ListDTO listDTO, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "전자결재");
 		model.addAttribute("map", map);
 
@@ -101,7 +132,7 @@ public class HomeController {
 	}
 
 	@GetMapping("/signDoc")
-	public String signDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
+	public String signDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "결재문서");
 		model.addAttribute("map", map);
 
@@ -116,7 +147,7 @@ public class HomeController {
 	}
 
 	@GetMapping("/announcementCheck")
-	public String announcementCheck(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
+	public String announcementCheck(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람확인");
 		model.addAttribute("map", map);
 
@@ -131,7 +162,7 @@ public class HomeController {
 	}
 
 	@GetMapping("/announcementDoc")
-	public String announcementDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
+	public String announcementDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람문서");
 		model.addAttribute("map", map);
 
@@ -145,15 +176,16 @@ public class HomeController {
 		return "list";
 	}
 
+	/* 개인서류 */
 	@GetMapping("/personalDoc")
-	public String personalDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
+	public String personalDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "개인서류");
 		model.addAttribute("map", map);
 		
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request);
-		
+
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
 
@@ -161,7 +193,7 @@ public class HomeController {
 	}
 
 	@GetMapping("/prograssDoc")
-	public String prograssDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
+	public String prograssDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "진행서류");
 		model.addAttribute("map", map);
 
