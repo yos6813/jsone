@@ -49,7 +49,7 @@ public class HomeController {
 		LoginDTO login = approvalService.loginProcess(map);
 
 		if(login == null) {
-			model.addAttribute("loginError", "ID 또는 비밀번호가 틀렸습니다.");
+			model.addAttribute("loginError", "ID 또는 비밀번호가 일치하지 않습니다.");
 
 			return "index";
         } else {
@@ -81,6 +81,8 @@ public class HomeController {
 		if(session != null) {
 			session.invalidate();
 		}
+
+		approvalService.use("garam_common");
 		
 		return "redirect:/";
 	}
