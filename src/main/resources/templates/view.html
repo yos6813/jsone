@@ -25,7 +25,7 @@
                         <div class="info">
                             <div>
                                 <span class="text-title">문서번호</span>
-                                <span>202201-004-5582</span>
+                                <span>[[${view.doc_num}]]</span>
                             </div>
                             <div>
                                 <span class="text-title">작성일자</span>
@@ -39,17 +39,17 @@
                             </div>
                             <div>
                                 <span class="text-title">문서종류</span>
-                                <span class="half-width">보고문서</span>
+                                <span class="half-width">[[${view.type_cd}]]</span>
                                 <span class="text-title">문서상태</span>
-                                <span>진행중</span>
+                                <span>[[${view.status_cd}]]</span>
                             </div>
                             <div>
                                 <span class="text-title">반려</span>
-                                <span class="yellow-txt">[[${view.reference_docid}]]</span>
+                                <span class="yellow-txt">[[${view.reference_id}]]</span>
                             </div>
                             <div>
                                 <span class="text-title">문서번호</span>
-                                <span class="green-txt">[[${view.docid}]]</span>
+                                <span class="green-txt">[[${view.doc_num}]]</span>
                             </div>
                         </div>
                     </div>
@@ -67,8 +67,10 @@
                             </div>
                         </div>
                         <div>
-                            <input type="text" class="input-text s" />
-                            <button type="button" class="btn secondary">전송</button>
+                            <form action="/saveChat" method="POST">
+                                <input type="text" class="input-text s" name="chatContents" />
+                                <button type="button" class="btn secondary">전송</button>
+                            </form>
                         </div>
                     </div>
                 </div>

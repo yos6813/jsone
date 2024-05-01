@@ -2,14 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="head">
-    <div class="main-header">
-        <span class="company">Company</span>
-        <h1>제이에스원</h1>
-        <span class="btn-logout">
-            ID
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        </span>
-    </div>
+    <form action="/logout" method="POST">
+        <div class="main-header">
+            <span class="company">GaRamWeb</span>
+            <h1>[[${manager_nm}]]</h1>
+            <span class="btn-logout">
+                [[${name}]]
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </span>
+        </div>
+    </form>
     <div class="tab-nav-wrap">
         <ul class="tab-nav">
             <li>메인</li>

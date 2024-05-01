@@ -8,9 +8,9 @@
             history.back();
         });
 
-        $('.login_btn').click(function(){
-            location.href = "/dashboard";
-        });
+        $('.btn-logout').click(function(){
+            $(this).parents('form').submit();
+        })
 
         $('.personal-nav').hide();
         $('.sub-title').click(function(){

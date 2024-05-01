@@ -3,11 +3,41 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Approval">
-        <select id="login" resultType="Long">
-                select emp_id from t_emp where mbl_tel_no = "#{mbl_tel_no}"
+        <select id="login" resultType="map">
+                SELECT emp_id FROM t_emp WHERE mbl_tel_no = '#{mbl_tel_no}' AND passwd = '#{passwd}'
         </select>
-        <select id="list" resultType="map">
-                select docid, empid, title, contents, contents_text, create_date
-                from t_approval_document order by create_date desc
+        <select id="list" resultType="map" parameterType="map">
+                SELECT docid, empid, title, contents, contents_text, create_date
+                FROM t_approval_document WHERE 1=1
+                <if test="startDate != null">
+                        <if test="startDate != ''">
+                                AND create_date <![CDATA[>=]]> '${startDate}'
+                        </if>
+                </if>
+                <if test="endDate != null">
+                        <if test="endDate != ''">
+                                AND create_date <![CDATA[<=]]> '${endDate}'
+                        </if>
+                </if>
+                <if test="search != null">
+                        <if test="search != ''">
+                                AND (title LIKE '%${search}%' OR contents_text LIKE '%${search}%')
+                        </if>
+                </if>
+                order by create_date desc
+        </select>
+        <select id="view" resultType="view" parameterType="Long">
+                SELECT e.emp_nm, d.docid, d.empid, d.title, d.contents, d.contents_text, d.reference_docid,
+                FORMAT(d.create_date, 'yyyy-MM-dd H:m:s') as create_date,
+                CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.docid) as doc_num,
+                CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.reference_docid) as reference_id,
+                (CASE d.type_cd  WHEN 001 THEN '임시저장' WHEN 002 THEN '진행중' WHEN 003 THEN '반려' WHEN 004 THEN '반려보관' ELSE '완료' END) as type_cd,
+                (CASE d.status_cd  WHEN 001 THEN '내부기안' WHEN 002 THEN '외부발송' WHEN 003 THEN '접수문서' WHEN 004 THEN '보고문서' WHEN 005 THEN '업무일지' WHEN 006 THEN '연차신청' WHEN 007 THEN '지출결의' ELSE '선택' END) as status_cd
+                FROM t_approval_document as d
+                LEFT OUTER JOIN t_emp as e ON d.empid = e.emp_id
+                WHERE d.docid = ${id}
+        </select>
+        <select id="chat" resultType="chat" parameterType="Long">
+                SELECT * FROM t_approval_document_chat WHERE docid = ${id}
         </select>
 </mapper>

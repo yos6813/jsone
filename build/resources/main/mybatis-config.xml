@@ -4,6 +4,8 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.jsone.approval.dto.LoginDTO" alias="login"></typeAlias>
+        <typeAlias type="com.jsone.approval.dto.CustDTO" alias="customer"></typeAlias>
+        <typeAlias type="com.jsone.approval.dto.UserDTO" alias="user"></typeAlias>
         <typeAlias type="com.jsone.approval.dto.ListDTO" alias="sign"></typeAlias>
         <typeAlias type="com.jsone.approval.dto.ViewDTO" alias="view"></typeAlias>
         <typeAlias type="com.jsone.approval.dto.ChatDTO" alias="chat"></typeAlias>

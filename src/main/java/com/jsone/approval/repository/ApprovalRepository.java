@@ -7,8 +7,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.jsone.approval.dto.ChatDTO;
+import com.jsone.approval.dto.CustDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
+import com.jsone.approval.dto.UserDTO;
 import com.jsone.approval.dto.ViewDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -19,9 +21,20 @@ public class ApprovalRepository {
 	
 	private final SqlSessionTemplate sql;
 
-    public LoginDTO loginProcess(LoginDTO loginDTO) {
-        sql.selectOne("Approval.login", loginDTO);
-        return loginDTO;
+    public LoginDTO loginProcess(Map<String, String> param) {
+        return sql.selectOne("Approval.login", param);
+    }
+
+    public void use(String dbname) {
+        sql.selectOne("Approval.use", dbname);
+    }
+
+    public CustDTO customer(Long custid) {
+        return sql.selectOne("Approval.customer", custid);
+    }
+
+    public UserDTO user(Map<String,String> param) {
+        return sql.selectOne("Approval.user", param);
     }
 
     public List<ListDTO> list (Map<String, String> param) {

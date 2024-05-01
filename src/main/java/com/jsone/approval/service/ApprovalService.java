@@ -6,8 +6,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.jsone.approval.dto.ChatDTO;
+import com.jsone.approval.dto.CustDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
+import com.jsone.approval.dto.UserDTO;
 import com.jsone.approval.dto.ViewDTO;
 import com.jsone.approval.repository.ApprovalRepository;
 
@@ -19,8 +21,20 @@ public class ApprovalService {
 	
 	private final ApprovalRepository approvalRepository;
 	
-	public void loginProcess (LoginDTO loginDTO) {
-		approvalRepository.loginProcess(loginDTO);
+	public LoginDTO loginProcess (Map<String, String> param) {
+		return approvalRepository.loginProcess(param);
+	}
+
+	public void use (String dbname) {
+		approvalRepository.use(dbname);
+	}
+
+	public CustDTO customer (Long custid) {
+		return approvalRepository.customer(custid);
+	}
+
+	public UserDTO user (Map<String, String> param) {
+		return approvalRepository.user(param);
 	}
 
 	public List<ListDTO> list (Map<String, String> param) {

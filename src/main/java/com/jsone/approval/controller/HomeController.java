@@ -1,5 +1,6 @@
 package com.jsone.approval.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,15 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jsone.approval.dto.ChatDTO;
+import com.jsone.approval.dto.CustDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
+import com.jsone.approval.dto.UserDTO;
 import com.jsone.approval.dto.ViewDTO;
 import com.jsone.approval.service.ApprovalService;
+import com.jsone.approval.util.SessionUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-
-
-
 
 
 @Controller
@@ -35,10 +38,38 @@ public class HomeController {
     }
 	
 	@PostMapping("/login")
-	public String loginProcess(@ModelAttribute LoginDTO loginDTO) {
-		approvalService.loginProcess(loginDTO);
-        return "redirect:/dashboard";
+	public String loginProcess(@RequestParam Map<String, String> map, HttpServletRequest request) {
+		LoginDTO login = approvalService.loginProcess(map);
+		CustDTO cust = approvalService.customer(login.getCustid());
+
+		Map<String, String> user = new HashMap<String, String>();
+		user.put("dbname", cust.getDb_nm());
+		user.put("empid", login.getEmpid());
+
+		UserDTO userDTO = approvalService.user(user);
+		HttpSession session = request.getSession();
+
+		session.setAttribute("manager_nm", cust.getManager_nm());
+		session.setAttribute("empid", login.getEmpid());
+		session.setAttribute("emp_nm", userDTO.getEmp_nm());
+		session.setMaxInactiveInterval(-1);
+
+		approvalService.use(cust.getDb_nm());
+
+		return "redirect:/dashboard";
 	}
+
+	@PostMapping("/logout")
+	public String logout(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+
+		if(session != null) {
+			session.invalidate();
+		}
+		
+		return "redirect:/";
+	}
+	
 
 	@GetMapping("/resetPassword")
 	public String resetPassword() {
@@ -46,25 +77,37 @@ public class HomeController {
 	}
 	
 	@GetMapping("/dashboard")
-	public String dashboard() {
+	public String dashboard(Model model, HttpServletRequest request) {
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request);
+
 		return "dashboard";
 	}
 
 	@GetMapping("/sign")
-	public String sign(@RequestParam Map<String, String> map, @ModelAttribute ListDTO listDTO, Model model) {
+	public String sign(@RequestParam Map<String, String> map, @ModelAttribute ListDTO listDTO, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "전자결재");
 		model.addAttribute("map", map);
 
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
 
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request);
+
 		return "list";
 	}
 
 	@GetMapping("/signDoc")
-	public String signDoc(@RequestParam Map<String, String> map, Model model) {
+	public String signDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "결재문서");
 		model.addAttribute("map", map);
+
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request);
 		
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
@@ -73,9 +116,13 @@ public class HomeController {
 	}
 
 	@GetMapping("/announcementCheck")
-	public String announcementCheck(@RequestParam Map<String, String> map, Model model) {
+	public String announcementCheck(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람확인");
 		model.addAttribute("map", map);
+
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request);
 		
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
@@ -84,9 +131,13 @@ public class HomeController {
 	}
 
 	@GetMapping("/announcementDoc")
-	public String announcementDoc(@RequestParam Map<String, String> map, Model model) {
+	public String announcementDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람문서");
 		model.addAttribute("map", map);
+
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request);
 		
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
@@ -95,9 +146,13 @@ public class HomeController {
 	}
 
 	@GetMapping("/personalDoc")
-	public String personalDoc(@RequestParam Map<String, String> map, Model model) {
+	public String personalDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "개인서류");
 		model.addAttribute("map", map);
+		
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request);
 		
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
@@ -106,9 +161,13 @@ public class HomeController {
 	}
 
 	@GetMapping("/prograssDoc")
-	public String prograssDoc(@RequestParam Map<String, String> map, Model model) {
+	public String prograssDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "진행서류");
 		model.addAttribute("map", map);
+
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request);
 		
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
@@ -117,12 +176,16 @@ public class HomeController {
 	}
 
 	@GetMapping("/{id}")
-	public String view(@PathVariable Long id, Model model) {
+	public String view(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
 		ViewDTO view = approvalService.view(id);
 		List<ChatDTO> chat = approvalService.chat(id);
 
 		model.addAttribute("view", view);
 		model.addAttribute("chatList", chat);
+
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request);
 		
 		return "view";
 	}
