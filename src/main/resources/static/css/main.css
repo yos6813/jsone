@@ -34,6 +34,10 @@
     font-size: large;
 }
 
+.bg-gray1 {
+    background-color: #EEEEEE;
+}
+
 .bg-blue1 {
     background-color: #3856B6;
     color: #FFFFFF;
@@ -64,6 +68,10 @@
     color: #FFFFFF
 }
 
+.bg-yellow {
+    background-color: #FCF5A2;
+}
+
 .yellow-txt {
     color: #DAA836;
 }
@@ -80,6 +88,17 @@
     border-bottom: 1px solid #EEEEEE;
     width: 100%;
     margin-bottom: 10px;
+    clear: both;
+}
+
+.left {
+    float: left;
+    clear: both;
+}
+
+.right {
+    float: right;
+    clear: both;
 }
 
 .alert-danger {
@@ -384,6 +403,22 @@
     text-align: justify;
 }
 
+.view-body .body-middle .comments .comment {
+    width: 150px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+    padding: 5px;
+}
+
+.view-body .body-middle .comments .comment .chat-contents {
+    word-wrap: break-word;
+}
+
+.view-body .body-middle .comments .comment .chat-contents span {
+    width: 150px;
+}
+
 .view-body .body-middle .comments > span {
     border-bottom: 1px solid #EEEEEE;
     width: 100%;
@@ -391,14 +426,24 @@
 }
 
 .view-body .body-middle .comments .comment-list {
-    height: 100px;
+    height: auto;
+    padding-bottom: 5px;
 }
 
 .view-body .body-middle .comments .comment-list span {
     padding-top: 5px;
 }
 
-.view-body .body-middle .comments button {
+.view-body .body-middle .comments .chat-form {
+    clear: both;
+    padding-top: 10px;
+}
+
+.view-body .body-middle .comments .chat-form input {
+    width: 258px;
+}
+
+.view-body .body-middle .comments .chat-form button {
     padding: 0 15px;
     font-weight: normal;
 }

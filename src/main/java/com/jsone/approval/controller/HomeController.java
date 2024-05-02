@@ -27,20 +27,17 @@ import lombok.RequiredArgsConstructor;
 
 
 
+
+
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
 	
 	private final ApprovalService approvalService;
 	
+	/* 로그인 */
 	@GetMapping("/")
     public String index(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-
-		if(session != null) {
-			model.addAttribute("error", session.getAttribute("error_message"));
-		}
-
         return "index";
     }
 	
@@ -59,6 +56,8 @@ public class HomeController {
 			user.put("dbname", cust.getDb_nm());
 			user.put("empid", login.getEmpid());
 
+			approvalService.use(cust.getDb_nm());
+
 			UserDTO userDTO = approvalService.user(user);
 
 			HttpSession session = request.getSession();
@@ -68,12 +67,11 @@ public class HomeController {
 			session.setAttribute("emp_nm", userDTO.getEmp_nm());
 			session.setMaxInactiveInterval(-1);
 
-			approvalService.use(cust.getDb_nm());
-
 			return "redirect:/dashboard";
 		}
 	}
 
+	/* 로그아웃 */
 	@PostMapping("/logout")
 	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
@@ -87,7 +85,7 @@ public class HomeController {
 		return "redirect:/";
 	}
 	
-
+	/* 비밀번호 재설정 */
 	@GetMapping("/resetPassword")
 	public String resetPassword() {
 		return "resetPassword";
@@ -108,9 +106,10 @@ public class HomeController {
 		}
 	}
 	
-	
+	/* 대시보드 */
 	@GetMapping("/dashboard")
 	public String dashboard(Model model, HttpServletRequest request) {
+		
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request);
@@ -118,6 +117,7 @@ public class HomeController {
 		return "dashboard";
 	}
 
+	/* 전자결재 */
 	@GetMapping("/sign")
 	public String sign(@RequestParam Map<String, Object> map, @ModelAttribute ListDTO listDTO, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "전자결재");
@@ -133,6 +133,7 @@ public class HomeController {
 		return "list";
 	}
 
+	/* 결재문서 */
 	@GetMapping("/signDoc")
 	public String signDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "결재문서");
@@ -148,6 +149,7 @@ public class HomeController {
 		return "list";
 	}
 
+	/* 공람확인 */
 	@GetMapping("/announcementCheck")
 	public String announcementCheck(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람확인");
@@ -163,6 +165,7 @@ public class HomeController {
 		return "list";
 	}
 
+	/* 공람문서 */
 	@GetMapping("/announcementDoc")
 	public String announcementDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람문서");
@@ -194,6 +197,7 @@ public class HomeController {
 		return "list";
 	}
 
+	/* 진행서류 */
 	@GetMapping("/prograssDoc")
 	public String prograssDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "진행서류");
@@ -209,6 +213,7 @@ public class HomeController {
 		return "list";
 	}
 
+	/* 뷰페이지 */
 	@GetMapping("/{id}")
 	public String view(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
 		ViewDTO view = approvalService.view(id);
@@ -216,6 +221,7 @@ public class HomeController {
 
 		model.addAttribute("view", view);
 		model.addAttribute("chatList", chat);
+		model.addAttribute("docid", id);
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -224,6 +230,7 @@ public class HomeController {
 		return "view";
 	}
 	
+	/* 편집 페이지 */
 	@GetMapping("/edit")
 	public String edit() {
 		return "edit";

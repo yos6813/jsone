@@ -10,6 +10,7 @@ import lombok.Setter;
 public class ChatDTO {
     private Long docid;
     private Long empid;
+    private String emp_nm;
     private String contents;
     private String create_date;
 }

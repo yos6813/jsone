@@ -2,6 +2,7 @@
     <head>
         <title>서류보기</title>
         <div th:replace="~{fragments/header::header}"></div>
+        <script th:src="@{/js/view.js}"></script>
     </head>
     <div class="wrapper">
         <div class="view-head">
@@ -62,14 +63,29 @@
                     <div class="comments">
                         <span>대화</span>
                         <div class="comment-list">
-                            <div th:if="!${#lists.isEmpty(chatList)}" th:each="list: ${chatList}">
-                                <span th:text="${list.contents}"></span>
+                            <div th:if="!${#lists.isEmpty(chatList)} and ${list.emp_nm} != ${name}" th:each="list: ${chatList}" class="comment bg-gray1 left">
+                                <div class="chat-user">
+                                    <span th:text="${list.emp_nm}"></span>
+                                </div>
+                                <div class="chat-contents">
+                                    <span th:text="${list.contents}"></span>
+                                </div>
+                            </div>
+                            <div th:unless="${list.emp_nm} != ${name}" th:each="list: ${chatList}" class="comment bg-yellow right">
+                                <div class="chat-user">
+                                    <span th:text="${list.emp_nm}"></span>
+                                </div>
+                                <div class="chat-contents">
+                                    <span th:text="${list.contents}"></span>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <form action="/saveChat" method="POST">
-                                <input type="text" class="input-text s" name="chatContents" />
-                                <button type="button" class="btn secondary">전송</button>
+                        <div class="chat-form">
+                            <form id="saveChat">
+                                <input type="hidden" id="docid" th:value="${docid}"/>
+                                <input type="hidden" id="empid" th:value="${empid}"/>
+                                <input type="text" class="input-text s" id="chatContents" />
+                                <button type="button" id="saveChat_submit" class="btn secondary">전송</button>
                             </form>
                         </div>
                     </div>
