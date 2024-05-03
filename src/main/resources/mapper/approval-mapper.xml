@@ -68,9 +68,9 @@
                 SELECT e.emp_nm, d.docid, d.empid, d.title, d.contents, d.contents_text, d.reference_docid,
                 FORMAT(d.create_date, 'yyyy-MM-dd H:m:s') as create_date,
                 CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.docid) as doc_num,
-                CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.reference_docid) as reference_id,
-                (CASE d.type_cd  WHEN 001 THEN '임시저장' WHEN 002 THEN '진행중' WHEN 003 THEN '반려' WHEN 004 THEN '반려보관' ELSE '완료' END) as type_cd,
-                (CASE d.status_cd  WHEN 001 THEN '내부기안' WHEN 002 THEN '외부발송' WHEN 003 THEN '접수문서' WHEN 004 THEN '보고문서' WHEN 005 THEN '업무일지' WHEN 006 THEN '연차신청' WHEN 007 THEN '지출결의' ELSE '선택' END) as status_cd
+                CASE WHEN d.reference_docid IS NULL or d.reference_docid = 0 THEN '-' ELSE CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.reference_docid) END as reference_id,
+                CASE WHEN d.type_cd = '001' THEN '임시저장' WHEN d.type_cd = '002' THEN '진행중' WHEN d.type_cd = '003' THEN '반려' WHEN d.type_cd = '004' THEN '반려보관' ELSE '완료' END as type_cd,
+                CASE WHEN d.status_cd = '001' THEN '내부기안' WHEN d.status_cd = '002' THEN '외부발송' WHEN d.status_cd = '003' THEN '접수문서' WHEN d.status_cd = '004' THEN '보고문서' WHEN d.status_cd = '005' THEN '업무일지' WHEN d.status_cd = '006' THEN '연차신청' WHEN d.status_cd = '007' THEN '지출결의' ELSE '선택' END as status_cd
                 FROM dbo.t_approval_document as d
                 LEFT OUTER JOIN t_emp as e ON d.empid = e.empid
                 WHERE d.docid = ${id}
@@ -86,5 +86,17 @@
         <!-- ajax로 채팅 insert한 것 불러오기 -->
         <select id="chatOne" resultType="chatAjax" parameterType="string">
                 SELECT c.docid, c.chatid, c.empid, c.contents as chatContents, e.emp_nm FROM t_approval_document_chat c JOIN t_emp e ON c.empid = e.empid WHERE c.chatid = ${chatid}
+        </select>
+        <!-- 결재자 조회 -->
+        <select id="approver" resultType="approver">
+                SELECT c.id, c.name, e.empid, e.emp_nm FROM t_code as c
+                JOIN t_emp as e ON c.code = e.pos_cd
+                WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' ORDER BY c.seq
+        </select>
+        <!-- 공람자 조회 -->
+        <select id="viewer" resultType="approver">
+                SELECT c.id, c.name, e.empid, e.emp_nm FROM
+                t_code as c JOIN t_emp as e ON c.code = e.coop_cd
+                WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' ORDER BY c.seq
         </select>
 </mapper>

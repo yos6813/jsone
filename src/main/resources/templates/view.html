@@ -27,17 +27,12 @@
                         <span class="title-txt">결재</span>
                         <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
                     </span>
-                    <div>
-                        <span>차장</span>
-                        <span><i class="fa-regular fa-square-check fa-lg"></i></span>
-                    </div>
-                    <div>
-                        <span>부장</span>
-                        <span><i class="fa-regular fa-square-check fa-lg"></i></span>
-                    </div>
-                    <div>
-                        <span>사장</span>
-                        <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                    <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
+                        <div>
+                            <span th:text="${list.emp_nm}"></span>
+                            <input type="checkbox" name="approver" th:value="${list.empid}" />
+                            <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
                     </div>
                 </div>
                 <div class="announcement-toggle toggle-box">
@@ -45,30 +40,12 @@
                         <span class="title-txt">공람(모든 공람 선택/해제)</span>
                         <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
                     </span>
-                    <div>
-                        <span>배차차장</span>
-                        <span><i class="fa-regular fa-square-check fa-lg"></i></span>
-                    </div>
-                    <div>
-                        <span>배차부장</span>
-                        <span><i class="fa-regular fa-square-check fa-lg"></i></span>
-                    </div>
-                    <div>
-                        <span>정비과장</span>
-                        <span><i class="fa-regular fa-square-check fa-lg"></i></span>
-                    </div>
-                    <div>
-                        <span>정비차장</span>
-                        <span><i class="fa-regular fa-square-check fa-lg"></i></span>
-                    </div>
-                    <span class="line"></span>
-                    <div>
-                        <span>경리이사</span>
-                        <span><i class="fa-regular fa-square-check fa-lg"></i></span>
-                    </div>
-                    <div>
-                        <span>경리계장</span>
-                        <span><i class="fa-regular fa-square-check fa-lg"></i></span>
+                    <div th:if="!${#lists.isEmpty(viewer)}" th:each="view: ${viewer}">
+                        <div>
+                            <span th:text="${view.emp_nm}"></span>
+                            <input type="checkbox" name="viewer" th:value="${view.empid}" />
+                            <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                        </div>
                     </div>
                 </div>
                 <div class="body-middle">

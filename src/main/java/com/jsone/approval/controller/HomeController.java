@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.jsone.approval.dto.ApproverDTO;
 import com.jsone.approval.dto.ChatDTO;
 import com.jsone.approval.dto.CustDTO;
 import com.jsone.approval.dto.ListDTO;
@@ -123,7 +124,11 @@ public class HomeController {
 		model.addAttribute("title", "전자결재");
 		model.addAttribute("map", map);
 
+		/* 진행중 문서 */
 		map.put("type_cd", "'002'");
+
+		List<UserDTO> users = approvalService.userAll();
+		model.addAttribute("users", users);
 
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
@@ -143,6 +148,9 @@ public class HomeController {
 
 		map.put("type_cd", "'003','999'");
 
+		List<UserDTO> users = approvalService.userAll();
+		model.addAttribute("users", users);
+
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request);
@@ -161,6 +169,9 @@ public class HomeController {
 
 		map.put("type_cd", "002");
 
+		List<UserDTO> users = approvalService.userAll();
+		model.addAttribute("users", users);
+
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request);
@@ -178,6 +189,9 @@ public class HomeController {
 		model.addAttribute("map", map);
 
 		map.put("type_cd", "'003','999'");
+
+		List<UserDTO> users = approvalService.userAll();
+		model.addAttribute("users", users);
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -233,10 +247,11 @@ public class HomeController {
 	public String view(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
 		ViewDTO view = approvalService.view(id);
 		List<ChatDTO> chat = approvalService.chat(id);
+		List<ApproverDTO> approver = approvalService.approver();
+		List<ApproverDTO> viewer = approvalService.viewer();
 
-		List<UserDTO> user = approvalService.userAll();
-
-		model.addAttribute("user", user);
+		model.addAttribute("approver", approver);
+		model.addAttribute("viewer", viewer);
 		model.addAttribute("view", view);
 		model.addAttribute("chatList", chat);
 		model.addAttribute("docid", id);

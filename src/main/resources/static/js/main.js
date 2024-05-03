@@ -45,6 +45,17 @@
             $('.announcement-toggle').slideToggle();
         })
 
+        /* checkbox */
+        $('.check').click(function(){
+            var checkbox = $(this).prev('input[type="checkbox"]');
+            
+            if(checkbox.is(":checked")) {
+                checkbox.prop('checked', false);
+            } else {
+                checkbox.prop('checked', true);
+            }
+        });
+
         /* 대시보드 경로 */
         $('.approval-box').click(function(){
             location.href = $(this).attr('id');

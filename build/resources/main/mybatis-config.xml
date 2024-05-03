@@ -10,5 +10,6 @@
         <typeAlias type="com.jsone.approval.dto.ViewDTO" alias="view"></typeAlias>
         <typeAlias type="com.jsone.approval.dto.ChatDTO" alias="chat"></typeAlias>
         <typeAlias type="com.jsone.approval.dto.ChatAjaxDTO" alias="chatAjax"></typeAlias>
+        <typeAlias type="com.jsone.approval.dto.ApproverDTO" alias="approver"></typeAlias>
     </typeAliases>
 </configuration>

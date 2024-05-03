@@ -112,6 +112,18 @@
     z-index: 10;
 }
 
+input[type="checkbox"]{
+    display: none;
+}
+
+input[type="checkbox"] + span{
+    color: #CCCCCC;
+}
+
+input[type="checkbox"]:checked + span{
+    color: #000000;
+}
+
 /* 메인 메뉴 */
 .tab-nav-wrap .tab-nav {
     display: ruby-text;
@@ -239,6 +251,10 @@
     padding-top: 25px;
 }
 
+.sign-body .search-box .users {
+    margin-bottom: 5px;
+}
+
 .sign-body .search-box .middle-txt {
     padding-top: 15px;
 }
@@ -253,19 +269,13 @@
 .sign-body .search-box .condition-box {
     height: 25px;
     padding-top: 5px;
-    text-align: center;
-    margin-left: -25vw;
+    text-align: left;
+    margin-left: 5vw;
 }
 
 .sign-body .search-box .condition-box .text {
     padding-left: 5px;
     margin-right: 35px;
-    vertical-align: 4px;
-}
-
-.sign-body .search-box .condition-box .svg-inline--fa {
-    color: #CCCCCC;
-    height: 20px;
 }
 
 .sign-body .list-box .list {
@@ -386,7 +396,7 @@
     width:290px;
 }
 
-.view-body .toggle-box div {
+.view-body .toggle-box > div {
     border: 1px solid #EEEEEE;
     border-radius: 4px;
     width: 70px;
@@ -398,10 +408,6 @@
 
 .view-body .toggle-box div span:first-child {
     border-bottom: 1px solid #EEEEEE;
-}
-
-.view-body .toggle-box div span:last-child {
-    color: #CCCCCC;
 }
 
 .view-body .toggle-box div span {

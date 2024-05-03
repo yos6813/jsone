@@ -6,6 +6,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.jsone.approval.dto.ApproverDTO;
 import com.jsone.approval.dto.ChatAjaxDTO;
 import com.jsone.approval.dto.ChatDTO;
 import com.jsone.approval.dto.CustDTO;
@@ -68,5 +69,13 @@ public class ApprovalRepository {
 
     public int chatSave (ChatAjaxDTO chatAjax) {
         return sql.insert("Approval.chatSave", chatAjax);
+    }
+
+    public List<ApproverDTO> approver () {
+        return sql.selectList("Approval.approver");
+    }
+
+    public List<ApproverDTO> viewer () {
+        return sql.selectList("Approval.viewer");
     }
 }

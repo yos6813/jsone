@@ -26,14 +26,20 @@
                 <div class="sign-body">
                     <div class="search-box">
                         <form>
-                            <input type="date" name="startDate" class="input-text sm datepicker" th:value="${startDate} ? ${startDate} : ''" th:placeholder="YYYY-MM-DD" />
+                            <input type="date" name="startDate" class="input-text sm datepicker" th:value="${map['startDate']} ? ${map['startDate']} : ''" th:placeholder="YYYY-MM-DD" />
                             <span class="middle-txt">~</span>
-                            <input type="date" name="endDate" th:value="${endDate} ? ${endDate} : ''" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
-                            <input type="text" name="search" th:value="${search} ? ${search} : ''" class="input-text lg search" placeholder="검색" />
+                            <input type="date" name="endDate" th:value="${map['endDate']} ? ${map['endDate']} : ''" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
+                            <select name="empid" class="input-text lg users" th:if="${title != '개인서류'}">
+                                <option>선택</option>
+                                <option th:selected="${map['empid'] == user.empid}" th:each="user: ${users}" th:text="${user.emp_nm}" th:value="${user.empid}"></option>
+                            </select>
+                            <input type="text" name="search" th:value="${map['search']} ? ${map['search']} : ''" class="input-text lg search" placeholder="검색" />
                             <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
                             <div class="condition-box">
-                                <span><i class="fa-regular fa-square-check"></i><span class="text">신규메시지</span></span>
-                                <span><i class="fa-regular fa-square-check"></i><span class="text">완료문서제외</span></span>
+                                <input type="checkbox" name="new" id="new" value="new"/>
+                                <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span><span class="text">신규메시지</span>
+                                <input th:if="${title == '개인서류'}" type="checkbox" id="end" name="end" value="end"/>
+                                <span th:if="${title == '개인서류'}" class="check"><i class="fa-regular fa-square-check fa-lg"></i></span><span th:if="${title == '개인서류'}" class="text">완료문서제외</span>
                             </div>
                         </form>
                     </div>

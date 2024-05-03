@@ -24,6 +24,7 @@
         /* 리스트가 하단으로 내려갈 때 상단으로 가기 버튼 */
         $('.sign-bottom span').click(function(){
             $(window).scrollTop(0);
-        })
+        });
+
     });
 })(jQuery)

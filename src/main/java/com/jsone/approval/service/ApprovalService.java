@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.jsone.approval.dto.ApproverDTO;
 import com.jsone.approval.dto.ChatAjaxDTO;
 import com.jsone.approval.dto.ChatDTO;
 import com.jsone.approval.dto.CustDTO;
@@ -68,6 +69,14 @@ public class ApprovalService {
 
 	public int chatSave (ChatAjaxDTO chatAjax) {
 		return approvalRepository.chatSave(chatAjax);
+	}
+
+	public List<ApproverDTO> approver () {
+		return approvalRepository.approver();
+	}
+
+	public List<ApproverDTO> viewer () {
+		return approvalRepository.viewer();
 	}
 
 }
