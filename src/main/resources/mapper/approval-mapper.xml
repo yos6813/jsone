@@ -67,7 +67,7 @@
         </select>
         <!-- 뷰페이지 하단 채팅 정보 -->
         <select id="chat" resultType="chat" parameterType="Long">
-                SELECT c.chatid, c.docid, c.empid, c.contents, e.emp_nm FROM t_approval_document_chat c JOIN t_emp e ON c.empid = e.empid WHERE docid = ${id}
+                SELECT c.chatid, c.docid, c.empid, c.contents, e.emp_nm FROM t_approval_document_chat c JOIN t_emp e ON c.empid = e.empid WHERE docid = ${id} ORDER BY c.create_date ASC
         </select>
         <!-- 채팅 저장 -->
         <insert id="chatSave" parameterType="chatAjax" useGeneratedKeys="true" keyProperty="chatid">
