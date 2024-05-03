@@ -1,5 +1,6 @@
 (function($){
     $(document).ready(function(){
+        /* 내용 편집기 */
         $('#content').summernote({
             tabsize: 2,
             height: 120,

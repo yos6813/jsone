@@ -46,7 +46,11 @@ public class ApprovalRepository {
         return sql.selectOne("Approval.user", param);
     }
 
-    public List<ListDTO> list (Map<String, Object> param) {
+    public List<UserDTO> userAll() {
+        return sql.selectList("Approval.allUser");
+    }
+
+    public List<ListDTO> list (Map<String, String> param) {
         return sql.selectList("Approval.list", param);
     }
 

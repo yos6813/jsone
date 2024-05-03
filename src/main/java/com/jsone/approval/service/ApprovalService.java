@@ -46,7 +46,11 @@ public class ApprovalService {
 		return approvalRepository.user(param);
 	}
 
-	public List<ListDTO> list (Map<String, Object> param) {
+	public List<UserDTO> userAll () {
+		return approvalRepository.userAll();
+	}
+
+	public List<ListDTO> list (Map<String, String> param) {
 		return approvalRepository.list(param);
 	}
 

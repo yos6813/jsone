@@ -1,5 +1,6 @@
 (function($) {
     $(document).ready(function(){
+        /* 뷰 하단 대화 전송 시 AJAX 처리 */
         $('#saveChat_submit').click(function(){
             $.ajax({
                     type : 'POST',
@@ -23,8 +24,6 @@
                                 '</div>' +
                             '</div>'
                         );
-
-                        console.log(result);
                     },
                     error : function(request, status, error) { 
                         console.log(error);

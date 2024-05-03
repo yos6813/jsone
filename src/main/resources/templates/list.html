@@ -4,7 +4,7 @@
             <div id="sign">
                 <div class="sign-head">
                     <span class="sub-title">[[${title}]] <i class="fa-solid fa-chevron-right"></i></span>
-                    <ul th:if="${title == '개인서류'}" class="personal-nav">
+                    <ul th:if="${title == '개인서류'}" class="sub-nav">
                         <li>전체</li>
                         <li>임시저장</li>
                         <li>진행중</li>
@@ -12,26 +12,24 @@
                         <li>반려보관</li>
                         <li>완료</li>
                     </ul>
-                    <span class="sub-nav">[[${title}]]/전체(0)</span>
+                    <ul th:unless="${title == '개인서류'}" class="sub-nav">
+                        <li>업무일지</li>
+                        <li>접수문서</li>
+                        <li>외부발송</li>
+                        <li>내부기안</li>
+                        <li>보고문서</li>
+                        <li>연차신청</li>
+                        <li>지출결의</li>
+                    </ul>
+                    <span class="list-nav">[[${title}]]/전체(0)</span>
                 </div>
                 <div class="sign-body">
                     <div class="search-box">
-                        <form th:if="!${#maps.isEmpty(map)}">
-                            <input type="date" name="startDate" class="input-text sm datepicker" th:value="${map.startDate}" th:placeholder="YYYY-MM-DD" />
+                        <form>
+                            <input type="date" name="startDate" class="input-text sm datepicker" th:value="${startDate} ? ${startDate} : ''" th:placeholder="YYYY-MM-DD" />
                             <span class="middle-txt">~</span>
-                            <input type="date" name="endDate" th:value="${map.endDate}" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
-                            <input type="text" name="search" th:value="${map.search}" class="input-text lg search" placeholder="검색" />
-                            <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
-                            <div class="condition-box">
-                                <span><i class="fa-regular fa-square-check"></i><span class="text">신규메시지</span></span>
-                                <span><i class="fa-regular fa-square-check"></i><span class="text">완료문서제외</span></span>
-                            </div>
-                        </form>
-                        <form th:unless="!${#maps.isEmpty(map)}">
-                            <input type="date" name="startDate" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
-                            <span class="middle-txt">~</span>
-                            <input type="date" name="endDate" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
-                            <input type="text" name="search" class="input-text lg search" placeholder="검색" />
+                            <input type="date" name="endDate" th:value="${endDate} ? ${endDate} : ''" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
+                            <input type="text" name="search" th:value="${search} ? ${search} : ''" class="input-text lg search" placeholder="검색" />
                             <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
                             <div class="condition-box">
                                 <span><i class="fa-regular fa-square-check"></i><span class="text">신규메시지</span></span>

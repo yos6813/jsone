@@ -119,9 +119,11 @@ public class HomeController {
 
 	/* 전자결재 */
 	@GetMapping("/sign")
-	public String sign(@RequestParam Map<String, Object> map, @ModelAttribute ListDTO listDTO, Model model, HttpServletRequest request) {
+	public String sign(@RequestParam Map<String, String> map, @ModelAttribute ListDTO listDTO, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "전자결재");
 		model.addAttribute("map", map);
+
+		map.put("type_cd", "'002'");
 
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
@@ -135,9 +137,11 @@ public class HomeController {
 
 	/* 결재문서 */
 	@GetMapping("/signDoc")
-	public String signDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
+	public String signDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "결재문서");
 		model.addAttribute("map", map);
+
+		map.put("type_cd", "'003','999'");
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -151,9 +155,11 @@ public class HomeController {
 
 	/* 공람확인 */
 	@GetMapping("/announcementCheck")
-	public String announcementCheck(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
+	public String announcementCheck(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람확인");
 		model.addAttribute("map", map);
+
+		map.put("type_cd", "002");
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -167,9 +173,11 @@ public class HomeController {
 
 	/* 공람문서 */
 	@GetMapping("/announcementDoc")
-	public String announcementDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
+	public String announcementDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람문서");
 		model.addAttribute("map", map);
+
+		map.put("type_cd", "'003','999'");
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -183,9 +191,14 @@ public class HomeController {
 
 	/* 개인서류 */
 	@GetMapping("/personalDoc")
-	public String personalDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
+	public String personalDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "개인서류");
 		model.addAttribute("map", map);
+
+		HttpSession session = request.getSession();
+		String empid = (String) session.getAttribute("empid");
+
+		map.put("empid", empid);
 		
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -199,9 +212,11 @@ public class HomeController {
 
 	/* 진행서류 */
 	@GetMapping("/prograssDoc")
-	public String prograssDoc(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) {
+	public String prograssDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "진행서류");
 		model.addAttribute("map", map);
+
+		map.put("type_cd", "'002'");
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -219,6 +234,9 @@ public class HomeController {
 		ViewDTO view = approvalService.view(id);
 		List<ChatDTO> chat = approvalService.chat(id);
 
+		List<UserDTO> user = approvalService.userAll();
+
+		model.addAttribute("user", user);
 		model.addAttribute("view", view);
 		model.addAttribute("chatList", chat);
 		model.addAttribute("docid", id);
@@ -233,6 +251,8 @@ public class HomeController {
 	/* 편집 페이지 */
 	@GetMapping("/edit")
 	public String edit() {
+
+
 		return "edit";
 	}
 	

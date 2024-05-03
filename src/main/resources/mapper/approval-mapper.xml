@@ -23,14 +23,24 @@
         <select id="customer" resultType="customer" parameterType="Long">
                 SELECT custid, manager_nm, telno, db_nm FROM t_customer WHERE custid = '${custid}'
         </select>
-        <!-- 현재 -->
+        <!-- 현재 로그인한 사람의 정보 조회 -->
         <select id="user" resultType="user" parameterType="map">
                 SELECT empid, emp_nm FROM dbo.t_emp WHERE empid = '${empid}'
+        </select>
+        <!-- 해당 회사의 회원 모두 조회 -->
+        <select id="allUser" resultType="user">
+                SELECT empid, emp_nm FROM dbo.t_emp WHERE use_yn = 'Y'
         </select>
         <!-- 리스트 페이지 -->
         <select id="list" resultType="map" parameterType="map">
                 SELECT docid, empid, title, contents, contents_text, create_date
                 FROM dbo.t_approval_document WHERE 1=1
+                <if test="type_cd != null">
+                        AND type_cd in (${type_cd})
+                </if>
+                <if test="status_cd != null">
+                        AND status_cd = '${status_cd}'
+                </if>
                 <if test="startDate != null">
                         <if test="startDate != ''">
                                 AND create_date <![CDATA[>=]]> '${startDate}'
@@ -62,7 +72,7 @@
                 (CASE d.type_cd  WHEN 001 THEN '임시저장' WHEN 002 THEN '진행중' WHEN 003 THEN '반려' WHEN 004 THEN '반려보관' ELSE '완료' END) as type_cd,
                 (CASE d.status_cd  WHEN 001 THEN '내부기안' WHEN 002 THEN '외부발송' WHEN 003 THEN '접수문서' WHEN 004 THEN '보고문서' WHEN 005 THEN '업무일지' WHEN 006 THEN '연차신청' WHEN 007 THEN '지출결의' ELSE '선택' END) as status_cd
                 FROM dbo.t_approval_document as d
-                LEFT OUTER JOIN t_emp as e ON d.empid = e.emp_id
+                LEFT OUTER JOIN t_emp as e ON d.empid = e.empid
                 WHERE d.docid = ${id}
         </select>
         <!-- 뷰페이지 하단 채팅 정보 -->
