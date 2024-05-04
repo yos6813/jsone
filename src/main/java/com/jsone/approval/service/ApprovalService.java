@@ -27,6 +27,10 @@ public class ApprovalService {
 		return approvalRepository.loginProcess(param);
 	}
 
+	public LoginDTO authCheck (String loginid) {
+		return approvalRepository.authCheck(loginid);
+	}
+
 	public Long findUser (Map<String, Object> map) {
 		return approvalRepository.findUser(map);
 	}

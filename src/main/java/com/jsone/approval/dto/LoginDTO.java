@@ -12,4 +12,5 @@ public class LoginDTO {
     private Long custid;
     private String loginid;
     private String passwd;
+    private char authyn;
 }

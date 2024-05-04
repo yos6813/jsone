@@ -27,6 +27,10 @@ public class ApprovalRepository {
         return sql.selectOne("Approval.login", param);
     }
 
+    public LoginDTO authCheck(String loginid) {
+        return sql.selectOne("Approval.authCheck", loginid);
+    }
+
     public Long findUser(Map<String, Object> map) {
         return sql.selectOne("Approval.findUser", map);
     }

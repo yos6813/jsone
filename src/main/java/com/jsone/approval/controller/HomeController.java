@@ -47,28 +47,42 @@ public class HomeController {
 		LoginDTO login = approvalService.loginProcess(map);
 
 		if(login == null) {
-			model.addAttribute("loginError", "ID 또는 비밀번호가 일치하지 않습니다.");
+			LoginDTO authCheck = approvalService.authCheck(map.get("loginid"));
+
+			if(authCheck == null) {
+				model.addAttribute("loginError", "ID 또는 비밀번호가 일치하지 않습니다.");
+			} else {
+				model.addAttribute("loginError", "인증되지 않은 회원입니다. 인증을 진행해주세요.");
+			}
 
 			return "index";
         } else {
-			CustDTO cust = approvalService.customer(login.getCustid());
+			System.out.println(login.getAuthyn());
 
-			Map<String, String> user = new HashMap<String, String>();
-			user.put("dbname", cust.getDb_nm());
-			user.put("empid", login.getEmpid());
+			if(login.getAuthyn() == 'N') {
+				model.addAttribute("loginError", "인증되지 않은 회원입니다. 인증을 진행해주세요.");
 
-			approvalService.use(cust.getDb_nm());
+				return "index";
+			} else {
+				CustDTO cust = approvalService.customer(login.getCustid());
 
-			UserDTO userDTO = approvalService.user(user);
+				Map<String, String> user = new HashMap<String, String>();
+				user.put("dbname", cust.getDb_nm());
+				user.put("empid", login.getEmpid());
 
-			HttpSession session = request.getSession();
+				approvalService.use(cust.getDb_nm());
 
-			session.setAttribute("manager_nm", cust.getManager_nm());
-			session.setAttribute("empid", login.getEmpid());
-			session.setAttribute("emp_nm", userDTO.getEmp_nm());
-			session.setMaxInactiveInterval(-1);
+				UserDTO userDTO = approvalService.user(user);
 
-			return "redirect:/dashboard";
+				HttpSession session = request.getSession();
+
+				session.setAttribute("manager_nm", cust.getManager_nm());
+				session.setAttribute("empid", login.getEmpid());
+				session.setAttribute("emp_nm", userDTO.getEmp_nm());
+				session.setMaxInactiveInterval(-1);
+
+				return "redirect:/dashboard";
+			}
 		}
 	}
 
