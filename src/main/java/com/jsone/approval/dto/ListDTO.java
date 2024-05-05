@@ -17,4 +17,7 @@ public class ListDTO {
     private String startDate;
     private String endDate;
     private String search;
+    private String status_cd;
+    private String type_cd;
+    private String emp_nm;
 }

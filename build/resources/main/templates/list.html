@@ -45,8 +45,8 @@
                     </div>
                     <div class="list-box">
                         <div class="list" th:attr="data-href=${list.docid}" th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
-                            <span th:text="${list.title}"> <i class="fa-regular fa-file-lines"></i></span>
-                            <span class="second-line" th:text="${list.create_date}"></span>
+                            <span th:text="${list.title}"></span><i th:if="${list.cnt} > 0" class="fa-regular fa-file-lines"></i>
+                            <span class="second-line" th:text="${list.create_date} + ' / ' + ${list.type_cd} + ' / ' + ${list.status_cd} + ' / ' + ${list.emp_nm}"></span>
                             <span th:text="${list.contents_text}"></span>
                         </div>
                         <div class="list" th:unless="!${#lists.isEmpty(approvalList)}">

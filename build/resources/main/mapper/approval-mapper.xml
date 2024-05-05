@@ -37,35 +37,39 @@
         </select>
         <!-- 리스트 페이지 -->
         <select id="list" resultType="map" parameterType="map">
-                SELECT docid, empid, title, contents, contents_text, create_date
-                FROM dbo.t_approval_document WHERE 1=1
+                SELECT d.docid, d.empid, d.title, d.contents, d.contents_text, FORMAT(d.create_date, 'yyyy-MM-dd H:m') as create_date, e.emp_nm,
+                CASE WHEN d.type_cd = '001' THEN '임시저장' WHEN d.type_cd = '002' THEN '진행중' WHEN d.type_cd = '003' THEN '반려' WHEN d.type_cd = '004' THEN '반려보관' ELSE '완료' END as type_cd,
+                CASE WHEN d.status_cd = '001' THEN '내부기안' WHEN d.status_cd = '002' THEN '외부발송' WHEN d.status_cd = '003' THEN '접수문서' WHEN d.status_cd = '004' THEN '보고문서' WHEN d.status_cd = '005' THEN '업무일지' WHEN d.status_cd = '006' THEN '연차신청' WHEN d.status_cd = '007' THEN '지출결의' ELSE '선택' END as status_cd,
+                (SELECT count(*) as cnt FROM dbo.t_approval_document_chat as c WHERE c.docid = d.docid) as cnt
+                FROM dbo.t_approval_document as d JOIN dbo.t_emp e ON d.empid = e.empid
+                WHERE 1=1
                 <if test="type_cd != null">
-                        AND type_cd in (${type_cd})
+                        AND d.type_cd in (${type_cd})
                 </if>
                 <if test="status_cd != null">
-                        AND status_cd = '${status_cd}'
+                        AND d.status_cd = '${status_cd}'
                 </if>
                 <if test="startDate != null">
                         <if test="startDate != ''">
-                                AND create_date <![CDATA[>=]]> '${startDate}'
+                                AND d.create_date <![CDATA[>=]]> '${startDate}'
                         </if>
                 </if>
                 <if test="endDate != null">
                         <if test="endDate != ''">
-                                AND create_date <![CDATA[<=]]> '${endDate}'
+                                AND d.create_date <![CDATA[<=]]> '${endDate}'
                         </if>
                 </if>
                 <if test="search != null">
                         <if test="search != ''">
-                                AND (title LIKE '%${search}%' OR contents_text LIKE '%${search}%')
+                                AND (d.title LIKE '%${search}%')
                         </if>
                 </if>
                 <if test="empid != null">
                         <if test="empid != ''">
-                                AND empid <![CDATA[=]]> '${empid}'
+                                AND d.empid <![CDATA[=]]> '${empid}'
                         </if>
                 </if>
-                order by create_date desc
+                order by d.create_date desc
         </select>
         <!-- 뷰페이지 -->
         <select id="view" resultType="view" parameterType="Long">

@@ -291,6 +291,7 @@ input[type="checkbox"]:checked + span{
 
 .sign-body .list-box .list span:first-child {
     color: black;
+    margin-right: 5px;
 }
 
 .sign-body .list-box .list span {
