@@ -30,8 +30,7 @@
                     <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
                         <div>
                             <span th:text="${list.emp_nm}"></span>
-                            <input type="checkbox" name="approver" th:value="${list.empid}" />
-                            <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                            <span class="check" th:classappend="!${#lists.isEmpty(docApprover)} and ${#lists.contains(docApprover, list.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
                     </div>
                 </div>
@@ -43,8 +42,7 @@
                     <div th:if="!${#lists.isEmpty(viewer)}" th:each="view: ${viewer}">
                         <div>
                             <span th:text="${view.emp_nm}"></span>
-                            <input type="checkbox" name="viewer" th:value="${view.empid}" />
-                            <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                            <span class="check" th:classappend="!${#lists.isEmpty(docViewer)} and ${#lists.contains(docViewer, view.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
                     </div>
                 </div>

@@ -96,4 +96,12 @@ public class ApprovalService {
 		return approvalRepository.viewer();
 	}
 
+	public List<Long> docApprover (Long id) {
+		return approvalRepository.docApprover(id);
+	}
+
+	public List<Long> docViewer (Long id) {
+		return approvalRepository.docViewer(id);
+	}
+
 }

@@ -171,4 +171,20 @@
                 t_code as c JOIN t_emp as e ON c.code = e.coop_cd
                 WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' ORDER BY c.seq
         </select>
+        <!-- 문서 별 결재자 -->
+        <select id="docApprover" parameterType="Long" resultType="Long">
+                SELECT e.empid FROM t_approval_document_public AS p
+                JOIN t_code AS c ON p.pub_cd = c.code
+                JOIN t_emp AS e ON c.code = e.pos_cd
+                WHERE p.docid = ${id} AND c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1'
+                ORDER BY c.seq
+        </select>
+        <!-- 문서 별 공람자 -->
+        <select id="docViewer" parameterType="Long" resultType="Long">
+                SELECT e.empid FROM t_approval_document_public AS p
+                JOIN t_code AS c ON p.pub_cd = c.code
+                JOIN t_emp AS e ON c.code = e.coop_cd
+                WHERE p.docid = ${id} AND c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1'
+                ORDER BY c.seq
+        </select>
 </mapper>

@@ -95,4 +95,12 @@ public class ApprovalRepository {
     public List<ApproverDTO> viewer () {
         return sql.selectList("Approval.viewer");
     }
+
+    public List<Long> docApprover (Long id) {
+        return sql.selectList("Approval.docApprover", id);
+    }
+
+    public List<Long> docViewer (Long id) {
+        return sql.selectList("Approval.docViewer", id);
+    }
 }

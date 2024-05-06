@@ -326,9 +326,15 @@ public class HomeController {
 		List<ChatDTO> chat = approvalService.chat(id);
 		List<ApproverDTO> approver = approvalService.approver();
 		List<ApproverDTO> viewer = approvalService.viewer();
+		List<Long> docApprover = approvalService.docApprover(id);
+		List<Long> docViewer = approvalService.docViewer(id);
+
+		System.out.println(docViewer);
 
 		model.addAttribute("approver", approver);
 		model.addAttribute("viewer", viewer);
+		model.addAttribute("docApprover", docApprover);
+		model.addAttribute("docViewer", docViewer);
 		model.addAttribute("view", view);
 		model.addAttribute("chatList", chat);
 		model.addAttribute("docid", id);
