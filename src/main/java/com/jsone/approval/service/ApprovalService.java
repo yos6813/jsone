@@ -11,6 +11,7 @@ import com.jsone.approval.dto.ChatDTO;
 import com.jsone.approval.dto.CustDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
+import com.jsone.approval.dto.SubCntDTO;
 import com.jsone.approval.dto.UserDTO;
 import com.jsone.approval.dto.ViewDTO;
 import com.jsone.approval.repository.ApprovalRepository;
@@ -61,6 +62,14 @@ public class ApprovalService {
 
 	public Long cnt (Map<String, String> param) {
 		return approvalRepository.cnt(param);
+	}
+
+	public SubCntDTO subCnt (String param) {
+		return approvalRepository.subCnt(param);
+	}
+
+	public SubCntDTO personalSubCnt (String param) {
+		return approvalRepository.personalSubCnt(param);
 	}
 
 	public ViewDTO view (Long id) {

@@ -5,21 +5,22 @@
                 <div class="sign-head">
                     <span class="sub-title">[[${title}]] <i class="fa-solid fa-chevron-right"></i></span>
                     <ul th:if="${title == '개인서류'}" class="sub-nav">
-                        <li>전체</li>
-                        <li>임시저장</li>
-                        <li>진행중</li>
-                        <li>반려</li>
-                        <li>반려보관</li>
-                        <li>완료</li>
+                        <li><a class="black-txt all_report">전체 [[${subCnt['all']} ? '(' + ${subCnt['all']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=001">임시저장 [[${subCnt['draft']} ? '(' + ${subCnt['draft']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=002">진행중 [[${subCnt['ongoing']} ? '(' + ${subCnt['ongoing']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=003">반려 [[${subCnt['refer']} ? '(' + ${subCnt['refer']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=004">반려보관 [[${subCnt['storage']} ? '(' + ${subCnt['storage']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=005">완료 [[${subCnt['complete']} ? '(' + ${subCnt['complete']} + ')' : '']]</a></li>
                     </ul>
                     <ul th:unless="${title == '개인서류'}" class="sub-nav">
-                        <li>업무일지</li>
-                        <li>접수문서</li>
-                        <li>외부발송</li>
-                        <li>내부기안</li>
-                        <li>보고문서</li>
-                        <li>연차신청</li>
-                        <li>지출결의</li>
+                        <li><a class="black-txt all_report">전체 [[${subCnt['all']} ? '(' + ${subCnt['all']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=005">업무일지 [[${subCnt['work']} ? '(' + ${subCnt['work']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=003">접수문서 [[${subCnt['apply']} ? '(' + ${subCnt['apply']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=002">외부발송 [[${subCnt['external']} ? '(' + ${subCnt['external']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=001">내부기안 [[${subCnt['internal']} ? '(' + ${subCnt['internal']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=004">보고문서 [[${subCnt['report']} ? '(' + ${subCnt['report']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=006">연차신청 [[${subCnt['annual']} ? '(' + ${subCnt['annual']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=007">지출결의 [[${subCnt['spend']} ? '(' + ${subCnt['spend']} + ')' : '']]</a></li>
                     </ul>
                     <span class="list-nav">[[${title}]]/전체([[${full_cnt}]])</span>
                 </div>
@@ -34,6 +35,8 @@
                                 <option th:selected="${map['empid'] == user.empid}" th:each="user: ${users}" th:text="${user.emp_nm}" th:value="${user.empid}"></option>
                             </select>
                             <input type="text" name="search" th:value="${map['search']} ? ${map['search']} : ''" class="input-text lg search" placeholder="검색" />
+                            <input type="hidden" name="type_cd" th:value="${map['type_cd']}" th:if="${map['type_cd']} != '' and ${title} == '개인서류'" />
+                            <input type="hidden" name="status_cd" th:value="${map['status_cd']}" th:if="${map['status_cd']} != '' and ${title} != '개인서류'" />
                             <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
                             <div class="condition-box">
                                 <input type="checkbox" th:checked="${map['new_msg']} != null and ${map['new_msg']} != ''" name="new_msg" id="new" value="1"/>
@@ -55,7 +58,7 @@
                     </div>
                     <div th:if="${full_cnt} > 20">
                         <input type="hidden" id="full_cnt" th:value="${full_cnt}" />
-                        <input type="hidden" id="type_cd" th:value="${type_cd}" />
+                        <input type="hidden" id="type_cd" th:value="${map['type_cd']}" />
                         <input type="hidden" id="page" th:value="1" />
                         <button type="button" class="more-btn btn secondary">더보기</button>
                     </div>

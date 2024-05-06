@@ -16,6 +16,12 @@
             $('.sub-nav').slideToggle();
         });
 
+
+        /* 서브 메뉴의 전체 버튼 */
+        $('.all_report').click(function(){
+            location.href = location.origin + location.pathname;
+        })
+
         /* 리스트 항목 선택 시 뷰 or 편집 페이지로 이동 */
         $(document).on('click', '.list', function(){
             location.href = "/" + $(this).data('href');

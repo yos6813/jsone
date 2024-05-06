@@ -76,6 +76,10 @@
     background-color: #FCF5A2;
 }
 
+.black-txt {
+    color: black;
+}
+
 .yellow-txt {
     color: #DAA836;
 }
@@ -324,7 +328,7 @@ input[type="checkbox"]:checked + span{
 
 /* sub nav */
 .sub-nav {
-    width: 75px;
+    width: 100px;
     position: absolute;
     z-index: 10;
     left: 23vw;
