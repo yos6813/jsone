@@ -137,15 +137,23 @@ public class HomeController {
 	public String sign(@RequestParam Map<String, String> map, @ModelAttribute ListDTO listDTO, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "전자결재");
 		model.addAttribute("map", map);
+		model.addAttribute("type_cd", "002");
 
 		/* 진행중 문서 */
 		map.put("type_cd", "'002'");
+
+		/* 페이지네이션 기본값 */
+		map.put("page", "0");
 
 		List<UserDTO> users = approvalService.userAll();
 		model.addAttribute("users", users);
 
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
+
+		/* 리스트 갯수 */
+		Long cnt = approvalService.cnt(map);
+		model.addAttribute("full_cnt", cnt);
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -159,8 +167,12 @@ public class HomeController {
 	public String signDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "결재문서");
 		model.addAttribute("map", map);
+		model.addAttribute("type_cd", "'003','999'");
 
 		map.put("type_cd", "'003','999'");
+
+		/* 페이지네이션 기본값 */
+		map.put("page", "0");
 
 		List<UserDTO> users = approvalService.userAll();
 		model.addAttribute("users", users);
@@ -171,6 +183,10 @@ public class HomeController {
 		
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
+
+		/* 리스트 갯수 */
+		Long cnt = approvalService.cnt(map);
+		model.addAttribute("full_cnt", cnt);
 
 		return "list";
 	}
@@ -180,8 +196,12 @@ public class HomeController {
 	public String announcementCheck(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람확인");
 		model.addAttribute("map", map);
+		model.addAttribute("type_cd", "002");
 
 		map.put("type_cd", "002");
+
+		/* 페이지네이션 기본값 */
+		map.put("page", "0");
 
 		List<UserDTO> users = approvalService.userAll();
 		model.addAttribute("users", users);
@@ -192,6 +212,10 @@ public class HomeController {
 		
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
+
+		/* 리스트 갯수 */
+		Long cnt = approvalService.cnt(map);
+		model.addAttribute("full_cnt", cnt);
 
 		return "list";
 	}
@@ -201,8 +225,12 @@ public class HomeController {
 	public String announcementDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "공람문서");
 		model.addAttribute("map", map);
+		model.addAttribute("type_cd", "'003','999'");
 
 		map.put("type_cd", "'003','999'");
+
+		/* 페이지네이션 기본값 */
+		map.put("page", "0");
 
 		List<UserDTO> users = approvalService.userAll();
 		model.addAttribute("users", users);
@@ -213,6 +241,10 @@ public class HomeController {
 		
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
+
+		/* 리스트 갯수 */
+		Long cnt = approvalService.cnt(map);
+		model.addAttribute("full_cnt", cnt);
 
 		return "list";
 	}
@@ -227,6 +259,9 @@ public class HomeController {
 		String empid = (String) session.getAttribute("empid");
 
 		map.put("empid", empid);
+
+		/* 페이지네이션 기본값 */
+		map.put("page", "0");
 		
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -234,6 +269,10 @@ public class HomeController {
 
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
+
+		/* 리스트 갯수 */
+		Long cnt = approvalService.cnt(map);
+		model.addAttribute("full_cnt", cnt);
 
 		return "list";
 	}
@@ -243,8 +282,12 @@ public class HomeController {
 	public String prograssDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "진행서류");
 		model.addAttribute("map", map);
+		model.addAttribute("type_cd", "002");
 
 		map.put("type_cd", "'002'");
+		
+		/* 페이지네이션 기본값 */
+		map.put("page", "0");
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -252,6 +295,10 @@ public class HomeController {
 		
 		List<ListDTO> listDTOList = approvalService.list(map);
         model.addAttribute("approvalList", listDTOList);
+
+		/* 리스트 갯수 */
+		Long cnt = approvalService.cnt(map);
+		model.addAttribute("full_cnt", cnt);
 		
 		return "list";
 	}
@@ -278,9 +325,15 @@ public class HomeController {
 	}
 	
 	/* 편집 페이지 */
-	@GetMapping("/edit")
-	public String edit() {
+	@GetMapping("/edit/{id}")
+	public String edit(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+		ViewDTO info = approvalService.view(id);
+		List<ApproverDTO> approver = approvalService.approver();
+		List<ApproverDTO> viewer = approvalService.viewer();
 
+		model.addAttribute("approver", approver);
+		model.addAttribute("viewer", viewer);
+		model.addAttribute("info", info);
 
 		return "edit";
 	}

@@ -59,6 +59,10 @@ public class ApprovalService {
 		return approvalRepository.list(param);
 	}
 
+	public Long cnt (Map<String, String> param) {
+		return approvalRepository.cnt(param);
+	}
+
 	public ViewDTO view (Long id) {
 		return approvalRepository.view(id);
 	}

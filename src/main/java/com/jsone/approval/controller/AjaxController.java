@@ -1,11 +1,16 @@
 package com.jsone.approval.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jsone.approval.dto.ChatAjaxDTO;
+import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.service.ApprovalService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,4 +32,14 @@ public class AjaxController {
 
 		return chat;
 	}
+
+	/* 리스트 페이지네이션 */
+	@PostMapping("/pagination")
+	@ResponseBody
+	public List<ListDTO> pagination(Model model, @RequestBody Map<String, String> map) {
+		List<ListDTO> listDTOList = approvalService.list(map);
+		
+		return listDTOList;
+	}
+	
 }

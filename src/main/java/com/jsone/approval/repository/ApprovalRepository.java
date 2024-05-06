@@ -59,6 +59,10 @@ public class ApprovalRepository {
         return sql.selectList("Approval.list", param);
     }
 
+    public Long cnt (Map<String, String> param) {
+        return sql.selectOne("Approval.cnt", param);
+    }
+
     public ViewDTO view (Long id) {
         return sql.selectOne("Approval.view", id);
     }

@@ -21,7 +21,7 @@
                         <li>연차신청</li>
                         <li>지출결의</li>
                     </ul>
-                    <span class="list-nav">[[${title}]]/전체(0)</span>
+                    <span class="list-nav">[[${title}]]/전체([[${full_cnt}]])</span>
                 </div>
                 <div class="sign-body">
                     <div class="search-box">
@@ -30,28 +30,34 @@
                             <span class="middle-txt">~</span>
                             <input type="date" name="endDate" th:value="${map['endDate']} ? ${map['endDate']} : ''" class="input-text sm datepicker" th:placeholder="YYYY-MM-DD" />
                             <select name="empid" class="input-text lg users" th:if="${title != '개인서류'}">
-                                <option>선택</option>
+                                <option value="0">선택</option>
                                 <option th:selected="${map['empid'] == user.empid}" th:each="user: ${users}" th:text="${user.emp_nm}" th:value="${user.empid}"></option>
                             </select>
                             <input type="text" name="search" th:value="${map['search']} ? ${map['search']} : ''" class="input-text lg search" placeholder="검색" />
                             <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
                             <div class="condition-box">
-                                <input type="checkbox" name="new" id="new" value="new"/>
+                                <input type="checkbox" th:checked="${map['new_msg']} != null and ${map['new_msg']} != ''" name="new_msg" id="new" value="1"/>
                                 <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span><span class="text">신규메시지</span>
-                                <input th:if="${title == '개인서류'}" type="checkbox" id="end" name="end" value="end"/>
+                                <input th:if="${title == '개인서류'}" th:checked="${map['end_msg']} != null and ${map['end_msg']} != ''" type="checkbox" id="end" name="end_msg" value="1"/>
                                 <span th:if="${title == '개인서류'}" class="check"><i class="fa-regular fa-square-check fa-lg"></i></span><span th:if="${title == '개인서류'}" class="text">완료문서제외</span>
                             </div>
                         </form>
                     </div>
                     <div class="list-box">
-                        <div class="list" th:attr="data-href=${list.docid}" th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
+                        <div class="list" th:attr="data-href=${list.type_cd} != '임시저장' ? ${list.docid} : 'edit/' + ${list.docid} " th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
                             <span th:text="${list.title}"></span><i th:if="${list.cnt} > 0" class="fa-regular fa-file-lines"></i>
-                            <span class="second-line" th:text="${list.create_date} + ' / ' + ${list.type_cd} + ' / ' + ${list.status_cd} + ' / ' + ${list.emp_nm}"></span>
+                            <span class="second-line" th:text="${list.create_date} + ' / ' + ${list.type_cd} + ' / ' + ${list.status_cd} + ' / ' + ${list.emp_nm} + ' / ' + ${list.name}"></span>
                             <span th:text="${list.contents_text}"></span>
                         </div>
                         <div class="list" th:unless="!${#lists.isEmpty(approvalList)}">
                             <span>결재 문서가 없습니다.</span>
                         </div>
+                    </div>
+                    <div th:if="${full_cnt} > 20">
+                        <input type="hidden" id="full_cnt" th:value="${full_cnt}" />
+                        <input type="hidden" id="type_cd" th:value="${type_cd}" />
+                        <input type="hidden" id="page" th:value="1" />
+                        <button type="button" class="more-btn btn secondary">더보기</button>
                     </div>
                 </div>
                 <div class="sign-bottom">
