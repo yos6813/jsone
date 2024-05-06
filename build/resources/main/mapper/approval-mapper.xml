@@ -80,6 +80,9 @@
                 <if test="type_cd != null">
                         AND d.type_cd in (${type_cd})
                 </if>
+                <if test="status_cd != null and status_cd != ''">
+                        AND d.status_cd = ${status_cd}
+                </if>
                 <if test="startDate != null and startDate != '' and new_msg == null">
                         AND d.create_date <![CDATA[>=]]> '${startDate}'
                 </if>
