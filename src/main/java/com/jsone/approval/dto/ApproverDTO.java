@@ -10,6 +10,7 @@ import lombok.Setter;
 public class ApproverDTO {
     private Long id;
     private String name;
+    private String code;
     private Long empid;
     private String emp_nm;
 }

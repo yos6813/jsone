@@ -12,5 +12,6 @@
         <typeAlias type="com.jsone.approval.dto.ChatAjaxDTO" alias="chatAjax"></typeAlias>
         <typeAlias type="com.jsone.approval.dto.ApproverDTO" alias="approver"></typeAlias>
         <typeAlias type="com.jsone.approval.dto.SubCntDTO" alias="subCnt"></typeAlias>
+        <typeAlias type="com.jsone.approval.dto.FileDTO" alias="file"></typeAlias>
     </typeAliases>
 </configuration>

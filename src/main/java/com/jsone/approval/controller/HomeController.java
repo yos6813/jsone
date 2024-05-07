@@ -1,5 +1,6 @@
 package com.jsone.approval.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.jsone.approval.dto.ApproverDTO;
 import com.jsone.approval.dto.ChatDTO;
 import com.jsone.approval.dto.CustDTO;
+import com.jsone.approval.dto.FileDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
 import com.jsone.approval.dto.SubCntDTO;
@@ -54,8 +56,6 @@ public class HomeController {
 
 			return "index";
         } else {
-			System.out.println(login.getAuthyn());
-
 			if(login.getAuthyn() == 'N') {
 				model.addAttribute("loginError", "인증되지 않은 회원입니다. 인증을 진행해주세요.");
 
@@ -74,7 +74,7 @@ public class HomeController {
 				HttpSession session = request.getSession();
 
 				session.setAttribute("manager_nm", cust.getManager_nm());
-				session.setAttribute("empid", login.getEmpid());
+				session.setAttribute("empid", Long.parseLong(login.getEmpid()));
 				session.setAttribute("emp_nm", userDTO.getEmp_nm());
 				session.setMaxInactiveInterval(-1);
 
@@ -324,20 +324,37 @@ public class HomeController {
 	public String view(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
 		ViewDTO view = approvalService.view(id);
 		List<ChatDTO> chat = approvalService.chat(id);
-		List<ApproverDTO> approver = approvalService.approver();
-		List<ApproverDTO> viewer = approvalService.viewer();
 		List<Long> docApprover = approvalService.docApprover(id);
 		List<Long> docViewer = approvalService.docViewer(id);
+		List<FileDTO> file = approvalService.file(id);
+		List<ApproverDTO> approver = approvalService.approver();
+		List<ApproverDTO> viewer = approvalService.viewer();
 
-		System.out.println(docViewer);
+		System.out.println("viewer: " + docViewer);
+		System.out.println("approver: " + docApprover);
+
+		/* 결재자와 공람자 empid 비교를 위해 empid만 따로 저장 */
+		List<Long> allApprover = new ArrayList<Long>();
+		List<Long> allViewer = new ArrayList<Long>();
+
+		approver.forEach(a -> {
+			allApprover.add(a.getEmpid());
+		});
+
+		viewer.forEach(v -> {
+			allViewer.add(v.getEmpid());
+		});
 
 		model.addAttribute("approver", approver);
 		model.addAttribute("viewer", viewer);
 		model.addAttribute("docApprover", docApprover);
 		model.addAttribute("docViewer", docViewer);
+		model.addAttribute("allApprover", allApprover);
+		model.addAttribute("allViewer", allViewer);
 		model.addAttribute("view", view);
 		model.addAttribute("chatList", chat);
 		model.addAttribute("docid", id);
+		model.addAttribute("file", file);
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();

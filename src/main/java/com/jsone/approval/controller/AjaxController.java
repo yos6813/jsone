@@ -1,5 +1,6 @@
 package com.jsone.approval.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,19 @@ import lombok.RequiredArgsConstructor;
 public class AjaxController {
 
     private final ApprovalService approvalService;
+
+	@PostMapping("/viewerCheck")
+	@ResponseBody
+	public Map<String, String> viewerCheck(@RequestBody Map<String, String> map) {
+		approvalService.viewerCheck(map);
+
+		Map<String, String> result = new HashMap<String, String>();
+
+		result.put("result", "success");
+
+		return result;
+	}
+	
 
 	/* 뷰 하단 대화 */
     @PostMapping("/saveChat")

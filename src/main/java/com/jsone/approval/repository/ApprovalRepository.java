@@ -10,6 +10,7 @@ import com.jsone.approval.dto.ApproverDTO;
 import com.jsone.approval.dto.ChatAjaxDTO;
 import com.jsone.approval.dto.ChatDTO;
 import com.jsone.approval.dto.CustDTO;
+import com.jsone.approval.dto.FileDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
 import com.jsone.approval.dto.SubCntDTO;
@@ -102,5 +103,13 @@ public class ApprovalRepository {
 
     public List<Long> docViewer (Long id) {
         return sql.selectList("Approval.docViewer", id);
+    }
+
+    public void viewerCheck (Map<String, String> map) {
+        sql.insert("Approval.viewerCheck", map);
+    }
+
+    public List<FileDTO> file (Long id) {
+        return sql.selectList("Approval.file", id);
     }
 }

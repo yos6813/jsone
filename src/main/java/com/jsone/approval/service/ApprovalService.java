@@ -9,6 +9,7 @@ import com.jsone.approval.dto.ApproverDTO;
 import com.jsone.approval.dto.ChatAjaxDTO;
 import com.jsone.approval.dto.ChatDTO;
 import com.jsone.approval.dto.CustDTO;
+import com.jsone.approval.dto.FileDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.LoginDTO;
 import com.jsone.approval.dto.SubCntDTO;
@@ -102,6 +103,14 @@ public class ApprovalService {
 
 	public List<Long> docViewer (Long id) {
 		return approvalRepository.docViewer(id);
+	}
+
+	public void viewerCheck (Map<String, String> map) {
+		approvalRepository.viewerCheck(map);
+	}
+
+	public List<FileDTO> file (Long id) {
+		return approvalRepository.file(id);
 	}
 
 }

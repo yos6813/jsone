@@ -317,6 +317,11 @@ body {
   border: 1px solid var(--color-gray);
   background-color: var(--color-background-black);
 }
+.btn.warning {
+  color: #fff;
+  border: 1px solid #DAA836;
+  background-color: #DAA836;
+}
 .btn.icon {
   padding: 0;
   display: flex;

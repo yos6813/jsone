@@ -11,6 +11,12 @@
         </div>
         <div id="view">
             <div class="view-body">
+                <div class="btn-box">
+                    <button th:if="${view.empid} == ${empid} and ${view.type_cd} == '진행중'" type="button" class="btn primary" id="docCollect">회수</button>
+                    <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.type_cd} == '진행중'" type="button" id="docCheck" class="btn primary">승인</button>
+                    <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.type_cd} == '진행중'" type="button" id="docRefer" class="btn warning">반려</button>
+                    <button th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and ${view.type_cd} == '진행중'" type="button" id="viewerCheck" class="btn primary">확인</button>
+                </div>
                 <div class="body-top">
                     <button type="button" class="btn secondary approval">
                         <span class="btn-txt">결재</span>
@@ -20,7 +26,6 @@
                         <span class="btn-txt">공람</span>
                         <span><i class="fa-solid fa-chevron-down"></i></span>
                     </button>
-                    <button type="button" class="btn primary">회수</button>
                 </div>
                 <div class="approval-toggle toggle-box">
                     <span class="title">
@@ -30,19 +35,21 @@
                     <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
                         <div>
                             <span th:text="${list.emp_nm}"></span>
+                            <input type="hidden" th:if="!${#lists.isEmpty(allApprover)} and ${#lists.contains(allApprover, list.empid)}" th:value="${list.code}" id="code" />
                             <span class="check" th:classappend="!${#lists.isEmpty(docApprover)} and ${#lists.contains(docApprover, list.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
                     </div>
                 </div>
                 <div class="announcement-toggle toggle-box">
                     <span class="title">
-                        <span class="title-txt">공람(모든 공람 선택/해제)</span>
+                        <span class="title-txt">공람</span>
                         <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
                     </span>
-                    <div th:if="!${#lists.isEmpty(viewer)}" th:each="view: ${viewer}">
+                    <div th:if="!${#lists.isEmpty(viewer)}" th:each="viewer: ${viewer}">
                         <div>
-                            <span th:text="${view.emp_nm}"></span>
-                            <span class="check" th:classappend="!${#lists.isEmpty(docViewer)} and ${#lists.contains(docViewer, view.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                            <span th:text="${viewer.emp_nm}"></span>
+                            <input type="hidden" th:if="!${#lists.isEmpty(allViewer)} and ${#lists.contains(allViewer, viewer.empid)}" th:value="${viewer.code}" id="code" />
+                            <span class="check" th:classappend="!${#lists.isEmpty(docViewer)} and ${#lists.contains(docViewer, viewer.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
                     </div>
                 </div>
@@ -82,6 +89,12 @@
                         <span>내용</span>
                         <div>
                             [(${view.contents})]
+                        </div>
+                    </div>
+                    <div class="file-box" th:if="!${#lists.isEmpty(file)}">
+                        <span class="title">첨부파일</span>
+                        <div th:each="file: ${file}">
+                            <span class="filename"><a download th:href="'/' + ${file.file_path}" th:text="${file.original_file_name}"></a></span>
                         </div>
                     </div>
                     <div class="comments">

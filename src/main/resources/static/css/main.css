@@ -377,19 +377,15 @@ input[type="checkbox"]:checked + span{
     font-size: 12px;
     text-align: justify;
     padding: 0 20px;
-}
-
-.view-body .body-top .approval {
-    width: 132px;
+    width: 165px;
 }
 
 .view-body .body-top .announcement {
-    width: 132px;
     margin-left: 5px;
 }
 
 .view-body .body-top .btn-txt {
-    width: 65px;
+    width: 105px;
 }
 
 .view-body .toggle-box {
@@ -397,7 +393,7 @@ input[type="checkbox"]:checked + span{
     padding: 10px;
     border-radius: 4px;
     width: 340px;
-    margin: 25px auto;
+    margin: 15px auto;
     text-align: justify;
 }
 
@@ -432,12 +428,18 @@ input[type="checkbox"]:checked + span{
     padding-bottom: 10px;
 }
 
+.view-body .btn-box {
+    padding-bottom: 10px;
+    padding-left: 20px;
+    text-align: justify;
+}
+
 .view-body .body-middle .info-box {
     border: 1px solid #DDDDDD;
     padding: 10px;
     border-radius: 4px;
     width: 340px;
-    margin: 25px auto;
+    margin: 15px auto;
 }
 
 .view-body .body-middle .info-box .title {
@@ -482,6 +484,27 @@ input[type="checkbox"]:checked + span{
     border-bottom: 1px solid #EEEEEE;
     width: 100%;
     padding-bottom: 10px;
+}
+
+.view-body .body-middle .file-box {
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    width: 340px;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: justify;
+}
+
+.view-body .body-middle .file-box .title {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.view-body .body-middle .file-box .filename {
+    width: 100%;
+    text-align: justify;
+    padding-top: 10px;
 }
 
 .view-body .body-middle .comments {
