@@ -260,17 +260,14 @@ public class HomeController {
 
 	/* 개인서류 */
 	@GetMapping("/personalDoc")
-	public String personalDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
+	public String personalDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request, HttpSession session) {
 		model.addAttribute("title", "개인서류");
 		model.addAttribute("map", map);
 
-		HttpSession session = request.getSession();
-		String empid = (String) session.getAttribute("empid");
-
-		map.put("empid", empid);
-
 		/* 페이지네이션 기본값 */
 		map.put("page", "0");
+
+		String empid = session.getAttribute("empid").toString();
 		
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
