@@ -38,6 +38,14 @@ public class HomeController {
 	/* 로그인 */
 	@GetMapping("/")
     public String index(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession(false);
+
+		if(session != null) {
+			session.invalidate();
+		}
+
+		approvalService.use("garam_common");
+		
         return "index";
     }
 	
