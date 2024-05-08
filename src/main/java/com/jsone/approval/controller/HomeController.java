@@ -276,6 +276,8 @@ public class HomeController {
 		map.put("page", "0");
 
 		String empid = session.getAttribute("empid").toString();
+
+		map.put("empid", empid);
 		
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
