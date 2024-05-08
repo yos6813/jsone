@@ -418,8 +418,17 @@ input[type="checkbox"]:checked + span{
     margin-bottom: 10px;
 }
 
+.view-body .toggle-box > div.not-found {
+    width: 100%;
+    border: unset;
+}
+
 .view-body .toggle-box div span:first-child {
     border-bottom: 1px solid #EEEEEE;
+}
+
+.view-body .toggle-box > div.not-found span {
+    border: unset;
 }
 
 .view-body .toggle-box div span {

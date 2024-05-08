@@ -89,12 +89,12 @@ public class ApprovalRepository {
         return sql.insert("Approval.chatSave", chatAjax);
     }
 
-    public List<ApproverDTO> approver () {
-        return sql.selectList("Approval.approver");
+    public List<ApproverDTO> approver (Long id) {
+        return sql.selectList("Approval.approver", id);
     }
 
-    public List<ApproverDTO> viewer () {
-        return sql.selectList("Approval.viewer");
+    public List<ApproverDTO> viewer (Long id) {
+        return sql.selectList("Approval.viewer", id);
     }
 
     public List<Long> docApprover (Long id) {
@@ -107,6 +107,18 @@ public class ApprovalRepository {
 
     public void viewerCheck (Map<String, String> map) {
         sql.insert("Approval.viewerCheck", map);
+    }
+
+    public void docCollect (Map<String, String> map) {
+        sql.insert("Approval.docCollect", map);
+    }
+
+    public void docCheck (Map<String, String> map) {
+        sql.insert("Approval.docCheck", map);
+    }
+
+    public void docRefer (Map<String, String> map) {
+        sql.insert("Approval.docRefer", map);
     }
 
     public List<FileDTO> file (Long id) {

@@ -166,31 +166,52 @@
         <select id="chatOne" resultType="chatAjax" parameterType="string">
                 SELECT c.docid, c.chatid, c.empid, c.contents as chatContents, e.emp_nm FROM t_approval_document_chat c JOIN t_emp e ON c.empid = e.empid WHERE c.chatid = ${chatid}
         </select>
-        <!-- 결재자 조회 -->
-        <select id="approver" resultType="approver">
-                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code as c
-                JOIN t_emp as e ON c.code = e.pos_cd
-                WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' ORDER BY c.seq
+        <!-- 문서 별 결재자 조회 -->
+        <select id="approver" resultType="approver" parameterType="Long">
+                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code AS c
+                JOIN t_approval_document_step AS s ON s.pos_cd = c.code
+                JOIN t_emp AS e ON c.code = e.pos_cd
+                WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND s.docid = '${docid}'
+                ORDER BY c.seq
         </select>
-        <!-- 공람자 조회 -->
-        <select id="viewer" resultType="approver">
-                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM
-                t_code as c JOIN t_emp as e ON c.code = e.coop_cd
-                WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' ORDER BY c.seq
+        <!-- 문서 별 공람자 조회 -->
+        <select id="viewer" resultType="approver" parameterType="Long">
+                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code AS c
+                JOIN t_approval_document_public AS p ON p.pub_cd = c.code
+                JOIN t_emp AS e ON c.code = e.coop_cd
+                WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND p.docid = '${docid}'
+                ORDER BY c.seq
         </select>
-        <!-- 문서 별 결재자 -->
+        <!-- 문서 별 결재 완료자 -->
         <select id="docApprover" parameterType="Long" resultType="Long">
-                SELECT e.empid, e.emp_nm FROM t_approval_document_step AS p
-                JOIN t_emp AS e ON p.empid = e.empid
-                WHERE p.docid = ${docid}
+                SELECT e.empid FROM t_code AS c
+                JOIN t_approval_document_step AS s ON s.pos_cd = c.code
+                JOIN t_emp AS e ON c.code = e.pos_cd
+                WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND s.docid = '${docid}' AND s.empid != 0
+                ORDER BY c.seq
         </select>
-        <!-- 문서 별 공람자 -->
+        <!-- 문서 별 공람 확인자 -->
         <select id="docViewer" parameterType="Long" resultType="Long">
-                SELECT e.empid FROM t_approval_document_public AS p
-                JOIN t_emp AS e ON p.empid = e.empid
-                WHERE p.docid = ${docid}
+                SELECT e.empid FROM t_code AS c
+                JOIN t_approval_document_public AS p ON p.pub_cd = c.code
+                JOIN t_emp AS e ON c.code = e.coop_cd
+                WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND p.docid = '${docid}' AND p.empid != 0
+                ORDER BY c.seq
         </select>
+        <!-- 결재체크 -->
+        <insert id="docCheck" parameterType="map">
+                UPDATE t_approval_document_step SET empid = '${empid}', end_date = getDate() WHERE docid = '${docid}' AND pos_cd = '${code}'
+        </insert>
+        <!-- 반려 -->
+        <insert id="docRefer" parameterType="map">
+                INSERT INTO t_approval_document_public values ('${docid}', '${code}', '${empid}', getDate(), null, null);
+        </insert>
+        <!-- 회수 -->
+        <insert id="docCollect" parameterType="map">
+                update t_approval_document set type_cd = "001" WHERE docid = '${docid}'
+        </insert>
+        <!-- 공람체크 -->
         <insert id="viewerCheck" parameterType="map">
-                INSERT INTO t_approval_document_public values ('${docid}', '${code}', '${empid}', getDate(), null, null); 
+                UPDATE t_approval_document_public SET empid = '${empid}' WHERE docid = '${docid}' AND pub_cd = '${code}'
         </insert>
 </mapper>

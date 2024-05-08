@@ -89,12 +89,12 @@ public class ApprovalService {
 		return approvalRepository.chatSave(chatAjax);
 	}
 
-	public List<ApproverDTO> approver () {
-		return approvalRepository.approver();
+	public List<ApproverDTO> approver (Long id) {
+		return approvalRepository.approver(id);
 	}
 
-	public List<ApproverDTO> viewer () {
-		return approvalRepository.viewer();
+	public List<ApproverDTO> viewer (Long id) {
+		return approvalRepository.viewer(id);
 	}
 
 	public List<Long> docApprover (Long id) {
@@ -107,6 +107,18 @@ public class ApprovalService {
 
 	public void viewerCheck (Map<String, String> map) {
 		approvalRepository.viewerCheck(map);
+	}
+
+	public void docCollect (Map<String, String> map) {
+		approvalRepository.docCollect(map);
+	}
+
+	public void docCheck (Map<String, String> map) {
+		approvalRepository.docCheck(map);
+	}
+
+	public void docRefer (Map<String, String> map) {
+		approvalRepository.docRefer(map);
 	}
 
 	public List<FileDTO> file (Long id) {

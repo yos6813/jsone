@@ -39,6 +39,9 @@
                             <span class="check" th:classappend="!${#lists.isEmpty(docApprover)} and ${#lists.contains(docApprover, list.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
                     </div>
+                    <div class="not-found" th:unless="!${#lists.isEmpty(approver)}">
+                        <span>선택된 결재자가 없습니다.</span>
+                    </div>
                 </div>
                 <div class="announcement-toggle toggle-box">
                     <span class="title">
@@ -51,6 +54,9 @@
                             <input type="hidden" th:if="!${#lists.isEmpty(allViewer)} and ${#lists.contains(allViewer, viewer.empid)}" th:value="${viewer.code}" id="code" />
                             <span class="check" th:classappend="!${#lists.isEmpty(docViewer)} and ${#lists.contains(docViewer, viewer.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
+                    </div>
+                    <div class="not-found" th:unless="!${#lists.isEmpty(viewer)}">
+                        <span>선택된 공람자가 없습니다.</span>
                     </div>
                 </div>
                 <div class="body-middle">

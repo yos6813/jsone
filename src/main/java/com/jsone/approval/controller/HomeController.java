@@ -334,11 +334,8 @@ public class HomeController {
 		List<Long> docApprover = approvalService.docApprover(id);
 		List<Long> docViewer = approvalService.docViewer(id);
 		List<FileDTO> file = approvalService.file(id);
-		List<ApproverDTO> approver = approvalService.approver();
-		List<ApproverDTO> viewer = approvalService.viewer();
-
-		System.out.println("viewer: " + docViewer);
-		System.out.println("approver: " + docApprover);
+		List<ApproverDTO> approver = approvalService.approver(id);
+		List<ApproverDTO> viewer = approvalService.viewer(id);
 
 		/* 결재자와 공람자 empid 비교를 위해 empid만 따로 저장 */
 		List<Long> allApprover = new ArrayList<Long>();
@@ -374,8 +371,8 @@ public class HomeController {
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
 		ViewDTO info = approvalService.view(id);
-		List<ApproverDTO> approver = approvalService.approver();
-		List<ApproverDTO> viewer = approvalService.viewer();
+		List<ApproverDTO> approver = approvalService.approver(id);
+		List<ApproverDTO> viewer = approvalService.viewer(id);
 
 		model.addAttribute("approver", approver);
 		model.addAttribute("viewer", viewer);

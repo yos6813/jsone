@@ -33,6 +33,40 @@ public class AjaxController {
 
 		return result;
 	}
+
+	@PostMapping("/docCollect")
+	public Map<String, String> docCollect(@RequestBody Map<String, String> map) {
+		approvalService.docCollect(map);
+
+		Map<String, String> result = new HashMap<String, String>();
+
+		result.put("result", "success");
+		
+		return result;
+	}
+
+	@PostMapping("/docCheck")
+	public Map<String, String> docCheck(@RequestBody Map<String, String> map) {
+		approvalService.docCheck(map);
+
+		Map<String, String> result = new HashMap<String, String>();
+
+		result.put("result", "success");
+		
+		return result;
+	}
+
+	@PostMapping("/docRefer")
+	public Map<String, String> docRefer(@RequestBody Map<String, String> map) {
+		approvalService.docRefer(map);
+
+		Map<String, String> result = new HashMap<String, String>();
+
+		result.put("result", "success");
+		
+		return result;
+	}
+	
 	
 
 	/* 뷰 하단 대화 */
