@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 public class SessionUtil {
+
     public void getSession(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
 

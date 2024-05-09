@@ -52,7 +52,7 @@
                                 AND e.empid = '${pid}'
                         </if>
                         <if test="title == '공람문서'">
-                                AND (e.empid = '${pid}' AND p.empid != 0)
+                                AND (e.empid = '${pid}' OR p.empid != 0)
                         </if>
                 </if>
                 <if test="type_cd != null">
@@ -86,7 +86,7 @@
         <!-- 파라미터 포함 리스트 갯수 -->
         <select id="cnt" resultType="Long" parameterType="map">
                 SELECT count(*) as full_cnt
-                FROM dbo.t_approval_document as d JOIN dbo.t_emp e ON d.empid = e.empid
+                FROM dbo.t_approval_document AS d JOIN dbo.t_emp e ON d.empid = e.empid
                 JOIN dbo.t_code AS c ON e.dept_cd = c.code
                 <if test="title != null and title != ''">
                         JOIN dbo.t_approval_document_public AS p ON p.docid = d.docid
@@ -94,10 +94,10 @@
                 WHERE c.category = '부서코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1'
                 <if test="title != null and title != '' and pid != null and pid gt 0">
                         <if test="title == '공람확인'">
-                                AND (p.empid = '${pid}' OR p.empid = 0)
+                                AND p.empid = '${pid}'
                         </if>
                         <if test="title == '공람문서'">
-                                AND p.empid = '${pid}'
+                                AND (p.empid = '${pid}' OR p.empid != 0)
                         </if>
                 </if>
                 <if test="type_cd != null">
@@ -115,7 +115,7 @@
                 <if test="search != null and search != ''">
                         AND (d.title LIKE '%${search}%')
                 </if>
-                <if test="empid != null and empid != ''">
+                <if test="empid != null and empid gt 0">
                         AND d.empid <![CDATA[=]]> '${empid}'
                 </if>
                 <if test="new_msg != null and new_msg != ''">

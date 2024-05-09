@@ -82,6 +82,7 @@ public class HomeController {
 				HttpSession session = request.getSession();
 
 				session.setAttribute("manager_nm", cust.getManager_nm());
+				session.setAttribute("dbname", cust.getDb_nm());
 				session.setAttribute("empid", Long.parseLong(login.getEmpid()));
 				session.setAttribute("emp_nm", userDTO.getEmp_nm());
 				session.setMaxInactiveInterval(-1);
@@ -164,7 +165,11 @@ public class HomeController {
 		SubCntDTO subCnt = approvalService.subCnt("'002'");
 		model.addAttribute("subCnt", subCnt);
 
-		return "list";
+		if(model.getAttribute("error") != "") {
+			return "list";
+		} else {
+			return "index";
+		}
 	}
 
 	/* 결재문서 */
@@ -193,7 +198,11 @@ public class HomeController {
 		SubCntDTO subCnt = approvalService.subCnt("'003','999'");
 		model.addAttribute("subCnt", subCnt);
 
-		return "list";
+		if(model.getAttribute("error") != "") {
+			return "list";
+		} else {
+			return "index";
+		}
 	}
 
 	/* 공람확인 */
@@ -227,7 +236,11 @@ public class HomeController {
 		SubCntDTO subCnt = approvalService.publicSubCnt(map);
 		model.addAttribute("subCnt", subCnt);
 
-		return "list";
+		if(model.getAttribute("error") != "") {
+			return "list";
+		} else {
+			return "index";
+		}
 	}
 
 	/* 공람문서 */
@@ -261,7 +274,11 @@ public class HomeController {
 		SubCntDTO subCnt = approvalService.publicSubCnt(map);
 		model.addAttribute("subCnt", subCnt);
 
-		return "list";
+		if(model.getAttribute("error") != "") {
+			return "list";
+		} else {
+			return "index";
+		}
 	}
 
 	/* 개인서류 */
@@ -289,7 +306,11 @@ public class HomeController {
 		SubCntDTO subCnt = approvalService.personalSubCnt(empid);
 		model.addAttribute("subCnt", subCnt);
 
-		return "list";
+		if(model.getAttribute("error") != "") {
+			return "list";
+		} else {
+			return "index";
+		}
 	}
 
 	/* 진행서류 */
@@ -318,7 +339,11 @@ public class HomeController {
 		SubCntDTO subCnt = approvalService.subCnt("'002'");
 		model.addAttribute("subCnt", subCnt);
 		
-		return "list";
+		if(model.getAttribute("error") != "") {
+			return "list";
+		} else {
+			return "index";
+		}
 	}
 
 	/* 뷰페이지 */
