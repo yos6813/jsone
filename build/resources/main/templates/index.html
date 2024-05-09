@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>로그인</title>
-        <div th:replace="fragments/header::header"></div>
+        <div th:replace="~{fragments/header::header}"></div>
     </head>
     <div th:if="${loginError}" class="alert alert-danger" role="alert" th:text="${loginError}"></div>
     <div class="wrapper">

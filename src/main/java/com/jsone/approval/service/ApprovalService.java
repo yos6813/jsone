@@ -69,6 +69,10 @@ public class ApprovalService {
 		return approvalRepository.subCnt(param);
 	}
 
+	public SubCntDTO publicSubCnt (Map<String, String> param) {
+		return approvalRepository.publicSubCnt(param);
+	}
+
 	public SubCntDTO personalSubCnt (String param) {
 		return approvalRepository.personalSubCnt(param);
 	}

@@ -146,9 +146,6 @@ public class HomeController {
 		/* 진행중 문서 */
 		map.put("type_cd", "'002'");
 
-		/* 페이지네이션 기본값 */
-		map.put("page", "0");
-
 		List<UserDTO> users = approvalService.userAll();
 		model.addAttribute("users", users);
 
@@ -178,9 +175,6 @@ public class HomeController {
 
 		map.put("type_cd", "'003','999'");
 
-		/* 페이지네이션 기본값 */
-		map.put("page", "0");
-
 		List<UserDTO> users = approvalService.userAll();
 		model.addAttribute("users", users);
 
@@ -204,14 +198,16 @@ public class HomeController {
 
 	/* 공람확인 */
 	@GetMapping("/announcementCheck")
-	public String announcementCheck(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
+	public String announcementCheck(@RequestParam Map<String, String> map, Model model, HttpServletRequest request, HttpSession session) {
 		model.addAttribute("title", "공람확인");
 		model.addAttribute("map", map);
 
 		map.put("type_cd", "002");
+		map.put("title", "공람확인");
 
-		/* 페이지네이션 기본값 */
-		map.put("page", "0");
+		String empid = session.getAttribute("empid").toString();
+
+		map.put("pid", empid);
 
 		List<UserDTO> users = approvalService.userAll();
 		model.addAttribute("users", users);
@@ -228,7 +224,7 @@ public class HomeController {
 		model.addAttribute("full_cnt", cnt);
 
 		/* 서브 메뉴 별 개수 */
-		SubCntDTO subCnt = approvalService.subCnt("'002'");
+		SubCntDTO subCnt = approvalService.publicSubCnt(map);
 		model.addAttribute("subCnt", subCnt);
 
 		return "list";
@@ -236,14 +232,16 @@ public class HomeController {
 
 	/* 공람문서 */
 	@GetMapping("/announcementDoc")
-	public String announcementDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
+	public String announcementDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request, HttpSession session) {
 		model.addAttribute("title", "공람문서");
 		model.addAttribute("map", map);
 
 		map.put("type_cd", "'003','999'");
+		map.put("title", "공람문서");
 
-		/* 페이지네이션 기본값 */
-		map.put("page", "0");
+		String empid = session.getAttribute("empid").toString();
+
+		map.put("pid", empid);
 
 		List<UserDTO> users = approvalService.userAll();
 		model.addAttribute("users", users);
@@ -260,7 +258,7 @@ public class HomeController {
 		model.addAttribute("full_cnt", cnt);
 
 		/* 서브 메뉴 별 개수 */
-		SubCntDTO subCnt = approvalService.subCnt("'003','999'");
+		SubCntDTO subCnt = approvalService.publicSubCnt(map);
 		model.addAttribute("subCnt", subCnt);
 
 		return "list";
@@ -271,9 +269,6 @@ public class HomeController {
 	public String personalDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request, HttpSession session) {
 		model.addAttribute("title", "개인서류");
 		model.addAttribute("map", map);
-
-		/* 페이지네이션 기본값 */
-		map.put("page", "0");
 
 		String empid = session.getAttribute("empid").toString();
 

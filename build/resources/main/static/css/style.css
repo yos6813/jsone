@@ -205,18 +205,6 @@ a:active {
   font-style: normal;
 }
 /* noto sans poppins */
-@font-face {
-  font-family: "Noto Sans Poppins";
-  src: url("//fonts.google.com/specimen/Poppins") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Noto Sans Poppins";
-  src: url("//fonts.google.com/specimen/Poppins") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-}
 body {
   font-family: "Noto Sans Poppins", sans-serif;
   font-size: 14px;
