@@ -2,6 +2,7 @@
     <head>
         <title>로그인</title>
         <div th:replace="~{fragments/header::header}"></div>
+        <script th:src="@{/js/login.js}"></script>
     </head>
     <div th:if="${loginError}" class="alert alert-danger" role="alert" th:text="${loginError}"></div>
     <div class="wrapper">
@@ -27,6 +28,27 @@
                 <div class="span-area">
                     <p class="warning">최초 사용자는 휴대폰번호 입력 후, <br/> Login 버튼 눌러주세요.</p>
                 </div>
+            </div>
+        </div>
+        <div th:if="${errorType} == 'auth'" id="auth">
+            <div class="auth-body">
+                <form>
+                    <div class="input-area">
+                        <input type="text" class="input-text id-text" readonly />
+                        <input type="text" placeholder="4자리 인증번호" class="input-text auth-input" />
+                    </div>
+                    <div class="time-area" th:classappend="${errorType} == 'auth' ? 'on' : ''">
+                        <span class="auth-time">03:00</span>
+                    </div>
+                    <div class="input-area password-box" style="display: none;">
+                        <input type="password" class="input-text passwd" placeholder="비밀번호(4자리 이상)" />
+                        <input type="password" name="passwd" class="input-text passwd2" placeholder="비밀번호 확인" />
+                    </div>
+                    <div>
+                        <button type="submit" class="btn primary">인증</button>
+                        <button type="button" class="btn secondary">취소</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

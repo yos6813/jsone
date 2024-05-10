@@ -29,6 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
+
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -60,12 +61,14 @@ public class HomeController {
 				model.addAttribute("loginError", "ID 또는 비밀번호가 일치하지 않습니다.");
 			} else {
 				model.addAttribute("loginError", "인증되지 않은 회원입니다. 인증을 진행해주세요.");
+				model.addAttribute("errorType", "auth");
 			}
 
 			return "index";
         } else {
 			if(login.getAuthyn() == 'N') {
 				model.addAttribute("loginError", "인증되지 않은 회원입니다. 인증을 진행해주세요.");
+				model.addAttribute("errorType", "auth");
 
 				return "index";
 			} else {
