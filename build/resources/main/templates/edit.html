@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>서류편집</title>
-        <div th:replace="fragments/header::header"></div>
+        <div th:replace="~{fragments/header::header}"></div>
         <script th:src="@{/js/edit.js}"></script>
     </head>
     <div class="wrapper">
@@ -103,29 +103,8 @@
                 <div class="body-bottom">
                     <div class="title-box">
                         <span class="title">첨부파일</span>
-                        <span class="title-icon"><i class="fa-solid fa-plus"></i></span>
-                    </div>
-                    <div class="file-box">
-                        <span class="filename">1 file uploaded</span>
-                        <span class="plus-icon">
-                            <i class="fa-solid fa-circle-plus"></i>
-                            <span class="file-size"></span>
-                        </span>
-                        <div class="file-bottom">
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="file-box">
-                        <span class="filename">file_name.jpg</span>
-                        <span class="plus-icon">
-                            <i class="fa-solid fa-circle-plus"></i>
-                            <span class="file-size">3Mb</span>
-                        </span>
-                        <div class="file-bottom">
-                            <span class="green-txt">Uploaded</span>
-                        </div>
+                        <input type="file" id="file-upload" class="hidden" />
+                        <span class="title-icon file-upload"><i class="fa-solid fa-plus"></i></span>
                     </div>
                 </div>
             </div>

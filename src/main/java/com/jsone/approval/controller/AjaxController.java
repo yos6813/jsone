@@ -1,5 +1,7 @@
 package com.jsone.approval.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,13 +9,16 @@ import java.util.Map;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jsone.approval.dto.ChatAjaxDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.service.ApprovalService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -67,7 +72,31 @@ public class AjaxController {
 		return result;
 	}
 	
-	
+	/* 파일 업로드 */
+	@PostMapping("/fileUpload")
+	@ResponseBody
+	public Map<String, String> fileUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+		Map<String, String> map = new HashMap<String, String>();
+		String fileName = multipartFile.getOriginalFilename();
+		Long size = multipartFile.getSize();
+		double sizeMB = size / (1024.0 * 1024.0);
+		String uploadPath = request.getServletContext().getRealPath("/files");
+		String filePath = uploadPath + File.separator + fileName;
+
+		try {
+			File dest = new File(filePath);
+			multipartFile.transferTo(dest); // 파일을 저장합니다.
+			map.put("status", "success");
+			map.put("filePath", filePath);
+			map.put("fileName", fileName);
+			map.put("size", Double.toString(sizeMB));
+		} catch (IOException e) {
+			e.printStackTrace();
+			map.put("status", "error");
+		}
+
+		return map;
+	}
 
 	/* 뷰 하단 대화 */
     @PostMapping("/saveChat")
@@ -89,5 +118,4 @@ public class AjaxController {
 		
 		return listDTOList;
 	}
-	
 }

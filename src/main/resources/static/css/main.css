@@ -132,6 +132,10 @@ input[type="checkbox"]:checked + span{
     color: #000000;
 }
 
+.hidden {
+    display: none;
+}
+
 /* 메인 메뉴 */
 .tab-nav-wrap .tab-nav {
     display: ruby-text;
