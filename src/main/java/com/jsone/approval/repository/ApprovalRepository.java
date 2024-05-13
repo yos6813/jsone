@@ -156,4 +156,20 @@ public class ApprovalRepository {
     public void approvalDoc (Long id) {
         sql.update("Approval.approvalDoc", id);
     }
+
+    public void delDoc (Long id) {
+        sql.update("Approval.delDoc", id);
+    }
+
+    public void delAttach (Long id) {
+        sql.update("Approval.delAttach", id);
+    }
+
+    public void delApproval (Long id) {
+        sql.update("Approval.delApproval", id);
+    }
+
+    public void delViewer (Long id) {
+        sql.update("Approval.delViewer", id);
+    }
 }

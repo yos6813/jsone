@@ -309,11 +309,11 @@
         <insert id="fileUpdate" parameterType="map">
                 INSERT t_approval_document_attach VALUES ('${id}', '${file_path}', '${fileName}', getDate())
         </insert>
-        <!-- 결재자 저장 -->
+        <!-- 결재자 삭제 -->
         <delete id="deleteApprover" parameterType="map">
                 DELETE FROM t_approval_doccument_step WHERE docid = '${id}' AND pos_cd != '${coop_cd}'
         </delete>
-        <!-- 공람자 저장 -->
+        <!-- 공람자 삭제 -->
         <delete id="deleteViewer" parameterType="map">
                 DELETE FROM t_approval_doccument_step WHERE docid = '${id}' AND pub_cd != '${pos_cd}'
         </delete>
@@ -325,4 +325,17 @@
         <update id="approvalDoc" parameterType="Long">
                 UPDATE t_approval_document SET type_cd = '002' WHERE docid = '${id}'
         </update>
+        <!-- 글 삭제 -->
+        <delete id="delDoc">
+                DELETE FROM t_approval_document WHERE docid = '${id}'
+        </delete>
+        <delete id="delAttach">
+                DELETE FROM t_approval_document_attach WHERE docid = '${id}'
+        </delete>
+        <delete id="delApproval">
+                DELETE FROM t_approval_document_step WHERE docid = '${id}'
+        </delete>
+        <delete id="delViewer">
+                DELETE FROM t_approval_document_public WHERE docid = '${id}'
+        </delete>
 </mapper>

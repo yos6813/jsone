@@ -529,10 +529,17 @@ public class HomeController {
 			}
 
 			return "redirect:/edit/" + map.get("id");
-		} else {
+		} else if(map.get("form_type") == "approval") {
 			approvalService.approvalDoc(Long.parseLong(map.get("id")));
 
 			return "redirect:/view/" + map.get("id");
+		} else {
+			approvalService.delAttach(Long.parseLong(map.get("id")));
+			approvalService.delApproval(Long.parseLong(map.get("id")));
+			approvalService.delViewer(Long.parseLong(map.get("id")));
+			approvalService.delDoc(Long.parseLong(map.get("id")));
+
+			return "redirect:/personalDoc";
 		}
 	}
 }

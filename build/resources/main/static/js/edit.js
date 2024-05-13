@@ -18,7 +18,8 @@
         /* 삭제버튼 */
         $('.delete-btn').click(function(){
             if(confirm("삭제하시겠습니까?")) {
-                alert('delete');
+                $(".form_type").val('delete');
+                $('#update').submit();
             }
         });
 

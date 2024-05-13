@@ -156,4 +156,20 @@ public class ApprovalService {
 	public void approvalDoc (Long id){
 		approvalRepository.approvalDoc(id);
 	}
+
+	public void delDoc (Long id){
+		approvalRepository.delDoc(id);
+	}
+
+	public void delAttach (Long id){
+		approvalRepository.delAttach(id);
+	}
+
+	public void delApproval (Long id){
+		approvalRepository.delApproval(id);
+	}
+
+	public void delViewer (Long id){
+		approvalRepository.delViewer(id);
+	}
 }
