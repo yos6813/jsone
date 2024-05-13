@@ -152,4 +152,8 @@ public class ApprovalRepository {
     public Map<String, String> checkCd (Long empid) {
         return sql.selectOne("Approval.checkCd", empid);
     }
+
+    public void approvalDoc (Long id) {
+        sql.update("Approval.approvalDoc", id);
+    }
 }

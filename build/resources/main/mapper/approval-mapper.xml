@@ -321,4 +321,8 @@
         <select id="checkCd" parameterType="map" resultType="map">
                 SELECT coop_cd, pos_cd FROM t_emp WHERE empid = '${empid}'
         </select>
+        <!-- 문서 상태 결재로 바꿈 -->
+        <update id="approvalDoc" parameterType="Long">
+                UPDATE t_approval_document SET type_cd = '002' WHERE docid = '${id}'
+        </update>
 </mapper>

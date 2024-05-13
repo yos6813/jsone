@@ -81,7 +81,7 @@
                             <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
                                 <div>
                                     <span th:text="${list.emp_nm}"></span>
-                                    <input type="checkbox" name="approver[]" th:value="${list.empid}" />
+                                    <input type="checkbox" name="approver[]" th:value="${list.empid}" checked />
                                     <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                             <div th:if="!${#lists.isEmpty(viewer)}" th:each="view: ${viewer}">
                                 <div>
                                     <span th:text="${view.emp_nm}"></span>
-                                    <input type="checkbox" name="viewer[]" th:value="${view.empid}" />
+                                    <input type="checkbox" name="viewer[]" th:value="${view.empid}" checked />
                                     <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
                                 </div>
                             </div>
@@ -109,6 +109,16 @@
                             <span class="title">첨부파일</span>
                             <input type="file" id="file-upload" class="hidden" />
                             <span class="title-icon file-upload"><i class="fa-solid fa-plus"></i></span>
+                            <div class="file-box" th:if="${file} != null" th:each="file: ${file}">
+                                <span class="filename">[[${file.original_file_name}]]</span>
+                                <span class="minus-icon">
+                                    <i class="fa-solid fa-circle-minus"></i>
+                                    <span class="file-size">0MB</span>
+                                </span>
+                                <div class="file-bottom">
+                                    <span class="green-txt">Uploaded</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

@@ -18,6 +18,7 @@ public class SessionUtil {
             model.addAttribute("manager_nm", session.getAttribute("manager_nm"));
             model.addAttribute("name", session.getAttribute("emp_nm"));
             model.addAttribute("empid", session.getAttribute("empid"));
+            model.addAttribute("dbName", session.getAttribute("dbName"));
         }
     }
 }

@@ -152,4 +152,8 @@ public class ApprovalService {
 	public Map<String, String> checkCd (Long empid) {
 		return approvalRepository.checkCd(empid);
 	}
+
+	public void approvalDoc (Long id){
+		approvalRepository.approvalDoc(id);
+	}
 }

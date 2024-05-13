@@ -31,8 +31,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
-
-
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -92,6 +90,7 @@ public class HomeController {
 				session.setAttribute("manager_nm", cust.getManager_nm());
 				session.setAttribute("empid", Long.parseLong(login.getEmpid()));
 				session.setAttribute("emp_nm", userDTO.getEmp_nm());
+				session.setAttribute("dbName", cust.getDb_nm());
 				session.setMaxInactiveInterval(-1);
 
 				return "redirect:/dashboard";
@@ -149,10 +148,16 @@ public class HomeController {
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
-		if(model.getAttribute("error") != "") {
-			return "dashboard";
+		if(model.getAttribute("error") == null) {
+			if(model.getAttribute("dbName") != null) {
+				approvalService.use(model.getAttribute("dbName").toString());
+				return "dashboard";
+			} else {
+				return "redirect:/";
+			}
+			
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 
@@ -167,27 +172,32 @@ public class HomeController {
 		sessionUtil.getSession(model, request, approvalService);
 
 		if(model.getAttribute("error") != "") {
+			if(model.getAttribute("dbName") != null) {
+				approvalService.use(model.getAttribute("dbName").toString());
 
-			/* 진행중 문서 */
-			map.put("type_cd", "'002'");
+				/* 진행중 문서 */
+				map.put("type_cd", "'002'");
 
-			List<UserDTO> users = approvalService.userAll();
-			model.addAttribute("users", users);
+				List<UserDTO> users = approvalService.userAll();
+				model.addAttribute("users", users);
 
-			List<ListDTO> listDTOList = approvalService.list(map);
-			model.addAttribute("approvalList", listDTOList);
+				List<ListDTO> listDTOList = approvalService.list(map);
+				model.addAttribute("approvalList", listDTOList);
 
-			/* 리스트 개수 */
-			Long cnt = approvalService.cnt(map);
-			model.addAttribute("full_cnt", cnt);
+				/* 리스트 개수 */
+				Long cnt = approvalService.cnt(map);
+				model.addAttribute("full_cnt", cnt);
 
-			/* 서브 메뉴 별 개수 */
-			SubCntDTO subCnt = approvalService.subCnt("'002'");
-			model.addAttribute("subCnt", subCnt);
-		
-			return "list";
+				/* 서브 메뉴 별 개수 */
+				SubCntDTO subCnt = approvalService.subCnt("'002'");
+				model.addAttribute("subCnt", subCnt);
+			
+				return "list";
+			} else {
+				return "redirect:/";
+			}
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 
@@ -201,25 +211,30 @@ public class HomeController {
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 		if(model.getAttribute("error") != "") {
-			map.put("type_cd", "'003','999'");
+			if(model.getAttribute("dbName") != null) {
+				approvalService.use(model.getAttribute("dbName").toString());
+				map.put("type_cd", "'003','999'");
 
-			List<UserDTO> users = approvalService.userAll();
-			model.addAttribute("users", users);
-			
-			List<ListDTO> listDTOList = approvalService.list(map);
-			model.addAttribute("approvalList", listDTOList);
+				List<UserDTO> users = approvalService.userAll();
+				model.addAttribute("users", users);
+				
+				List<ListDTO> listDTOList = approvalService.list(map);
+				model.addAttribute("approvalList", listDTOList);
 
-			/* 리스트 개수 */
-			Long cnt = approvalService.cnt(map);
-			model.addAttribute("full_cnt", cnt);
+				/* 리스트 개수 */
+				Long cnt = approvalService.cnt(map);
+				model.addAttribute("full_cnt", cnt);
 
-			/* 서브 메뉴 별 개수 */
-			SubCntDTO subCnt = approvalService.subCnt("'003','999'");
-			model.addAttribute("subCnt", subCnt);
+				/* 서브 메뉴 별 개수 */
+				SubCntDTO subCnt = approvalService.subCnt("'003','999'");
+				model.addAttribute("subCnt", subCnt);
 
-			return "list";
+				return "list";
+			} else {
+				return "redirect:/";
+			}
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 
@@ -232,31 +247,36 @@ public class HomeController {
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 		if(model.getAttribute("error") != "") {
+			if(model.getAttribute("dbName") != null) {
+				approvalService.use(model.getAttribute("dbName").toString());
 
-			map.put("type_cd", "002");
-			map.put("title", "공람확인");
+				map.put("type_cd", "002");
+				map.put("title", "공람확인");
 
-			String empid = session.getAttribute("empid").toString();
+				String empid = session.getAttribute("empid").toString();
 
-			map.put("pid", empid);
+				map.put("pid", empid);
 
-			List<UserDTO> users = approvalService.userAll();
-			model.addAttribute("users", users);
-			
-			List<ListDTO> listDTOList = approvalService.list(map);
-			model.addAttribute("approvalList", listDTOList);
+				List<UserDTO> users = approvalService.userAll();
+				model.addAttribute("users", users);
+				
+				List<ListDTO> listDTOList = approvalService.list(map);
+				model.addAttribute("approvalList", listDTOList);
 
-			/* 리스트 개수 */
-			Long cnt = approvalService.cnt(map);
-			model.addAttribute("full_cnt", cnt);
+				/* 리스트 개수 */
+				Long cnt = approvalService.cnt(map);
+				model.addAttribute("full_cnt", cnt);
 
-			/* 서브 메뉴 별 개수 */
-			SubCntDTO subCnt = approvalService.publicSubCnt(map);
-			model.addAttribute("subCnt", subCnt);
+				/* 서브 메뉴 별 개수 */
+				SubCntDTO subCnt = approvalService.publicSubCnt(map);
+				model.addAttribute("subCnt", subCnt);
 
-			return "list";
+				return "list";
+			} else {
+				return "redirect:/";
+			}
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 
@@ -270,29 +290,34 @@ public class HomeController {
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 		if(model.getAttribute("error") != "") {
-			map.put("type_cd", "'003','999'");
-			map.put("title", "공람문서");
+			if(model.getAttribute("dbName") != null) {
+				approvalService.use(model.getAttribute("dbName").toString());
+				map.put("type_cd", "'003','999'");
+				map.put("title", "공람문서");
 
-			String empid = session.getAttribute("empid").toString();
+				String empid = session.getAttribute("empid").toString();
 
-			map.put("pid", empid);
+				map.put("pid", empid);
 
-			List<UserDTO> users = approvalService.userAll();
-			model.addAttribute("users", users);
-			
-			List<ListDTO> listDTOList = approvalService.list(map);
-			model.addAttribute("approvalList", listDTOList);
+				List<UserDTO> users = approvalService.userAll();
+				model.addAttribute("users", users);
+				
+				List<ListDTO> listDTOList = approvalService.list(map);
+				model.addAttribute("approvalList", listDTOList);
 
-			/* 리스트 개수 */
-			Long cnt = approvalService.cnt(map);
-			model.addAttribute("full_cnt", cnt);
+				/* 리스트 개수 */
+				Long cnt = approvalService.cnt(map);
+				model.addAttribute("full_cnt", cnt);
 
-			/* 서브 메뉴 별 개수 */
-			SubCntDTO subCnt = approvalService.publicSubCnt(map);
-			model.addAttribute("subCnt", subCnt);
-			return "list";
+				/* 서브 메뉴 별 개수 */
+				SubCntDTO subCnt = approvalService.publicSubCnt(map);
+				model.addAttribute("subCnt", subCnt);
+				return "list";
+			} else {
+				return "redirect:/";
+			}
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 
@@ -305,25 +330,30 @@ public class HomeController {
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 		if(model.getAttribute("error") != "") {
+			if(model.getAttribute("dbName") != null) {
+				approvalService.use(model.getAttribute("dbName").toString());
 
-			String empid = session.getAttribute("empid").toString();
+				String empid = session.getAttribute("empid").toString();
 
-			map.put("empid", empid);
+				map.put("empid", empid);
 
-			List<ListDTO> listDTOList = approvalService.list(map);
-			model.addAttribute("approvalList", listDTOList);
+				List<ListDTO> listDTOList = approvalService.list(map);
+				model.addAttribute("approvalList", listDTOList);
 
-			/* 리스트 개수 */
-			Long cnt = approvalService.cnt(map);
-			model.addAttribute("full_cnt", cnt);
+				/* 리스트 개수 */
+				Long cnt = approvalService.cnt(map);
+				model.addAttribute("full_cnt", cnt);
 
-			/* 서브 메뉴 별 개수 */
-			SubCntDTO subCnt = approvalService.personalSubCnt(empid);
-			model.addAttribute("subCnt", subCnt);
+				/* 서브 메뉴 별 개수 */
+				SubCntDTO subCnt = approvalService.personalSubCnt(empid);
+				model.addAttribute("subCnt", subCnt);
 
-			return "list";
+				return "list";
+			} else {
+				return "redirect:/";
+			}
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 
@@ -337,26 +367,31 @@ public class HomeController {
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 		if(model.getAttribute("error") != "") {
+			if(model.getAttribute("dbName") != null) {
+				approvalService.use(model.getAttribute("dbName").toString());
 
-			map.put("type_cd", "'002'");
-			
-			/* 페이지네이션 기본값 */
-			map.put("page", "0");
-			
-			List<ListDTO> listDTOList = approvalService.list(map);
-			model.addAttribute("approvalList", listDTOList);
+				map.put("type_cd", "'002'");
+				
+				/* 페이지네이션 기본값 */
+				map.put("page", "0");
+				
+				List<ListDTO> listDTOList = approvalService.list(map);
+				model.addAttribute("approvalList", listDTOList);
 
-			/* 리스트 개수 */
-			Long cnt = approvalService.cnt(map);
-			model.addAttribute("full_cnt", cnt);
+				/* 리스트 개수 */
+				Long cnt = approvalService.cnt(map);
+				model.addAttribute("full_cnt", cnt);
 
-			/* 서브 메뉴 별 개수 */
-			SubCntDTO subCnt = approvalService.subCnt("'002'");
-			model.addAttribute("subCnt", subCnt);
+				/* 서브 메뉴 별 개수 */
+				SubCntDTO subCnt = approvalService.subCnt("'002'");
+				model.addAttribute("subCnt", subCnt);
 
-			return "list";
+				return "list";
+			} else {
+				return "redirect:/";
+			}
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 
@@ -367,40 +402,45 @@ public class HomeController {
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 		if(model.getAttribute("error") != "") {
-			ViewDTO view = approvalService.view(id);
-			List<ChatDTO> chat = approvalService.chat(id);
-			List<Long> docApprover = approvalService.docApprover(id);
-			List<Long> docViewer = approvalService.docViewer(id);
-			List<FileDTO> file = approvalService.file(id);
-			List<ApproverDTO> approver = approvalService.approver(id);
-			List<ApproverDTO> viewer = approvalService.viewer(id);
+			if(model.getAttribute("dbName") != null) {
+				approvalService.use(model.getAttribute("dbName").toString());
+				ViewDTO view = approvalService.view(id);
+				List<ChatDTO> chat = approvalService.chat(id);
+				List<Long> docApprover = approvalService.docApprover(id);
+				List<Long> docViewer = approvalService.docViewer(id);
+				List<FileDTO> file = approvalService.file(id);
+				List<ApproverDTO> approver = approvalService.approver(id);
+				List<ApproverDTO> viewer = approvalService.viewer(id);
 
-			/* 결재자와 공람자 empid 비교를 위해 empid만 따로 저장 */
-			List<Long> allApprover = new ArrayList<Long>();
-			List<Long> allViewer = new ArrayList<Long>();
+				/* 결재자와 공람자 empid 비교를 위해 empid만 따로 저장 */
+				List<Long> allApprover = new ArrayList<Long>();
+				List<Long> allViewer = new ArrayList<Long>();
 
-			approver.forEach(a -> {
-				allApprover.add(a.getEmpid());
-			});
+				approver.forEach(a -> {
+					allApprover.add(a.getEmpid());
+				});
 
-			viewer.forEach(v -> {
-				allViewer.add(v.getEmpid());
-			});
+				viewer.forEach(v -> {
+					allViewer.add(v.getEmpid());
+				});
 
-			model.addAttribute("approver", approver);
-			model.addAttribute("viewer", viewer);
-			model.addAttribute("docApprover", docApprover);
-			model.addAttribute("docViewer", docViewer);
-			model.addAttribute("allApprover", allApprover);
-			model.addAttribute("allViewer", allViewer);
-			model.addAttribute("view", view);
-			model.addAttribute("chatList", chat);
-			model.addAttribute("docid", id);
-			model.addAttribute("file", file);
-			
-			return "view";
+				model.addAttribute("approver", approver);
+				model.addAttribute("viewer", viewer);
+				model.addAttribute("docApprover", docApprover);
+				model.addAttribute("docViewer", docViewer);
+				model.addAttribute("allApprover", allApprover);
+				model.addAttribute("allViewer", allViewer);
+				model.addAttribute("view", view);
+				model.addAttribute("chatList", chat);
+				model.addAttribute("docid", id);
+				model.addAttribute("file", file);
+				
+				return "view";
+			} else {
+				return "redirect:/";
+			}
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 	
@@ -412,72 +452,87 @@ public class HomeController {
 		sessionUtil.getSession(model, request, approvalService);
 
 		if(model.getAttribute("error") != "") {
-			ViewDTO info = approvalService.view(id);
-			List<ApproverDTO> approver = approvalService.approver(id);
-			List<ApproverDTO> viewer = approvalService.viewer(id);
+			if(model.getAttribute("dbName") != null) {
+				approvalService.use(model.getAttribute("dbName").toString());
+				ViewDTO info = approvalService.view(id);
+				List<ApproverDTO> approver = approvalService.approver(id);
+				List<ApproverDTO> viewer = approvalService.viewer(id);
+				List<FileDTO> file = approvalService.file(id);
 
-			model.addAttribute("approver", approver);
-			model.addAttribute("viewer", viewer);
-			model.addAttribute("info", info);
-			model.addAttribute("id", id);
+				model.addAttribute("approver", approver);
+				model.addAttribute("viewer", viewer);
+				model.addAttribute("info", info);
+				model.addAttribute("id", id);
+				model.addAttribute("file", file);
 
-			return "edit";
+				return "edit";
+			} else {
+				return "redirect:/";
+			}
 		} else {
-			return "index";
+			return "redirect:/";
 		}
 	}
 	
 	/* 글 저장 */
 	@PostMapping("/update")
-	public String update(@RequestParam Map<String, String> map, @RequestParam("original_file_name") String[] fileName, @RequestParam("approver") Long[] approv, @RequestParam("viewer") Long[] view, Model model, HttpServletRequest request) {
+	public String update(@RequestParam Map<String, String> map, @RequestParam(name = "original_file_name", required = false) String[] fileName, @RequestParam("approver") Long[] approv, @RequestParam("viewer") Long[] view, Model model, HttpServletRequest request) {
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 
-		CommonUtil commonUtil = new CommonUtil();
-		String contentsText = commonUtil.removeTagString(map.get("contents").toString());
+		if(map.get("form_type") == "update") {
+			CommonUtil commonUtil = new CommonUtil();
+			String contentsText = commonUtil.removeTagString(map.get("contents").toString());
 
-		map.put("contents_text", contentsText);
+			map.put("contents_text", contentsText);
 
-		approvalService.update(map);
+			approvalService.update(map);
 
-		for (String item : fileName) {
-			String filePath = "/files" + File.separator + item;
+			if(fileName != null){
+				for (String item : fileName) {
+					String filePath = "/files" + File.separator + item;
 
-			map.put("file_path", filePath);
-			map.put("fileName", item);
+					map.put("file_path", filePath);
+					map.put("fileName", item);
 
-			approvalService.fileUpdate(map);
-		}
-
-		List<Long> approver = approvalService.docApprover(Long.parseLong(map.get("id")));
-		List<Long> viewer = approvalService.docViewer(Long.parseLong(map.get("id")));
-
-
-		Map<String, Long> appList = new HashMap<>();
-		appList.put("id", Long.parseLong(map.get("id")));
-		if(approver.size() != approv.length) {
-			for (Long item : approv) {
-				if(approvalService.checkCd(item).get("coop_cd") != null) {
-					appList.put("coop_cd", Long.parseLong(approvalService.checkCd(item).get("coop_cd")));
-		
-					approvalService.deleteApprover(appList);
+					approvalService.fileUpdate(map);
 				}
 			}
-		}
 
-		Map<String, Long> viewList = new HashMap<>();
-		viewList.put("id", Long.parseLong(map.get("id")));
-		if(viewer.size() != view.length) {
-			for (Long item : view) {
-				if(approvalService.checkCd(item).get("pos_cd") != null) {
-					viewList.put("pos_cd", Long.parseLong(approvalService.checkCd(item).get("pos_cd")));
+			List<Long> approver = approvalService.docApprover(Long.parseLong(map.get("id")));
+			List<Long> viewer = approvalService.docViewer(Long.parseLong(map.get("id")));
+
+
+			Map<String, Long> appList = new HashMap<>();
+			appList.put("id", Long.parseLong(map.get("id")));
+			if(approver.size() > approv.length) {
+				for (Long item : approv) {
+					if(approvalService.checkCd(item).get("coop_cd") != null) {
+						appList.put("coop_cd", Long.parseLong(approvalService.checkCd(item).get("coop_cd")));
 			
-					approvalService.deleteViewer(viewList);
+						approvalService.deleteApprover(appList);
+					}
 				}
 			}
-		}
 
-		return "redirect:/edit/" + map.get("id");
+			Map<String, Long> viewList = new HashMap<>();
+			viewList.put("id", Long.parseLong(map.get("id")));
+			if(viewer.size() > view.length) {
+				for (Long item : view) {
+					if(approvalService.checkCd(item).get("pos_cd") != null) {
+						viewList.put("pos_cd", Long.parseLong(approvalService.checkCd(item).get("pos_cd")));
+				
+						approvalService.deleteViewer(viewList);
+					}
+				}
+			}
+
+			return "redirect:/edit/" + map.get("id");
+		} else {
+			approvalService.approvalDoc(Long.parseLong(map.get("id")));
+
+			return "redirect:/view/" + map.get("id");
+		}
 	}
 }
