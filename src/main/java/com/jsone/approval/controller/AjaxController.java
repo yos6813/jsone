@@ -22,6 +22,7 @@ import com.jsone.approval.service.ApprovalService;
 import com.jsone.approval.util.SmsUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,11 +31,15 @@ public class AjaxController {
 
     private final ApprovalService approvalService;
 
-	@PostMapping("/auth")
+	@PostMapping("/sendAuth")
 	@ResponseBody
-    public ResponseEntity<String> aligoSendSMS(RestTemplate restTemplate, @RequestBody Map<String, String> map) {
+    public ResponseEntity<String> sendAuth(RestTemplate restTemplate, @RequestBody Map<String, String> map, HttpServletRequest request) {
 		SmsUtil sms = new SmsUtil(restTemplate);
 		int randNum = (int) (Math.random() * 10000);
+
+		HttpSession session = request.getSession();
+
+		session.setAttribute("authNum", randNum);
 
 		Map<String, String> smsData = new HashMap<>();
         smsData.put("user_id", "jsoftone");
@@ -50,9 +55,30 @@ public class AjaxController {
         ResponseEntity<String> response = sms.sendSms(smsData);
 
 		System.out.println("SMS 전송 결과: " + response.getBody());
+		System.out.println("인증번호: " + session.getAttribute("authNum"));
 
         return sms.sendSms(smsData);
     }
+
+	@PostMapping("/authCheck")
+	@ResponseBody
+	public Map<String, String> authCheck(@RequestBody Map<String, String> map, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Map<String, String> result  = new HashMap<String, String>();
+
+		System.out.println("입력번호: " + map.get("authNum"));
+
+		if(map.get("authNum").equals(session.getAttribute("authNum").toString())) {
+			result.put("status", "success");
+			result.put("msg", "인증이 완료되었습니다. 비밀번호를 설정해주세요.");
+		} else {
+			result.put("status", "error");
+			result.put("msg", "인증번호가 틀립니다.");
+		}
+		
+		return result;
+	}
+	
 
 	@PostMapping("/viewerCheck")
 	@ResponseBody

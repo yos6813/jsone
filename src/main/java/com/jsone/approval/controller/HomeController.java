@@ -62,6 +62,7 @@ public class HomeController {
 			} else {
 				model.addAttribute("loginError", "인증되지 않은 회원입니다. 인증을 진행해주세요.");
 				model.addAttribute("errorType", "auth");
+				model.addAttribute("loginid", map.get("loginid"));
 			}
 
 			return "index";
@@ -69,6 +70,7 @@ public class HomeController {
 			if(login.getAuthyn() == 'N') {
 				model.addAttribute("loginError", "인증되지 않은 회원입니다. 인증을 진행해주세요.");
 				model.addAttribute("errorType", "auth");
+				model.addAttribute("loginid", map.get("loginid"));
 
 				return "index";
 			} else {
@@ -115,7 +117,7 @@ public class HomeController {
 	}
 
 	@PostMapping("/resetPassword")
-	public String postMethodName(@RequestParam Map<String, Object> map, Model model) {
+	public String postResetPassword(@RequestParam Map<String, Object> map, Model model) {
 		Long findUser = approvalService.findUser(map);
 
 		if(findUser != null) {
@@ -127,6 +129,14 @@ public class HomeController {
 
 			return "resetPassword";
 		}
+	}
+
+	/* 비밀번호 설정 */
+	@PostMapping("/setPassword")
+	public String setPassword(@RequestParam Map<String, Object> map, Model model) {
+		approvalService.setPw(map);
+
+		return "redirect:/";
 	}
 	
 	/* 대시보드 */

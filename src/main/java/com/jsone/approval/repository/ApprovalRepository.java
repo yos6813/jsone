@@ -41,6 +41,10 @@ public class ApprovalRepository {
         sql.update("Approval.resetPw", map);
     }
 
+    public void setPw (Map<String, Object> map) {
+        sql.update("Approval.setPw", map);
+    }
+
     public void use(String dbname) {
         sql.selectOne("Approval.use", dbname);
     }
