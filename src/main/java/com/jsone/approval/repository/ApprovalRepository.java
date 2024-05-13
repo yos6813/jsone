@@ -114,22 +114,42 @@ public class ApprovalRepository {
     }
 
     public void viewerCheck (Map<String, String> map) {
-        sql.insert("Approval.viewerCheck", map);
+        sql.update("Approval.viewerCheck", map);
     }
 
     public void docCollect (Map<String, String> map) {
-        sql.insert("Approval.docCollect", map);
+        sql.update("Approval.docCollect", map);
     }
 
     public void docCheck (Map<String, String> map) {
-        sql.insert("Approval.docCheck", map);
+        sql.update("Approval.docCheck", map);
     }
 
     public void docRefer (Map<String, String> map) {
-        sql.insert("Approval.docRefer", map);
+        sql.update("Approval.docRefer", map);
     }
 
     public List<FileDTO> file (Long id) {
         return sql.selectList("Approval.file", id);
+    }
+
+    public void update (Map<String, String> map) {
+        sql.update("Approval.update", map);
+    }
+
+    public void fileUpdate (Map<String, String> map) {
+        sql.update("Approval.fileUpdate", map);
+    }
+
+    public void deleteApprover (Map<String, Long> map) {
+        sql.insert("Approval.deleteApprover", map);
+    }
+
+    public void deleteViewer (Map<String, Long> map) {
+        sql.insert("Approval.deleteViewer", map);
+    }
+
+    public Map<String, String> checkCd (Long empid) {
+        return sql.selectOne("Approval.checkCd", empid);
     }
 }

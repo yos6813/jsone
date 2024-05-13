@@ -1,5 +1,6 @@
 package com.jsone.approval.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +24,13 @@ import com.jsone.approval.dto.SubCntDTO;
 import com.jsone.approval.dto.UserDTO;
 import com.jsone.approval.dto.ViewDTO;
 import com.jsone.approval.service.ApprovalService;
+import com.jsone.approval.util.CommonUtil;
 import com.jsone.approval.util.SessionUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+
 
 
 @Controller
@@ -407,6 +410,7 @@ public class HomeController {
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
+
 		if(model.getAttribute("error") != "") {
 			ViewDTO info = approvalService.view(id);
 			List<ApproverDTO> approver = approvalService.approver(id);
@@ -415,6 +419,7 @@ public class HomeController {
 			model.addAttribute("approver", approver);
 			model.addAttribute("viewer", viewer);
 			model.addAttribute("info", info);
+			model.addAttribute("id", id);
 
 			return "edit";
 		} else {
@@ -422,4 +427,57 @@ public class HomeController {
 		}
 	}
 	
+	/* 글 저장 */
+	@PostMapping("/update")
+	public String update(@RequestParam Map<String, String> map, @RequestParam("original_file_name") String[] fileName, @RequestParam("approver") Long[] approv, @RequestParam("viewer") Long[] view, Model model, HttpServletRequest request) {
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request, approvalService);
+
+		CommonUtil commonUtil = new CommonUtil();
+		String contentsText = commonUtil.removeTagString(map.get("contents").toString());
+
+		map.put("contents_text", contentsText);
+
+		approvalService.update(map);
+
+		for (String item : fileName) {
+			String filePath = "/files" + File.separator + item;
+
+			map.put("file_path", filePath);
+			map.put("fileName", item);
+
+			approvalService.fileUpdate(map);
+		}
+
+		List<Long> approver = approvalService.docApprover(Long.parseLong(map.get("id")));
+		List<Long> viewer = approvalService.docViewer(Long.parseLong(map.get("id")));
+
+
+		Map<String, Long> appList = new HashMap<>();
+		appList.put("id", Long.parseLong(map.get("id")));
+		if(approver.size() != approv.length) {
+			for (Long item : approv) {
+				if(approvalService.checkCd(item).get("coop_cd") != null) {
+					appList.put("coop_cd", Long.parseLong(approvalService.checkCd(item).get("coop_cd")));
+		
+					approvalService.deleteApprover(appList);
+				}
+			}
+		}
+
+		Map<String, Long> viewList = new HashMap<>();
+		viewList.put("id", Long.parseLong(map.get("id")));
+		if(viewer.size() != view.length) {
+			for (Long item : view) {
+				if(approvalService.checkCd(item).get("pos_cd") != null) {
+					viewList.put("pos_cd", Long.parseLong(approvalService.checkCd(item).get("pos_cd")));
+			
+					approvalService.deleteViewer(viewList);
+				}
+			}
+		}
+
+		return "redirect:/edit/" + map.get("id");
+	}
 }

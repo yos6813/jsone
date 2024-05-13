@@ -48,7 +48,7 @@ public class AjaxController {
         smsData.put("receiver", "01039196562");
         smsData.put("destination", "");
         smsData.put("sender", "0220384812");
-        smsData.put("testmode_yn", "Y");
+        //smsData.put("testmode_yn", "Y");
         smsData.put("title", "본인인증");
 
 		// SMS 전송 요청 보내기

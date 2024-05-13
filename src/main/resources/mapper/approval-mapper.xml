@@ -284,19 +284,41 @@
                 ORDER BY c.seq
         </select>
         <!-- 결재체크 -->
-        <insert id="docCheck" parameterType="map">
+        <update id="docCheck" parameterType="map">
                 UPDATE t_approval_document_step SET empid = '${empid}', end_date = getDate() WHERE docid = '${docid}' AND pos_cd = '${code}'
-        </insert>
+        </update>
         <!-- 반려 -->
-        <insert id="docRefer" parameterType="map">
-                INSERT INTO t_approval_document_public values ('${docid}', '${code}', '${empid}', getDate(), null, null);
-        </insert>
+        <update id="docRefer" parameterType="map">
+                UPDATE INTO t_approval_document_public SET empid = '${empid}' WHERE docid = '${docid}' AND pub_cd = '${code}'
+        </update>
         <!-- 회수 -->
-        <insert id="docCollect" parameterType="map">
-                update t_approval_document set type_cd = "001" WHERE docid = '${docid}'
-        </insert>
+        <update id="docCollect" parameterType="map">
+                UPDATE t_approval_document SET type_cd = "001" WHERE docid = '${docid}'
+        </update>
         <!-- 공람체크 -->
-        <insert id="viewerCheck" parameterType="map">
+        <update id="viewerCheck" parameterType="map">
                 UPDATE t_approval_document_public SET empid = '${empid}' WHERE docid = '${docid}' AND pub_cd = '${code}'
+        </update>
+        <!-- 글 편집 후 저장 -->
+        <update id="update" parameterType="map">
+                UPDATE t_approval_document
+                SET title = '${title}', status_cd = '${status_cd}', contents = '${contents}', reference_docid = '${reference_docid}', contents_text = '${contents_text}'
+                WHERE docid = '${id}'
+        </update>
+        <!-- 파일 데이터 업데이트 -->
+        <insert id="fileUpdate" parameterType="map">
+                INSERT t_approval_document_attach VALUES ('${id}', '${file_path}', '${fileName}', getDate())
         </insert>
+        <!-- 결재자 저장 -->
+        <delete id="deleteApprover" parameterType="map">
+                DELETE FROM t_approval_doccument_step WHERE docid = '${id}' AND pos_cd != '${coop_cd}'
+        </delete>
+        <!-- 공람자 저장 -->
+        <delete id="deleteViewer" parameterType="map">
+                DELETE FROM t_approval_doccument_step WHERE docid = '${id}' AND pub_cd != '${pos_cd}'
+        </delete>
+        <!-- 공람자, 결재자 코드 조회 coop_cd: 결재자, pos_cd: 공람자 -->
+        <select id="checkCd" parameterType="map" resultType="map">
+                SELECT coop_cd, pos_cd FROM t_emp WHERE empid = '${empid}'
+        </select>
 </mapper>

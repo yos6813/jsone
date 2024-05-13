@@ -16,97 +16,102 @@
                 <button type="button" class="btn secondary delete-btn">삭제</button>
             </div>
             <div class="edit-body">
-                <div class="body-top">
-                    <div class="info-box">
-                        <input type="text" name="title" class="input-text" th:value="${info.title}" />
-                        <div class="info">
-                            <div>
-                                <span class="text-title">문서번호</span>
-                                <span th:text="${info.doc_num}"></span>
-                            </div>
-                            <div>
-                                <span class="text-title">작성일자</span>
-                                <span th:text="${info.create_date}"></span>
-                            </div>
-                            <div>
-                                <span class="text-title">작성자</span>
-                                <span th:text="${info.emp_nm}"></span>
-                            </div>
-                            <div>
-                                <span class="text-title">문서종류</span>
-                                <span>
-                                    <select class="status_cd" name="status_cd">
-                                        <option value="999">선택</option>
-                                        <option th:selected="${info.status_cd} == '내부기안'" value="001">내부기안</option>
-                                        <option th:selected="${info.status_cd} == '외부발송'" value="002">외부발송</option>
-                                        <option th:selected="${info.status_cd} == '접수문서'" value="003">접수문서</option>
-                                        <option th:selected="${info.status_cd} == '보고문서'" value="004">보고문서</option>
-                                        <option th:selected="${info.status_cd} == '업무일지'" value="005">업무일지</option>
-                                        <option th:selected="${info.status_cd} == '연차신청'" value="006">연차신청</option>
-                                        <option th:selected="${info.status_cd} == '지출결의'" value="007">지출결의</option>
-                                    </select>
-                                </span>
-                            </div>
-                            <div>
-                                <span class="text-title">문서상태</span>
-                                <span th:text="${info.type_cd}"></span>
-                            </div>
-                            <div>
-                                <span class="text-title">반려</span>
-                                <span class="yellow-txt" th:text="${info.reference_id}"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="body-middle">
-                    <div class="btn-box">
-                        <button type="button" class="btn secondary approval">
-                            <span class="btn-txt">결재</span>
-                            <span><i class="fa-solid fa-chevron-down"></i></span>
-                        </button>
-                        <button type="button" class="btn secondary announcement">
-                            <span class="btn-txt">공람</span>
-                            <span><i class="fa-solid fa-chevron-down"></i></span>
-                        </button>
-                    </div>
-                    <div class="approval-toggle toggle-box">
-                        <span class="title">
-                            <span class="title-txt">결재</span>
-                            <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
-                        </span>
-                        <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
-                            <div>
-                                <span th:text="${list.emp_nm}"></span>
-                                <input type="checkbox" name="approver" th:value="${list.empid}" />
-                                <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                <form action="/update" method="POST" id="update">
+                    <input type="hidden" name="id" th:value="${id}" />
+                    <input type="hidden" name="form_type" class="form_type" />
+                    <div class="body-top">
+                        <div class="info-box">
+                            <input type="text" name="title" class="input-text" th:value="${info.title}" />
+                            <div class="info">
+                                <div>
+                                    <span class="text-title">문서번호</span>
+                                    <span th:text="${info.doc_num}"></span>
+                                </div>
+                                <div>
+                                    <span class="text-title">작성일자</span>
+                                    <span th:text="${info.create_date}"></span>
+                                </div>
+                                <div>
+                                    <span class="text-title">작성자</span>
+                                    <span th:text="${info.emp_nm}"></span>
+                                </div>
+                                <div>
+                                    <span class="text-title">문서종류</span>
+                                    <span>
+                                        <select class="status_cd" name="status_cd">
+                                            <option value="999">선택</option>
+                                            <option th:selected="${info.status_cd} == '내부기안'" value="001">내부기안</option>
+                                            <option th:selected="${info.status_cd} == '외부발송'" value="002">외부발송</option>
+                                            <option th:selected="${info.status_cd} == '접수문서'" value="003">접수문서</option>
+                                            <option th:selected="${info.status_cd} == '보고문서'" value="004">보고문서</option>
+                                            <option th:selected="${info.status_cd} == '업무일지'" value="005">업무일지</option>
+                                            <option th:selected="${info.status_cd} == '연차신청'" value="006">연차신청</option>
+                                            <option th:selected="${info.status_cd} == '지출결의'" value="007">지출결의</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="text-title">문서상태</span>
+                                    <span th:text="${info.type_cd}"></span>
+                                </div>
+                                <div>
+                                    <span class="text-title">반려</span>
+                                    <span class="yellow-txt" th:text="${info.reference_id}"></span>
+                                    <input type="hidden" name="reference_docid" th:value="${info.reference_docid} ? ${info.reference_docid} : 0" />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="announcement-toggle toggle-box">
-                        <span class="title">
-                            <span class="title-txt">공람(모든 공람 선택/해제)</span>
-                            <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
-                        </span>
-                        <div th:if="!${#lists.isEmpty(viewer)}" th:each="view: ${viewer}">
-                            <div>
-                                <span th:text="${view.emp_nm}"></span>
-                                <input type="checkbox" name="viewer" th:value="${view.empid}" />
-                                <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                    <div class="body-middle">
+                        <div class="btn-box">
+                            <button type="button" class="btn secondary approval">
+                                <span class="btn-txt">결재</span>
+                                <span><i class="fa-solid fa-chevron-down"></i></span>
+                            </button>
+                            <button type="button" class="btn secondary announcement">
+                                <span class="btn-txt">공람</span>
+                                <span><i class="fa-solid fa-chevron-down"></i></span>
+                            </button>
+                        </div>
+                        <div class="approval-toggle toggle-box">
+                            <span class="title">
+                                <span class="title-txt">결재</span>
+                                <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                            </span>
+                            <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
+                                <div>
+                                    <span th:text="${list.emp_nm}"></span>
+                                    <input type="checkbox" name="approver[]" th:value="${list.empid}" />
+                                    <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                                </div>
                             </div>
                         </div>
+                        <div class="announcement-toggle toggle-box">
+                            <span class="title">
+                                <span class="title-txt">공람(모든 공람 선택/해제)</span>
+                                <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                            </span>
+                            <div th:if="!${#lists.isEmpty(viewer)}" th:each="view: ${viewer}">
+                                <div>
+                                    <span th:text="${view.emp_nm}"></span>
+                                    <input type="checkbox" name="viewer[]" th:value="${view.empid}" />
+                                    <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <span class="title">내용</span>
+                            <textarea id="content" name="contents">[[${info.contents}]]</textarea>
+                        </div>
                     </div>
-                    <div class="content">
-                        <span class="title">내용</span>
-                        <textarea id="content">[[${info.contents}]]</textarea>
+                    <div class="body-bottom">
+                        <div class="title-box">
+                            <span class="title">첨부파일</span>
+                            <input type="file" id="file-upload" class="hidden" />
+                            <span class="title-icon file-upload"><i class="fa-solid fa-plus"></i></span>
+                        </div>
                     </div>
-                </div>
-                <div class="body-bottom">
-                    <div class="title-box">
-                        <span class="title">첨부파일</span>
-                        <input type="file" id="file-upload" class="hidden" />
-                        <span class="title-icon file-upload"><i class="fa-solid fa-plus"></i></span>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

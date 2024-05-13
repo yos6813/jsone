@@ -68,6 +68,7 @@
                     $('.body-bottom').append(
                         '<div class="file-box">' +
                             '<span class="filename">' + result.fileName + '</span>' +
+                            '<input type="hidden" name="original_file_name[]" value="' + result.fileName + '" />' +
                             '<span class="minus-icon">' +
                                 '<i class="fa-solid fa-circle-minus"></i>' +
                                 '<span class="file-size"> ' + Math.round(result.size) + 'MB</span>' +
@@ -103,5 +104,17 @@
                 });
             }
         })
+
+        /* 글 저장 */
+        $('.save-btn').click(function(){
+            $(".form_type").val('update');
+            $('#update').submit();
+        });
+
+        /* 결재올리기 */
+        $('.approval-btn').click(function(){
+            $(".form_type").val('approval');
+            $('#update').submit();
+        });
     })
 })(jQuery)

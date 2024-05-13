@@ -133,4 +133,23 @@ public class ApprovalService {
 		return approvalRepository.file(id);
 	}
 
+	public void update (Map<String, String> map) {
+		approvalRepository.update(map);
+	}
+
+	public void fileUpdate(Map<String, String> map) {
+		approvalRepository.fileUpdate(map);
+	}
+
+	public void deleteApprover(Map<String, Long> map) {
+		approvalRepository.deleteApprover(map);
+	}
+
+	public void deleteViewer(Map<String, Long> map) {
+		approvalRepository.deleteViewer(map);
+	}
+
+	public Map<String, String> checkCd (Long empid) {
+		return approvalRepository.checkCd(empid);
+	}
 }

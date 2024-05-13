@@ -695,10 +695,6 @@ input[type="checkbox"]:checked + span{
     border-bottom: 1px solid #EEEEEE;
 }
 
-.edit-body .body-middle .toggle-box div span:last-child {
-    color: #CCCCCC;
-}
-
 .edit-body .body-middle .toggle-box div span {
     width: 100%;
     padding-top: 10px;
