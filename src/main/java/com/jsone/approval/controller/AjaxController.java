@@ -171,4 +171,35 @@ public class AjaxController {
 		
 		return listDTOList;
 	}
+
+	/* edit 페이지 내 파일 삭제 */
+	@PostMapping("/deleteFile")
+	@ResponseBody
+	public Map<String, String> deleteFile(@RequestParam String fileName, HttpServletRequest request) {
+		String uploadPath = request.getServletContext().getRealPath("/files");
+		String filePath = uploadPath + File.separator + fileName;
+
+		Map<String, String> map = new HashMap<String, String>();
+
+		File file = new File(filePath);
+        if (file.exists()) {
+            if (file.delete()) {
+				map.put("status", "success");
+				map.put("msg", "파일을 삭제하였습니다.");
+
+                return map;
+            } else {
+				map.put("status", "error");
+				map.put("msg", "파일을 삭제하지 못했습니다.");
+
+                return map;
+            }
+        } else {
+            map.put("status", "error");
+			map.put("msg", "파일경로가 올바르지 않습니다.");
+
+			return map;
+        }
+	}
+	
 }

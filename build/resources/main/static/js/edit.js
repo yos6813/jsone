@@ -41,7 +41,7 @@
                     $('.body-bottom').append(
                         '<div class="file-box">' +
                             '<span class="filename">1 file uploaded</span>' +
-                            '<span class="plus-icon">' +
+                            '<span class="minus-icon">' +
                                 '<i class="fa-solid fa-circle-minus"></i>' +
                                 '<span class="file-size"></span>' +
                             '</span>' +
@@ -68,7 +68,7 @@
                     $('.body-bottom').append(
                         '<div class="file-box">' +
                             '<span class="filename">' + result.fileName + '</span>' +
-                            '<span class="plus-icon">' +
+                            '<span class="minus-icon">' +
                                 '<i class="fa-solid fa-circle-minus"></i>' +
                                 '<span class="file-size"> ' + Math.round(result.size) + 'MB</span>' +
                             '</span>' +
@@ -79,5 +79,29 @@
                     );
                 }});
         });
+
+        $(document).on('click', '.minus-icon', function(){
+            var that = $(this);
+            var fileName = that.prev('.filename').text();
+            if(confirm(fileName + " 파일을 삭제하시겠습니까?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/deleteFile',
+                    data: {
+                        fileName: fileName
+                    },
+                    success: function(response) {
+                        if(response.status == 'success') {
+                            that.parents('.file-box').remove();
+                        } else {
+                            alert(response.msg);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('파일 삭제 실패:', error);
+                    }
+                });
+            }
+        })
     })
 })(jQuery)

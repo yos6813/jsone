@@ -759,6 +759,13 @@ input[type="checkbox"]:checked + span{
     text-align: right;
 }
 
+.edit-body .body-bottom .minus-icon {
+    position: absolute;
+    margin-left: -50px;
+    width: 50px;
+    text-align: right;
+}
+
 .edit-body .body-bottom .file-bottom {
     text-align: left;
     padding-top: 5px;
