@@ -136,7 +136,7 @@ public class HomeController {
 	/* 비밀번호 설정 */
 	@PostMapping("/setPassword")
 	public String setPassword(@RequestParam Map<String, Object> map, Model model) {
-		approvalService.setPw(map);
+		approvalService.setAuth(map);
 
 		return "redirect:/";
 	}

@@ -41,8 +41,8 @@ public class ApprovalService {
 		approvalRepository.resetPw(map);
 	}
 
-	public void setPw (Map<String, Object> map) {
-		approvalRepository.setPw(map);
+	public void setAuth (Map<String, Object> map) {
+		approvalRepository.setAuth(map);
 	}
 
 	public void use (String dbname) {

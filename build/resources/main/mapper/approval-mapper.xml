@@ -12,7 +12,7 @@
                 SELECT authyn FROM t_login WHERE loginid = '${loginid}'
         </select>
         <!-- 비밀번호, 인증확인 여부 설정 -->
-        <update id="setPw" parameterType="map">
+        <update id="setAuth" parameterType="map">
                 UPDATE t_login SET passwd = '${passwd}', authyn = 'Y' WHERE loginid = '${loginid}' AND RTRIM(authyn) != 'Y';
         </update>
         <!-- 비밀번호 재설정 전 유저 정보 찾기 -->

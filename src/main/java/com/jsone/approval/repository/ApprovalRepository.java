@@ -41,8 +41,8 @@ public class ApprovalRepository {
         sql.update("Approval.resetPw", map);
     }
 
-    public void setPw (Map<String, Object> map) {
-        sql.update("Approval.setPw", map);
+    public void setAuth (Map<String, Object> map) {
+        sql.update("Approval.setAuth", map);
     }
 
     public void use(String dbname) {
