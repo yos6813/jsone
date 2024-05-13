@@ -6,13 +6,13 @@
         
         if(timeSpan.length) {
             $.ajax({
-                type : 'POST', // 타입 (get, post, put 등등)
-                url : '/auth', // 요청할 서버url
-                dataType : 'json', // 데이터 타입 (html, xml, json, text 등등)
-                data : JSON.stringify({ // 보낼 데이터 (Object , String, Array)
+                type : 'POST',
+                url : '/auth',
+                dataType : 'json',
+                data : JSON.stringify({
                     "telNo" : $('input[name="loginid"]').val()
                 }),
-                success : function(result) { // 결과 성공 콜백함수
+                success : function(result) {
                     $('.id-text').val($('input[name="loginid"]').val());
 
                     countdown = setInterval(function(){
@@ -29,7 +29,7 @@
                         }
                     }, 1000);
                 },
-                error : function(request, status, error) { // 결과 에러 콜백함수
+                error : function(request, status, error) {
                     console.log(error)
                 }
             });
