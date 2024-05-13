@@ -45,7 +45,7 @@ public class AjaxController {
         smsData.put("user_id", "jsoftone");
         smsData.put("key", "xg7d36hj0xavo5a40vq98ch7pu9339za");
         smsData.put("msg", "인증번호[" + randNum + "] 가람웹 로그인 인증 문자입니다. 웹화면에서 인증번호를 입력해주세요.");
-        smsData.put("receiver", "01039196562");
+        smsData.put("receiver", map.get("telNo"));
         smsData.put("destination", "");
         smsData.put("sender", "0220384812");
         //smsData.put("testmode_yn", "Y");
