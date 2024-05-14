@@ -23,7 +23,7 @@
             </div>
             <div class="login-bottom">
                 <div class="span-area">
-                    <a href="/setPassword">비밀번호 재설정</a>
+                    <a href="/resetPassword">비밀번호 재설정</a>
                 </div>
                 <div class="span-area">
                     <p class="warning">최초 사용자는 휴대폰번호 입력 후, <br/> Login 버튼 눌러주세요.</p>
@@ -32,7 +32,7 @@
         </div>
         <div th:if="${errorType} == 'auth'" id="auth">
             <div class="auth-body">
-                <form id="changePw" action="/resetPassword" method="POST">
+                <form id="changePw" action="/setPassword" method="POST">
                     <div class="input-area">
                         <input type="text" class="input-text id-text" name="loginid" readonly />
                         <input type="text" placeholder="4자리 인증번호" class="input-text authNum" />

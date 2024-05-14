@@ -58,7 +58,7 @@ public class HomeController {
 		if(login == null) {
 			LoginDTO authCheck = approvalService.authCheck(map.get("loginid"));
 
-			if(authCheck == null) {
+			if(authCheck.getAuthyn() == 'Y') {
 				model.addAttribute("loginError", "ID 또는 비밀번호가 일치하지 않습니다.");
 			} else {
 				model.addAttribute("loginError", "인증되지 않은 회원입니다. 인증을 진행해주세요.");
