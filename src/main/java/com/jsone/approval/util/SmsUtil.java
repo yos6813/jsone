@@ -39,4 +39,27 @@ public class SmsUtil {
         
         return response;
     }
+
+    public ResponseEntity<String> sendKakao(Map<String, String> sms) {
+        // 요청 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        // Multipart 요청 본문 설정
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        for (Map.Entry<String, String> entry : sms.entrySet()) {
+            body.add(entry.getKey(), entry.getValue());
+        }
+
+        // 요청 엔터티 생성
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        // Kakao API 엔드포인트
+        String smsUrl = "https://kakaoapi.aligo.in/akv10/alimtalk/send/";
+
+        // POST 요청 보내기
+        ResponseEntity<String> response = restTemplate.postForEntity(smsUrl, requestEntity, String.class);
+        
+        return response;
+    }
 }

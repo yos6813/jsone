@@ -321,9 +321,13 @@
         <select id="checkCd" parameterType="map" resultType="map">
                 SELECT coop_cd, pos_cd FROM t_emp WHERE empid = '${empid}'
         </select>
-        <!-- 문서 상태 결재로 바꿈 -->
-        <update id="approvalDoc" parameterType="Long">
-                UPDATE t_approval_document SET type_cd = '002' WHERE docid = '${id}'
+        <!-- 결재자가 모두 체크했는지 확인 -->
+        <select id="checkAppov" parameterType="map" resultType="Long">
+                SELECT COUNT(*) AS cnt FROM t_approval_document_step WHERE docid = '${docid}' AND empid = '0'
+        </select>
+        <!-- 문서 상태 변경 -->
+        <update id="approvalDoc" parameterType="map">
+                UPDATE t_approval_document SET type_cd = '${type_cd}' WHERE docid = '${id}'
         </update>
         <!-- 글 삭제 -->
         <delete id="delDoc">

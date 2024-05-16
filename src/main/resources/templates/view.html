@@ -35,7 +35,7 @@
                     <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
                         <div>
                             <span th:text="${list.emp_nm}"></span>
-                            <input type="hidden" th:if="!${#lists.isEmpty(allApprover)} and ${#lists.contains(allApprover, list.empid)}" th:value="${list.code}" id="code" />
+                            <input type="hidden" th:if="!${#lists.isEmpty(allApprover)} and ${#lists.contains(allApprover, empid)}" th:value="${list.code}" id="code" />
                             <span class="check" th:classappend="!${#lists.isEmpty(docApprover)} and ${#lists.contains(docApprover, list.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                     <div th:if="!${#lists.isEmpty(viewer)}" th:each="viewer: ${viewer}">
                         <div>
                             <span th:text="${viewer.emp_nm}"></span>
-                            <input type="hidden" th:if="!${#lists.isEmpty(allViewer)} and ${#lists.contains(allViewer, viewer.empid)}" th:value="${viewer.code}" id="code" />
+                            <input type="hidden" th:if="!${#lists.isEmpty(allViewer)} and ${#lists.contains(allViewer, empid)}" th:value="${viewer.code}" id="code" />
                             <span class="check" th:classappend="!${#lists.isEmpty(docViewer)} and ${#lists.contains(docViewer, viewer.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
                     </div>

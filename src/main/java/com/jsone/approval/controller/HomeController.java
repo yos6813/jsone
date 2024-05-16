@@ -530,7 +530,8 @@ public class HomeController {
 
 			return "redirect:/edit/" + map.get("id");
 		} else if(map.get("form_type") == "approval") {
-			approvalService.approvalDoc(Long.parseLong(map.get("id")));
+			map.put("type_cd", "002");
+			approvalService.approvalDoc(map);
 
 			return "redirect:/view/" + map.get("id");
 		} else {

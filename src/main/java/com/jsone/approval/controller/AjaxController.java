@@ -51,14 +51,40 @@ public class AjaxController {
         //smsData.put("testmode_yn", "Y");
         smsData.put("title", "본인인증");
 
-		// SMS 전송 요청 보내기
-        ResponseEntity<String> response = sms.sendSms(smsData);
-
-		System.out.println("SMS 전송 결과: " + response.getBody());
-		System.out.println("인증번호: " + session.getAttribute("authNum"));
-
         return sms.sendSms(smsData);
     }
+
+	@PostMapping("/sendApproval")
+	public ResponseEntity<String> postMethodName(RestTemplate restTemplate, @RequestBody Map<String, String> map, HttpServletRequest request) {
+		SmsUtil sms = new SmsUtil(restTemplate);
+		int randNum = (int) (Math.random() * 10000);
+		String name = map.get("name");
+		String title = map.get("title");
+
+		HttpSession session = request.getSession();
+
+		session.setAttribute("authNum", randNum);
+
+		Map<String, String> kakaoData = new HashMap<>();
+        kakaoData.put("userid", "jsoftone");
+        kakaoData.put("apikey", "xg7d36hj0xavo5a40vq98ch7pu9339za");
+        kakaoData.put("message_1", name + "님의 '" + title + "' 전자결재 문서가 결재되었습니다.");
+        kakaoData.put("subject_1", "결재완료");
+		kakaoData.put("senderkey", "TS_7933");
+		kakaoData.put("tpl_code", "TS_7933"); //템플릿 코드
+        kakaoData.put("receiver_1", map.get("telNo"));
+        kakaoData.put("sender", "0220384812");
+        //kakaoData.put("testmode_yn", "Y");
+        kakaoData.put("title", "본인인증");
+
+		// SMS 전송 요청 보내기
+        ResponseEntity<String> response = sms.sendSms(kakaoData);
+
+		System.out.println("전송 결과: " + response.getBody());
+
+        return sms.sendKakao(kakaoData);
+	}
+	
 
 	@PostMapping("/authCheck")
 	@ResponseBody
@@ -92,6 +118,7 @@ public class AjaxController {
 		return result;
 	}
 
+	/* 결재회수 */
 	@PostMapping("/docCollect")
 	public Map<String, String> docCollect(@RequestBody Map<String, String> map) {
 		approvalService.docCollect(map);
@@ -103,9 +130,18 @@ public class AjaxController {
 		return result;
 	}
 
+	/* 결재 */
 	@PostMapping("/docCheck")
 	public Map<String, String> docCheck(@RequestBody Map<String, String> map) {
 		approvalService.docCheck(map);
+
+		Long approvCnt = approvalService.checkAppov(map);
+
+		if(approvCnt <= 0) {
+			map.put("type_cd", "005");
+			map.put("id", map.get("docid"));
+			approvalService.approvalDoc(map);
+		}
 
 		Map<String, String> result = new HashMap<String, String>();
 

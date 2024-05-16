@@ -117,6 +117,10 @@ public class ApprovalService {
 		approvalRepository.viewerCheck(map);
 	}
 
+	public Long checkAppov (Map<String, String> map){
+		return approvalRepository.checkAppov(map);
+	}
+
 	public void docCollect (Map<String, String> map) {
 		approvalRepository.docCollect(map);
 	}
@@ -153,8 +157,8 @@ public class ApprovalService {
 		return approvalRepository.checkCd(empid);
 	}
 
-	public void approvalDoc (Long id){
-		approvalRepository.approvalDoc(id);
+	public void approvalDoc (Map<String, String> map){
+		approvalRepository.approvalDoc(map);
 	}
 
 	public void delDoc (Long id){

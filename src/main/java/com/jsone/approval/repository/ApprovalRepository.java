@@ -117,6 +117,10 @@ public class ApprovalRepository {
         sql.update("Approval.viewerCheck", map);
     }
 
+    public Long checkAppov(Map<String, String> map) {
+        return sql.selectOne("Approval.checkAppov", map);
+    }
+
     public void docCollect (Map<String, String> map) {
         sql.update("Approval.docCollect", map);
     }
@@ -153,8 +157,8 @@ public class ApprovalRepository {
         return sql.selectOne("Approval.checkCd", empid);
     }
 
-    public void approvalDoc (Long id) {
-        sql.update("Approval.approvalDoc", id);
+    public void approvalDoc (Map<String, String> map) {
+        sql.update("Approval.approvalDoc", map);
     }
 
     public void delDoc (Long id) {
