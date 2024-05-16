@@ -53,7 +53,7 @@
                 CASE WHEN d.status_cd = '001' THEN '내부기안' WHEN d.status_cd = '002' THEN '외부발송' WHEN d.status_cd = '003' THEN '접수문서' WHEN d.status_cd = '004' THEN '보고문서' WHEN d.status_cd = '005' THEN '업무일지' WHEN d.status_cd = '006' THEN '연차신청' WHEN d.status_cd = '007' THEN '지출결의' ELSE '선택' END as status_cd,
                 (SELECT count(*) as cnt FROM t_approval_document_chat as c WHERE c.docid = d.docid) as cnt
                 FROM t_approval_document AS d
-                <if test="title != null and title != '' and (code != null and code != '')">
+                <if test="title != null and title != ''">
                         <if test="title == '공람' or title == '공람문서'">
                                 JOIN t_approval_document_public AS p ON d.docid = p.docid
                                 JOIN t_emp e ON e.coop_cd = p.pub_cd
@@ -63,7 +63,7 @@
                                 JOIN t_emp e ON e.pos_cd = s.pos_cd
                         </if>
                 </if>
-                <if test="title == null or title == '' and (code == null and code == '')">
+                <if test="title == null or title == ''">
                         JOIN t_emp e ON e.empid = d.empid
                         JOIN t_code AS c ON e.dept_cd = c.code
                         WHERE c.category = '부서코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1'
