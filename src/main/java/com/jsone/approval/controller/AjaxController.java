@@ -57,11 +57,13 @@ public class AjaxController {
     }
 
 	@PostMapping("/sendApproval")
+	@ResponseBody
 	public ResponseEntity<String> postMethodName(RestTemplate restTemplate, @RequestBody Map<String, String> map, HttpServletRequest request) {
 		SmsUtil sms = new SmsUtil(restTemplate);
 		int randNum = (int) (Math.random() * 10000);
 		String name = map.get("name");
 		String title = map.get("title");
+		String button = map.get("button");
 
 		HttpSession session = request.getSession();
 
@@ -70,8 +72,9 @@ public class AjaxController {
 		Map<String, String> kakaoData = new HashMap<>();
         kakaoData.put("userid", "jsoftone");
         kakaoData.put("apikey", "xg7d36hj0xavo5a40vq98ch7pu9339za");
-        kakaoData.put("message_1", name + "님의 '" + title + "' 전자결재 문서가 결재되었습니다.");
-        kakaoData.put("subject_1", "결재완료");
+        kakaoData.put("message_1", name + "님의 '" + title + "' 전자결재 문서가 도착하였습니다.");
+        kakaoData.put("subject_1", "결재요청");
+        kakaoData.put("button_1", button);
 		kakaoData.put("senderkey", "TS_7933");
 		kakaoData.put("tpl_code", "TS_7933"); //템플릿 코드
         kakaoData.put("receiver_1", map.get("telNo"));

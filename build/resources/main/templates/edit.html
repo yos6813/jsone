@@ -17,11 +17,12 @@
             </div>
             <div class="edit-body">
                 <form action="/update" method="POST" id="update">
-                    <input type="hidden" name="id" th:value="${id}" />
+                    <input type="hidden" name="id" class="id" th:value="${id}" />
+                    <input type="hidden" class="emp_nm" th:value="${info.emp_nm}" />
                     <input type="hidden" name="form_type" class="form_type" />
                     <div class="body-top">
                         <div class="info-box">
-                            <input type="text" name="title" class="input-text" th:value="${info.title}" />
+                            <input type="text" name="title" class="input-text title" th:value="${info.title}" />
                             <div class="info">
                                 <div>
                                     <span class="text-title">문서번호</span>

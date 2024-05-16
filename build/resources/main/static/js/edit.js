@@ -115,7 +115,34 @@
         /* 결재올리기 */
         $('.approval-btn').click(function(){
             $(".form_type").val('approval');
-            $('#update').submit();
+            $.ajax({
+                type: 'POST',
+                url: '/sendApproval',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    name: $('.emp_nm').val(),
+                    title: $('.title').val(),
+                    button: JSON.stringify({
+                        button: {
+                            name: "결재문서 확인하기",
+                            linkType: "WL",
+                            linkTypeName: "웹링크",
+                            linkMo: location.origin + "/" + $('.id').val()
+                        }
+                    })
+                }),
+                success: function(response) {
+                    if(response.status == 'success') {
+                        //$('#update').submit();
+                    } else {
+                        alert(response.msg);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
         });
     })
 })(jQuery)
