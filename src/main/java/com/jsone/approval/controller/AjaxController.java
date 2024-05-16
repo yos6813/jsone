@@ -77,7 +77,7 @@ public class AjaxController {
         kakaoData.put("button_1", button);
 		kakaoData.put("senderkey", "7b7f39a82a33c7d0069be9ecb4df9a477df974a6");
 		kakaoData.put("tpl_code", "TS_7933"); //템플릿 코드
-        kakaoData.put("receiver_1", session.getAttribute("loginid").toString());
+        kakaoData.put("receiver_1", "01039196562");
         kakaoData.put("sender", "0220384812");
         //kakaoData.put("testmode_yn", "Y");
         kakaoData.put("title", "본인인증");
