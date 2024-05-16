@@ -89,6 +89,7 @@ public class HomeController {
 
 				session.setAttribute("manager_nm", cust.getManager_nm());
 				session.setAttribute("empid", Long.parseLong(login.getEmpid()));
+				session.setAttribute("loginid", Long.parseLong(login.getLoginid()));
 				session.setAttribute("emp_nm", userDTO.getEmp_nm());
 				session.setAttribute("dbName", cust.getDb_nm());
 				session.setAttribute("coop_cd", userDTO.getPos_cd());
