@@ -364,7 +364,7 @@
         </update>
         <!-- 회수 -->
         <update id="docCollect" parameterType="map">
-                UPDATE t_approval_document SET type_cd = "001" WHERE docid = '${docid}'
+                UPDATE t_approval_document SET type_cd = '001' WHERE docid = '${docid}'
         </update>
         <!-- 공람체크 -->
         <update id="viewerCheck" parameterType="map">
