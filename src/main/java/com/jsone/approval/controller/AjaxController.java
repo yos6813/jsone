@@ -51,6 +51,8 @@ public class AjaxController {
         //smsData.put("testmode_yn", "Y");
         smsData.put("title", "본인인증");
 
+		System.out.println(randNum);
+
         return sms.sendSms(smsData);
     }
 

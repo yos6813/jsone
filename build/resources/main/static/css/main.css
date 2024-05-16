@@ -218,9 +218,10 @@ input[type="checkbox"]:checked + span{
     position: absolute;
     right: 25px;
     padding-top: 2px;
+    background: none;
 }
 
-.resetPw-body .input-area {
+.auth-body {
     margin-bottom: 50px;
 }
 

@@ -5,7 +5,6 @@
         var timeSpan = $('.time-area.on > span'); // 시간을 표시할 요소
         var seconds = 180; // 남은 시간 변수
         var countdown;
-        var countdown2;
         
         if(timeSpan.length) {
             countdown = setInterval(function(){
@@ -27,7 +26,7 @@
                 }),
                 success : function(result) {
                     $('.id-text').val($('input[name="loginid"]').val());
-                    countdown2 = setTimeout(function(){
+                    setTimeout(function(){
                         alert('인증번호 유효시간이 만료되었습니다.');
                         timeSpan.text = "00:00";
                         clearInterval(countdown);
@@ -56,7 +55,6 @@
                     if(result.status == 'success') {
                         alert(result.msg);
                         clearInterval(countdown);
-                        clearInterval(countdown2);
                         $('.password-box').show();
                         $('.changePw').show();
                         $('.auth-btn').hide();
@@ -71,6 +69,13 @@
                 }
             });
         });
+
+        $('#login').submit(function(){
+            if(!$.isNumeric($('#loginid').val())) {
+                alert("휴대폰번호는 숫자만 입력해주세요.");
+                return false;
+            }
+        })
         
         /* 비밀번호 설정 */
         $('#changePw').submit(function(){

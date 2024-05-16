@@ -20,20 +20,6 @@
             $(this).parents('form').submit();
         });
 
-        /* 비밀번호 재설정 비밀번호 확인 경고 글귀 */
-        $('.pw-warning').hide();
-        $('#passwd2').keyup(function(){
-            var pass = $('#passwd').val();
-
-            if(pass != $(this).val()) {
-                $('.pw-warning').show();
-                $('.submit_btn').attr('disabled', 'disabled');
-            } else {
-                $('.pw-warning').hide();
-                $('.submit_btn').removeAttr('disabled');
-            }
-        });
-
         /* 뷰 & 편집 페이지 결재, 공람 토글 */
         $('.approval-toggle').hide();
         $('.announcement-toggle').hide();
