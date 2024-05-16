@@ -258,22 +258,31 @@ public class HomeController {
 				approvalService.use(model.getAttribute("dbName").toString());
 
 				map.put("type_cd", "002");
-				map.put("code", model.getAttribute("posCd").toString());
-				map.put("title", "공람");
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
-				
-				List<ListDTO> listDTOList = approvalService.list(map);
-				model.addAttribute("approvalList", listDTOList);
+				if(model.getAttribute("posCd") == null || model.getAttribute("posCd") == "") {
+					model.addAttribute("approvalList", null);
 
-				/* 리스트 개수 */
-				Long cnt = approvalService.cnt(map);
-				model.addAttribute("full_cnt", cnt);
+					/* 리스트 개수 */
+					model.addAttribute("full_cnt", null);
 
-				/* 서브 메뉴 별 개수 */
-				SubCntDTO subCnt = approvalService.publicSubCnt(map);
-				model.addAttribute("subCnt", subCnt);
+					/* 서브 메뉴 별 개수 */
+					model.addAttribute("subCnt", null);
+				} else {
+					map.put("code",model.getAttribute("posCd").toString());
+					map.put("title", "공람");
+					List<ListDTO> listDTOList = approvalService.list(map);
+					model.addAttribute("approvalList", listDTOList);
+
+					/* 리스트 개수 */
+					Long cnt = approvalService.cnt(map);
+					model.addAttribute("full_cnt", cnt);
+
+					/* 서브 메뉴 별 개수 */
+					SubCntDTO subCnt = approvalService.publicSubCnt(map);
+					model.addAttribute("subCnt", subCnt);
+				}
 
 				return "list";
 			} else {
