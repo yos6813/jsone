@@ -10,4 +10,6 @@ import lombok.Setter;
 public class UserDTO {
     private String empid;
     private String emp_nm;
+    private String coop_cd;
+    private String pos_cd;
 }

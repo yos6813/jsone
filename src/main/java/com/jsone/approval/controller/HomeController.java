@@ -58,7 +58,7 @@ public class HomeController {
 		if(login == null) {
 			LoginDTO authCheck = approvalService.authCheck(map.get("loginid"));
 
-			if(authCheck == null) {
+			if(authCheck != null) {
 				model.addAttribute("loginError", "ID 또는 비밀번호가 일치하지 않습니다.");
 			} else {
 				model.addAttribute("loginError", "인증되지 않은 회원입니다. 인증을 진행해주세요.");
@@ -91,6 +91,8 @@ public class HomeController {
 				session.setAttribute("empid", Long.parseLong(login.getEmpid()));
 				session.setAttribute("emp_nm", userDTO.getEmp_nm());
 				session.setAttribute("dbName", cust.getDb_nm());
+				session.setAttribute("coop_cd", userDTO.getPos_cd());
+				session.setAttribute("pos_cd", userDTO.getCoop_cd());
 				session.setMaxInactiveInterval(-1);
 
 				return "redirect:/dashboard";
@@ -177,6 +179,8 @@ public class HomeController {
 
 				/* 진행중 문서 */
 				map.put("type_cd", "'002'");
+				map.put("code", model.getAttribute("coopCd").toString());
+				map.put("title", "결재");
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
@@ -189,7 +193,7 @@ public class HomeController {
 				model.addAttribute("full_cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
-				SubCntDTO subCnt = approvalService.subCnt("'002'");
+				SubCntDTO subCnt = approvalService.stepSubCnt(map);
 				model.addAttribute("subCnt", subCnt);
 			
 				return "list";
@@ -214,6 +218,8 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 				map.put("type_cd", "'003','999'");
+				map.put("pid", model.getAttribute("empid").toString());
+				map.put("title", "결재문서");
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
@@ -226,7 +232,7 @@ public class HomeController {
 				model.addAttribute("full_cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
-				SubCntDTO subCnt = approvalService.subCnt("'003','999'");
+				SubCntDTO subCnt = approvalService.stepSubCnt(map);
 				model.addAttribute("subCnt", subCnt);
 
 				return "list";
@@ -251,11 +257,8 @@ public class HomeController {
 				approvalService.use(model.getAttribute("dbName").toString());
 
 				map.put("type_cd", "002");
-				map.put("title", "공람확인");
-
-				String empid = session.getAttribute("empid").toString();
-
-				map.put("pid", empid);
+				map.put("code", model.getAttribute("posCd").toString());
+				map.put("title", "공람");
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
@@ -294,10 +297,7 @@ public class HomeController {
 				approvalService.use(model.getAttribute("dbName").toString());
 				map.put("type_cd", "'003','999'");
 				map.put("title", "공람문서");
-
-				String empid = session.getAttribute("empid").toString();
-
-				map.put("pid", empid);
+				map.put("pid", model.getAttribute("empid").toString());
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
@@ -371,6 +371,7 @@ public class HomeController {
 				approvalService.use(model.getAttribute("dbName").toString());
 
 				map.put("type_cd", "'002'");
+				map.put("empid", model.getAttribute("empid").toString());
 				
 				/* 페이지네이션 기본값 */
 				map.put("page", "0");
@@ -383,7 +384,7 @@ public class HomeController {
 				model.addAttribute("full_cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
-				SubCntDTO subCnt = approvalService.subCnt("'002'");
+				SubCntDTO subCnt = approvalService.subCnt(map);
 				model.addAttribute("subCnt", subCnt);
 
 				return "list";

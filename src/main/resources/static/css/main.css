@@ -138,13 +138,13 @@ input[type="checkbox"]:checked + span{
 
 /* 메인 메뉴 */
 .tab-nav-wrap .tab-nav {
-    display: ruby-text;
+    display: inline-flex;
     padding-top: 5px;
     border-bottom: 1px solid #EEEEEE;
 }
 
 .tab-nav-wrap .tab-nav > li {
-    padding: 0px 15px;
+    width: 25vw;
     height: 32px;
     line-height: 30px;
     text-align: center;
@@ -239,7 +239,7 @@ input[type="checkbox"]:checked + span{
 }
 
 .dashboard-body .btn-box {
-    display: ruby;
+    display: inline-flex;
 }
 
 .dashboard-body .btn-box .approval-box {
@@ -459,8 +459,7 @@ input[type="checkbox"]:checked + span{
 
 .view-body .btn-box {
     padding-bottom: 10px;
-    padding-left: 20px;
-    text-align: justify;
+    margin: 0 auto;
 }
 
 .view-body .body-middle .info-box {
