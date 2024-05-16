@@ -154,6 +154,14 @@ public class AjaxController {
 	public Map<String, String> docRefer(@RequestBody Map<String, String> map) {
 		approvalService.docRefer(map);
 
+		Long approvCnt = approvalService.checkAppov(map);
+
+		if(approvCnt <= 0) {
+			map.put("type_cd", "003");
+			map.put("id", map.get("docid"));
+			approvalService.approvalDoc(map);
+		}
+
 		Map<String, String> result = new HashMap<String, String>();
 
 		result.put("result", "success");
