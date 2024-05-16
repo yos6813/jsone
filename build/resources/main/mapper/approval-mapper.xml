@@ -289,7 +289,7 @@
         </update>
         <!-- 반려 -->
         <update id="docRefer" parameterType="map">
-                UPDATE INTO t_approval_document_public SET empid = '${empid}' WHERE docid = '${docid}' AND pub_cd = '${code}'
+                UPDATE t_approval_document_step SET empid = '${empid}' WHERE docid = '${docid}' AND pub_cd = '${code}'
         </update>
         <!-- 회수 -->
         <update id="docCollect" parameterType="map">
