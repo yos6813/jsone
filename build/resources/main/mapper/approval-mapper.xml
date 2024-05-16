@@ -5,7 +5,7 @@
 <mapper namespace="Approval">
         <!-- 로그인 -->
         <select id="login" resultType="login" parameterType="map">
-                SELECT empid, custid, authyn FROM t_login WHERE loginid = '${loginid}' AND passwd = '${passwd}'
+                SELECT empid, custid, authyn, loginid FROM t_login WHERE loginid = '${loginid}' AND passwd = '${passwd}'
         </select>
         <!-- 인증여부 확인 -->
         <select id="authCheck" resultType="login" parameterType="map">
