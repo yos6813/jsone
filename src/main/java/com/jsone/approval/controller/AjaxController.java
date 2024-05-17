@@ -80,7 +80,7 @@ public class AjaxController {
         kakaoData.put("receiver_1", "01039196562");
         kakaoData.put("sender", "0220384812");
         //kakaoData.put("testmode_yn", "Y");
-        kakaoData.put("title", "본인인증");
+        kakaoData.put("subject_1", "본인인증");
 
 		// SMS 전송 요청 보내기
         ResponseEntity<String> response = sms.sendKakao(kakaoData);
