@@ -12,7 +12,7 @@
                     code: $('#code').val()
                 }),
                 success : function(result) {
-                    location.reload();
+                    location.href = document.referrer;
                 },
                 error : function(request, status, error) { 
                     console.log(error);

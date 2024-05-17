@@ -17,8 +17,8 @@
 
         /* 삭제버튼 */
         $('.delete-btn').click(function(){
+            $(".form_type").val('delete');
             if(confirm("삭제하시겠습니까?")) {
-                $(".form_type").val('delete');
                 $('#update').submit();
             }
         });
@@ -104,17 +104,21 @@
                     }
                 });
             }
-        })
+        });
 
         /* 글 저장 */
         $('.save-btn').click(function(){
             $(".form_type").val('update');
-            $('#update').submit();
+
+            if($(".form_type").val() == 'update') {
+                $('#update').submit();
+            }
         });
 
         /* 결재올리기 */
         $('.approval-btn').click(function(){
             $(".form_type").val('approval');
+
             $.ajax({
                 type: 'POST',
                 url: '/sendApproval',
@@ -133,11 +137,7 @@
                     })
                 }),
                 success: function(response) {
-                    if(response.status == 'success') {
-                        //$('#update').submit();
-                    } else {
-                        alert(response.msg);
-                    }
+                    $('#update').submit();
                 },
                 error: function(xhr, status, error) {
                     console.log(error);

@@ -115,8 +115,14 @@
                 FETCH NEXT 20 ROWS ONLY;
         </select>
         <!-- 파라미터 포함 리스트 갯수 -->
-        <select id="cnt" resultType="Long" parameterType="map">
+        <select id="cnt" resultType="map" parameterType="map">
                 SELECT count(*) as full_cnt
+                <if test="type != null and type != ''">
+                        , (SELECT CASE WHEN '${type}' = '001' THEN '임시저장' WHEN '${type}' = '002' THEN '진행중' WHEN '${type}' = '003' THEN '반려' WHEN '${type}' = '004' THEN '반려보관' ELSE '완료' END) as type_cd
+                </if>
+                <if test="status != null and status != ''">
+                        , (SELECT CASE WHEN '${status}' = '001' THEN '내부기안' WHEN '${status}' = '002' THEN '외부발송' WHEN '${status}' = '003' THEN '접수문서' WHEN '${status}' = '004' THEN '보고문서' WHEN '${status}' = '005' THEN '업무일지' WHEN '${status}' = '006' THEN '연차신청' WHEN '${status}' = '007' THEN '지출결의' ELSE '선택' END) as status_cd,
+                </if>
                 FROM t_approval_document AS d
                 <if test="title != null and title != ''">
                         <if test="title == '공람' or title == '공람문서'">

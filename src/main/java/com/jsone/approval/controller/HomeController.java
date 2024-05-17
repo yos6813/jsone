@@ -183,6 +183,11 @@ public class HomeController {
 				map.put("code", model.getAttribute("coopCd").toString());
 				map.put("title", "결재");
 
+				/* 현재 필터링 되고 있는 서브메뉴 */
+				if(map.get("status_cd") != null) {
+					map.put("status", map.get("status_cd"));
+				}
+
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
 
@@ -190,8 +195,8 @@ public class HomeController {
 				model.addAttribute("approvalList", listDTOList);
 
 				/* 리스트 개수 */
-				Long cnt = approvalService.cnt(map);
-				model.addAttribute("full_cnt", cnt);
+				Map<String, String> cnt = approvalService.cnt(map);
+				model.addAttribute("cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
 				SubCntDTO subCnt = approvalService.stepSubCnt(map);
@@ -218,9 +223,14 @@ public class HomeController {
 		if(model.getAttribute("error") != "") {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
-				map.put("type_cd", "'003','999'");
+				map.put("type_cd", "'003','999','005'");
 				map.put("pid", model.getAttribute("empid").toString());
 				map.put("title", "결재문서");
+
+				/* 현재 필터링 되고 있는 서브메뉴 */
+				if(map.get("status_cd") != null) {
+					map.put("status", map.get("status_cd"));
+				}
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
@@ -229,8 +239,8 @@ public class HomeController {
 				model.addAttribute("approvalList", listDTOList);
 
 				/* 리스트 개수 */
-				Long cnt = approvalService.cnt(map);
-				model.addAttribute("full_cnt", cnt);
+				Map<String, String> cnt = approvalService.cnt(map);
+				model.addAttribute("cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
 				SubCntDTO subCnt = approvalService.stepSubCnt(map);
@@ -263,17 +273,24 @@ public class HomeController {
 				model.addAttribute("users", users);
 				map.put("code",model.getAttribute("posCd").toString());
 				map.put("title", "공람");
+
 				if(model.getAttribute("posCd") == null || model.getAttribute("posCd").toString().isEmpty()) {
 					model.addAttribute("approvalList", null);
 
-					model.addAttribute("full_cnt", 0);
+					model.addAttribute("cnt", null);
+					System.out.println("여기");
 				} else {
+					/* 현재 필터링 되고 있는 서브메뉴 */
+					if(map.get("status_cd") != null) {
+						map.put("status", map.get("status_cd"));
+					}
+
 					List<ListDTO> listDTOList = approvalService.list(map);
 					model.addAttribute("approvalList", listDTOList);
 					
 					/* 리스트 개수 */
-					Long cnt = approvalService.cnt(map);
-					model.addAttribute("full_cnt", cnt);
+					Map<String, String> cnt = approvalService.cnt(map);
+					model.addAttribute("cnt", cnt);
 				}
 
 				/* 서브 메뉴 별 개수 */
@@ -302,21 +319,25 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
-				map.put("type_cd", "'003','999'");
+				map.put("type_cd", "'003','999','005'");
 				map.put("title", "공람문서");
 				map.put("pid", model.getAttribute("empid").toString());
 
 				if(model.getAttribute("posCd") == null || model.getAttribute("posCd").toString().isEmpty()) {
 					model.addAttribute("approvalList", null);
-
-					model.addAttribute("full_cnt", 0);
+					model.addAttribute("cnt", null);
 				} else {
+					/* 현재 필터링 되고 있는 서브메뉴 */
+					if(map.get("status_cd") != null) {
+						map.put("status", map.get("status_cd"));
+					}
+
 					List<ListDTO> listDTOList = approvalService.list(map);
 					model.addAttribute("approvalList", listDTOList);
 
 					/* 리스트 개수 */
-					Long cnt = approvalService.cnt(map);
-					model.addAttribute("full_cnt", cnt);
+					Map<String, String> cnt = approvalService.cnt(map);
+					model.addAttribute("cnt", cnt);
 				}
 
 				List<UserDTO> users = approvalService.userAll();
@@ -346,6 +367,12 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
+				/* 현재 필터링 되고 있는 서브메뉴 */
+				if(map.get("type_cd") != null) {
+					String type = map.get("type_cd");
+					map.put("type", type);
+				}
+
 				String empid = session.getAttribute("empid").toString();
 
 				map.put("empid", empid);
@@ -354,8 +381,8 @@ public class HomeController {
 				model.addAttribute("approvalList", listDTOList);
 
 				/* 리스트 개수 */
-				Long cnt = approvalService.cnt(map);
-				model.addAttribute("full_cnt", cnt);
+				Map<String, String> cnt = approvalService.cnt(map);
+				model.addAttribute("cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
 				SubCntDTO subCnt = approvalService.personalSubCnt(empid);
@@ -383,6 +410,11 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
+				/* 현재 필터링 되고 있는 서브메뉴 */
+				if(map.get("status_cd") != null) {
+					map.put("status", map.get("status_cd"));
+				}
+
 				map.put("type_cd", "'002'");
 				map.put("empid", model.getAttribute("empid").toString());
 				
@@ -393,8 +425,8 @@ public class HomeController {
 				model.addAttribute("approvalList", listDTOList);
 
 				/* 리스트 개수 */
-				Long cnt = approvalService.cnt(map);
-				model.addAttribute("full_cnt", cnt);
+				Map<String, String> cnt = approvalService.cnt(map);
+				model.addAttribute("cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
 				SubCntDTO subCnt = approvalService.subCnt(map);
@@ -495,7 +527,7 @@ public class HomeController {
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 
-		if(map.get("form_type") == "update") {
+		if("update".equals(map.get("form_type"))) {
 			CommonUtil commonUtil = new CommonUtil();
 			String contentsText = commonUtil.removeTagString(map.get("contents").toString());
 
@@ -543,12 +575,12 @@ public class HomeController {
 			}
 
 			return "redirect:/edit/" + map.get("id");
-		} else if(map.get("form_type") == "approval") {
+		} else if("approval".equals(map.get("form_type"))) {
 			map.put("type_cd", "002");
 			approvalService.approvalDoc(map);
 
-			return "redirect:/view/" + map.get("id");
-		} else {
+			return "redirect:/" + map.get("id");
+		} else if("delete".equals(map.get("form_type"))) {
 			approvalService.delAttach(Long.parseLong(map.get("id")));
 			approvalService.delApproval(Long.parseLong(map.get("id")));
 			approvalService.delViewer(Long.parseLong(map.get("id")));
@@ -556,5 +588,7 @@ public class HomeController {
 
 			return "redirect:/personalDoc";
 		}
+
+		return "redirect:/edit/" + map.get("id");
 	}
 }

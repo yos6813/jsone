@@ -65,7 +65,7 @@ public class ApprovalRepository {
         return sql.selectList("Approval.list", param);
     }
 
-    public Long cnt (Map<String, String> param) {
+    public Map<String, String> cnt (Map<String, String> param) {
         return sql.selectOne("Approval.cnt", param);
     }
 

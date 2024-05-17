@@ -22,7 +22,8 @@
                         <li><a class="black-txt" href="?status_cd=006">연차신청 [[${subCnt['annual']} ? '(' + ${subCnt['annual']} + ')' : '']]</a></li>
                         <li><a class="black-txt" href="?status_cd=007">지출결의 [[${subCnt['spend']} ? '(' + ${subCnt['spend']} + ')' : '']]</a></li>
                     </ul>
-                    <span class="list-nav">[[${title}]]/전체([[${full_cnt}]])</span>
+                    <span th:if="${title == '개인서류'}" class="list-nav">[[${title}]]/[[${map['type']} != null ? ${cnt.type_cd} : '전체']]([[${cnt != null ? cnt.full_cnt : 0}]])</span>
+                    <span th:unless="${title == '개인서류'}" class="list-nav">[[${title}]]/[[${map['status']} != null ? ${cnt.status_cd} : '전체']]([[${cnt != null ? cnt.full_cnt : 0}]])</span>
                 </div>
                 <div class="sign-body">
                     <div class="search-box">
@@ -56,8 +57,8 @@
                             <span>결재 문서가 없습니다.</span>
                         </div>
                     </div>
-                    <div th:if="${full_cnt} > 20">
-                        <input type="hidden" id="full_cnt" th:value="${full_cnt}" />
+                    <div th:if="${cnt != null} and ${cnt.full_cnt > 20}">
+                        <input type="hidden" id="full_cnt" th:value="${cnt.full_cnt}" />
                         <input type="hidden" id="type_cd" th:value="${map['type_cd']}" />
                         <input type="hidden" id="page" th:value="1" />
                         <button type="button" class="more-btn btn secondary">더보기</button>

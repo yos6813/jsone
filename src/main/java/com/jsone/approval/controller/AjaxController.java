@@ -72,7 +72,7 @@ public class AjaxController {
 		Map<String, String> kakaoData = new HashMap<>();
         kakaoData.put("userid", "jsoftone");
         kakaoData.put("apikey", "xg7d36hj0xavo5a40vq98ch7pu9339za");
-        kakaoData.put("message_1", name + "님의 '" + title + "' 전자결재 문서가 도착하였습니다.");
+        kakaoData.put("message_1", name + "님의 \"" + title + "\" 전자결재 문서가 도착하였습니다");
         kakaoData.put("subject_1", "결재요청");
         kakaoData.put("button_1", button);
 		kakaoData.put("senderkey", "7b7f39a82a33c7d0069be9ecb4df9a477df974a6");

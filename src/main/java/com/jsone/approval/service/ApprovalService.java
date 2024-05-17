@@ -65,7 +65,7 @@ public class ApprovalService {
 		return approvalRepository.list(param);
 	}
 
-	public Long cnt (Map<String, String> param) {
+	public Map<String, String> cnt (Map<String, String> param) {
 		return approvalRepository.cnt(param);
 	}
 
