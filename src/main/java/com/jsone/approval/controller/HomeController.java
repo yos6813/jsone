@@ -261,28 +261,24 @@ public class HomeController {
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
-				if(model.getAttribute("posCd") == null || model.getAttribute("posCd") == "") {
+				map.put("code",model.getAttribute("posCd").toString());
+				map.put("title", "공람");
+				if(model.getAttribute("posCd") == null || model.getAttribute("posCd").toString().isEmpty()) {
 					model.addAttribute("approvalList", null);
 
-					/* 리스트 개수 */
-					model.addAttribute("full_cnt", null);
-
-					/* 서브 메뉴 별 개수 */
-					model.addAttribute("subCnt", null);
+					model.addAttribute("full_cnt", 0);
 				} else {
-					map.put("code",model.getAttribute("posCd").toString());
-					map.put("title", "공람");
 					List<ListDTO> listDTOList = approvalService.list(map);
 					model.addAttribute("approvalList", listDTOList);
-
+					
 					/* 리스트 개수 */
 					Long cnt = approvalService.cnt(map);
 					model.addAttribute("full_cnt", cnt);
-
-					/* 서브 메뉴 별 개수 */
-					SubCntDTO subCnt = approvalService.publicSubCnt(map);
-					model.addAttribute("subCnt", subCnt);
 				}
+
+				/* 서브 메뉴 별 개수 */
+				SubCntDTO subCnt = approvalService.publicSubCnt(map);
+				model.addAttribute("subCnt", subCnt);
 
 				return "list";
 			} else {
@@ -305,19 +301,26 @@ public class HomeController {
 		if(model.getAttribute("error") != "") {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
+
 				map.put("type_cd", "'003','999'");
 				map.put("title", "공람문서");
 				map.put("pid", model.getAttribute("empid").toString());
 
+				if(model.getAttribute("posCd") == null || model.getAttribute("posCd").toString().isEmpty()) {
+					model.addAttribute("approvalList", null);
+
+					model.addAttribute("full_cnt", 0);
+				} else {
+					List<ListDTO> listDTOList = approvalService.list(map);
+					model.addAttribute("approvalList", listDTOList);
+
+					/* 리스트 개수 */
+					Long cnt = approvalService.cnt(map);
+					model.addAttribute("full_cnt", cnt);
+				}
+
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
-				
-				List<ListDTO> listDTOList = approvalService.list(map);
-				model.addAttribute("approvalList", listDTOList);
-
-				/* 리스트 개수 */
-				Long cnt = approvalService.cnt(map);
-				model.addAttribute("full_cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
 				SubCntDTO subCnt = approvalService.publicSubCnt(map);
