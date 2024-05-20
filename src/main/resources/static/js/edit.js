@@ -131,8 +131,8 @@
                             name : "결재문서 확인하기",
                             linkType : "WL",
                             linkTypeName : "웹링크",
-                            linkMo : locaation.origin + "/" + $(".id").val(),
-                            linkPc : locaation.origin + "/" + $(".id").val()
+                            linkMo : location.origin + "/" + $(".id").val(),
+                            linkPc : location.origin + "/" + $(".id").val()
                     }]
                 }),
                 success: function(response) {
