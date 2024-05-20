@@ -60,16 +60,18 @@ public class AjaxController {
 	@ResponseBody
 	public ResponseEntity<String> postMethodName(RestTemplate restTemplate, @RequestBody Map<String, String> map, HttpServletRequest request) {
 		SmsUtil sms = new SmsUtil(restTemplate);
-		int randNum = (int) (Math.random() * 10000);
 		String name = map.get("name");
 		String title = map.get("title");
 		String button = map.get("button");
+		String telNo = map.get("telNo");
 
-		HttpSession session = request.getSession();
-
-		session.setAttribute("authNum", randNum);
-
+		List<String> checkLoginid = approvalService.checkLoginid(telNo);
 		Map<String, String> kakaoData = new HashMap<>();
+
+		for(Integer i = 0; i < checkLoginid.size(); i++){
+			kakaoData.put("receiver_" + (i + 1), checkLoginid.get(i).toString());
+		}
+		
         kakaoData.put("userid", "jsoftone");
         kakaoData.put("apikey", "xg7d36hj0xavo5a40vq98ch7pu9339za");
         kakaoData.put("message_1", name + "님의 \"" + title + "\" 전자결재 문서가 도착하였습니다");
@@ -77,18 +79,15 @@ public class AjaxController {
         kakaoData.put("button_1", button);
 		kakaoData.put("senderkey", "7b7f39a82a33c7d0069be9ecb4df9a477df974a6");
 		kakaoData.put("tpl_code", "TS_7933"); //템플릿 코드
-        kakaoData.put("receiver_1", "01039196562");
         kakaoData.put("sender", "0220384812");
         //kakaoData.put("testmode_yn", "Y");
 
-		System.out.println(map.toString());
+		System.out.println(kakaoData.toString());
 
 		//알림톡 전송 요청 보내기
         ResponseEntity<String> response = sms.sendKakao(kakaoData);
 
-		System.out.println("전송 결과: " + response.getBody());
-
-        return sms.sendKakao(kakaoData);
+        return response;
 	}
 	
 

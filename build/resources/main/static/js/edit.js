@@ -118,6 +118,11 @@
         /* 결재올리기 */
         $('.approval-btn').click(function(){
             $(".form_type").val('approval');
+            var telNo = new Array();
+            
+            $('input[name="approver[]"]').each(function(index) {
+                telNo[index] = $(this).val();
+            });
 
             $.ajax({
                 type: 'POST',
@@ -127,14 +132,15 @@
                 data: JSON.stringify({
                     name: $('.emp_nm').val(),
                     title: $('.title').val(),
+                    telNo: telNo.toString(),
                     button: JSON.stringify({
-                        button: [
+                        "button": [
                             {
                                 "name": "결재문서 확인하기",
                                 "linkType": "WL",
                                 "linkTypeName": "웹링크",
-                                "linkMo": location.origin + "/" + $(".id").val(),
-                                "linkPc": location.origin + "/" + $(".id").val()
+                                "linkMo": "http://jsoftone4.cafe24.com",
+                                "linkPc": "https://전자결재.com"
                             }
                         ]
                     })

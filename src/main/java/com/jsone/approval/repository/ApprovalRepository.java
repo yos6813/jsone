@@ -180,4 +180,8 @@ public class ApprovalRepository {
     public void delViewer (Long id) {
         sql.update("Approval.delViewer", id);
     }
+
+    public List<String> checkLoginid (String empid) {
+        return sql.selectList("Approval.checkLoginid", empid);
+    }
 }

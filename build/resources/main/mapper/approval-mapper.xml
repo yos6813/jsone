@@ -419,4 +419,7 @@
         <delete id="delViewer">
                 DELETE FROM t_approval_document_public WHERE docid = '${id}'
         </delete>
+        <select id="checkLoginid" parameterType="String" resultType="String">
+                SELECT REPlACE(mbl_tel_no, '-', '') as loginid FROM t_emp WHERE empid IN (${empid});
+        </select>
 </mapper>

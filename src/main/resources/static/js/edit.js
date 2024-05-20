@@ -118,6 +118,11 @@
         /* 결재올리기 */
         $('.approval-btn').click(function(){
             $(".form_type").val('approval');
+            var telNo = new Array();
+            
+            $('input[name="approver[]"]').each(function(index) {
+                telNo[index] = $(this).val();
+            });
 
             $.ajax({
                 type: 'POST',
@@ -127,6 +132,7 @@
                 data: JSON.stringify({
                     name: $('.emp_nm').val(),
                     title: $('.title').val(),
+                    telNo: telNo.toString(),
                     button: JSON.stringify({
                         "button": [
                             {

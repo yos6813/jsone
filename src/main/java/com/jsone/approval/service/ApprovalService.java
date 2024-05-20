@@ -180,4 +180,8 @@ public class ApprovalService {
 	public void delViewer (Long id){
 		approvalRepository.delViewer(id);
 	}
+
+	public List<String> checkLoginid (String empid) {
+		return approvalRepository.checkLoginid(empid);
+	}
 }
