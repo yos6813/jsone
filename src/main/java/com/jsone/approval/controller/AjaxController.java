@@ -73,16 +73,15 @@ public class AjaxController {
         kakaoData.put("userid", "jsoftone");
         kakaoData.put("apikey", "xg7d36hj0xavo5a40vq98ch7pu9339za");
         kakaoData.put("message_1", name + "님의 \"" + title + "\" 전자결재 문서가 도착하였습니다");
-        kakaoData.put("subject_1", "결재요청");
+        kakaoData.put("emtitle_1", "전자결재 알림서비스");
         kakaoData.put("button_1", button);
 		kakaoData.put("senderkey", "7b7f39a82a33c7d0069be9ecb4df9a477df974a6");
 		kakaoData.put("tpl_code", "TS_7933"); //템플릿 코드
         kakaoData.put("receiver_1", "01039196562");
         kakaoData.put("sender", "0220384812");
         //kakaoData.put("testmode_yn", "Y");
-        kakaoData.put("subject_1", "본인인증");
 
-		// SMS 전송 요청 보내기
+		//알림톡 전송 요청 보내기
         ResponseEntity<String> response = sms.sendKakao(kakaoData);
 
 		System.out.println("전송 결과: " + response.getBody());
