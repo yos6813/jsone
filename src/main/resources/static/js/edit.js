@@ -134,7 +134,7 @@
                                 "linkType": "WL",
                                 "linkTypeName": "웹링크",
                                 "linkMo": "http://jsoftone4.cafe24.com",
-                                "linkPc": "http://전자결재.com"
+                                "linkPc": "https://전자결재.com"
                             }
                         ]
                     })
