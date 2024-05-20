@@ -81,6 +81,8 @@ public class AjaxController {
         kakaoData.put("sender", "0220384812");
         //kakaoData.put("testmode_yn", "Y");
 
+		System.out.println(map.toString());
+
 		//알림톡 전송 요청 보내기
         ResponseEntity<String> response = sms.sendKakao(kakaoData);
 

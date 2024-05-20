@@ -468,6 +468,11 @@ input[type="checkbox"]:checked + span{
     float: right;
 }
 
+.view-body .body-top {
+    clear: both;
+    padding-top: 5px;
+}
+
 .view-body .body-middle .info-box {
     border: 1px solid #DDDDDD;
     padding: 10px;

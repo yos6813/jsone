@@ -127,15 +127,17 @@
                 data: JSON.stringify({
                     name: $('.emp_nm').val(),
                     title: $('.title').val(),
-                    button: {
-                        button: {
-                            name : "결재문서 확인하기",
-                            linkType : "WL",
-                            linkTypeName : "웹링크",
-                            linkMo : location.origin + "/" + $(".id").val(),
-                            linkPc : location.origin + "/" + $(".id").val()
-                        }
-                    }
+                    button: JSON.stringify({
+                        button: [
+                            {
+                                "name": "결재문서 확인하기",
+                                "linkType": "WL",
+                                "linkTypeName": "웹링크",
+                                "linkMo": location.origin + "/" + $(".id").val(),
+                                "linkPc": location.origin + "/" + $(".id").val()
+                            }
+                        ]
+                    })
                 }),
                 success: function(response) {
                     $('#update').submit();
