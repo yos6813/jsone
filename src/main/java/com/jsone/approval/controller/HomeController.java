@@ -319,7 +319,7 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
-				map.put("type_cd", "'003','999','005'");
+				map.put("type_cd", "'002','003','999','005'");
 				map.put("title", "공람문서");
 				map.put("pid", model.getAttribute("empid").toString());
 
@@ -458,6 +458,8 @@ public class HomeController {
 				List<ApproverDTO> approver = approvalService.approver(id);
 				List<ApproverDTO> viewer = approvalService.viewer(id);
 
+				Map<String, String> user = approvalService.checkCd(Long.parseLong(model.getAttribute("empid").toString()));
+
 				/* 결재자와 공람자 empid 비교를 위해 empid만 따로 저장 */
 				List<Long> allApprover = new ArrayList<Long>();
 				List<Long> allViewer = new ArrayList<Long>();
@@ -480,6 +482,7 @@ public class HomeController {
 				model.addAttribute("chatList", chat);
 				model.addAttribute("docid", id);
 				model.addAttribute("file", file);
+				model.addAttribute("user", user);
 				
 				return "view";
 			} else {

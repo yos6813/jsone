@@ -1,6 +1,15 @@
 (function($) {
     $(document).ready(function(){
         $('.btn-box button').click(function(){
+            var code;
+
+            if($('#pos_cd').length) {
+                code = $('#pos_cd').val();
+            } else if($('#coop_cd').length) {
+                code = $("#coop_cd").val();
+            } else {
+                code = 0;
+            }
             $.ajax({
                 type : 'POST',
                 url : '/' + $(this).attr('id'),
@@ -9,7 +18,7 @@
                 data : JSON.stringify({
                     docid: $('#docid').val(),
                     empid: $('#empid').val(),
-                    code: $('#code').val()
+                    code: code
                 }),
                 success : function(result) {
                     location.href = document.referrer;

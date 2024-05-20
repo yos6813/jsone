@@ -464,6 +464,10 @@ input[type="checkbox"]:checked + span{
     margin: 0 auto;
 }
 
+.view-body .btn-box #viewerCheck {
+    float: right;
+}
+
 .view-body .body-middle .info-box {
     border: 1px solid #DDDDDD;
     padding: 10px;

@@ -16,6 +16,8 @@
                     <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.type_cd} == '진행중'" type="button" id="docCheck" class="btn primary">승인</button>
                     <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.type_cd} == '진행중'" type="button" id="docRefer" class="btn warning">반려</button>
                     <button th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and ${view.type_cd} == '진행중'" type="button" id="viewerCheck" class="btn primary">확인</button>
+                    <input th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.type_cd} == '진행중'" type="hidden" id="pos_cd" th:value="${user['pos_cd']}"/>
+                    <input th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and ${view.type_cd} == '진행중'" type="hidden" id="coop_cd" th:value="${user['coop_cd']}"/>
                 </div>
                 <div class="body-top">
                     <button type="button" class="btn secondary approval">
@@ -35,7 +37,6 @@
                     <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
                         <div>
                             <span th:text="${list.emp_nm}"></span>
-                            <input type="hidden" th:if="!${#lists.isEmpty(allApprover)} and ${#lists.contains(allApprover, empid)}" th:value="${list.code}" id="code" />
                             <span class="check" th:classappend="!${#lists.isEmpty(docApprover)} and ${#lists.contains(docApprover, list.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
                     </div>
@@ -51,7 +52,6 @@
                     <div th:if="!${#lists.isEmpty(viewer)}" th:each="viewer: ${viewer}">
                         <div>
                             <span th:text="${viewer.emp_nm}"></span>
-                            <input type="hidden" th:if="!${#lists.isEmpty(allViewer)} and ${#lists.contains(allViewer, empid)}" th:value="${viewer.code}" id="code" />
                             <span class="check" th:classappend="!${#lists.isEmpty(docViewer)} and ${#lists.contains(docViewer, viewer.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
                         </div>
                     </div>
