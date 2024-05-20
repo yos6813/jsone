@@ -128,7 +128,7 @@
                     name: $('.emp_nm').val(),
                     title: $('.title').val(),
                     button: JSON.stringify({
-                        button: [
+                        "button": [
                             {
                                 "name": "결재문서 확인하기",
                                 "linkType": "WL",
