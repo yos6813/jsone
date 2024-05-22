@@ -83,11 +83,11 @@
                             </div>
                             <div>
                                 <span class="text-title">반려문서번호</span>
-                                <span class="yellow-txt">[[${view.copy_id}]]</span>
+                                <span class="yellow-txt copy_id" th:attr="data-href=${view.copy_docid} != 0 and ${view.copy_docid} != null ? ${view.copy_docid} : 0">[[${view.copy_id}]]</span>
                             </div>
                             <div>
                                 <span class="text-title">참고문서번호</span>
-                                <span class="green-txt">[[${view.reference_id}]]</span>
+                                <span class="green-txt refer_id" th:attr="data-href=${view.reference_docid} != 0 and ${view.reference_docid} != null ? ${view.reference_docid} : 0">[[${view.reference_id}]]</span>
                             </div>
                         </div>
                     </div>

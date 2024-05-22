@@ -27,6 +27,16 @@
             })
         });
 
+        $('.copy_id').click(function(){
+            var href = $(this).data('href');
+            location.href = location.origin + "/" + href;
+        });
+
+        $('.refer_id').click(function(){
+            var href = $(this).data('href');
+            location.href = location.origin + "/" + href;
+        });
+
         /* 뷰 하단 대화 전송 시 AJAX 처리 */
         $('#saveChat_submit').click(function(){
             $.ajax({
