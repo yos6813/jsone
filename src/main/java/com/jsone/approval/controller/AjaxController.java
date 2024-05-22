@@ -78,7 +78,7 @@ public class AjaxController {
         kakaoData.put("emtitle_1", "전자결재 알림서비스");
         kakaoData.put("button_1", button);
 		kakaoData.put("senderkey", "7b7f39a82a33c7d0069be9ecb4df9a477df974a6");
-		kakaoData.put("tpl_code", "TS_7933"); //템플릿 코드
+		kakaoData.put("tpl_code", "TS_9675"); //템플릿 코드
         kakaoData.put("sender", "0220384812");
         //kakaoData.put("testmode_yn", "Y");
 

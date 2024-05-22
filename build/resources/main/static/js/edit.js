@@ -120,8 +120,8 @@
             $(".form_type").val('approval');
             var telNo = new Array();
             
-            $('input[name="approver[]"]').each(function(index) {
-                telNo[index] = $(this).val();
+            $('input[name="approver[]"]:checked').each(function(index) {
+                telNo[index] = $(this).data("id");
             });
 
             $.ajax({
@@ -139,8 +139,8 @@
                                 "name": "결재문서 확인하기",
                                 "linkType": "WL",
                                 "linkTypeName": "웹링크",
-                                "linkMo": "http://jsoftone4.cafe24.com",
-                                "linkPc": "https://전자결재.com"
+                                "linkMo": "://jsoftone4.cafe24.com",
+                                "linkPc": "://전자결재.com"
                             }
                         ]
                     })

@@ -82,7 +82,7 @@
                             <div th:if="!${#lists.isEmpty(allApprover)}" th:each="list: ${allApprover}">
                                 <div>
                                     <span th:text="${list.emp_nm}"></span>
-                                    <input type="checkbox" name="approver[]" th:value="${list.code}" th:checked="!${#lists.isEmpty(approver)} and ${#lists.contains(approver, list.empid)}" />
+                                    <input type="checkbox" name="approver[]" th:value="${list.code}" th:attr="data-id=${list.empid}" th:checked="!${#lists.isEmpty(approver)} and ${#lists.contains(approver, list.empid)}" />
                                     <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
                                 </div>
                             </div>
