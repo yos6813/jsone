@@ -12,12 +12,12 @@
         <div id="view">
             <div class="view-body">
                 <div class="btn-box">
-                    <button th:if="${view.empid} == ${empid} and ${view.type_cd} == '진행중'" type="button" class="btn primary" id="docCollect">회수</button>
-                    <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.type_cd} == '진행중'" type="button" id="docCheck" class="btn primary">승인</button>
-                    <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.type_cd} == '진행중'" type="button" id="docRefer" class="btn warning">반려</button>
-                    <button th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and ${view.type_cd} == '진행중'" type="button" id="viewerCheck" class="btn primary">확인</button>
-                    <input th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.type_cd} == '진행중'" type="hidden" id="pos_cd" th:value="${user['pos_cd']}"/>
-                    <input th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and ${view.type_cd} == '진행중'" type="hidden" id="coop_cd" th:value="${user['coop_cd']}"/>
+                    <button th:if="${view.empid} == ${empid} and ${view.status_cd} == '진행중'" type="button" class="btn primary" id="docCollect">회수</button>
+                    <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.status_cd} == '진행중'" type="button" id="docCheck" class="btn primary">승인</button>
+                    <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.status_cd} == '진행중'" type="button" id="docRefer" class="btn warning">반려</button>
+                    <button th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and ${view.status_cd} == '진행중'" type="button" id="viewerCheck" class="btn primary">확인</button>
+                    <input th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.status_cd} == '진행중'" type="hidden" id="pos_cd" th:value="${user['pos_cd']}"/>
+                    <input th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and ${view.status_cd} == '진행중'" type="hidden" id="coop_cd" th:value="${user['coop_cd']}"/>
                 </div>
                 <div class="body-top">
                     <button type="button" class="btn secondary approval">
@@ -77,9 +77,9 @@
                             </div>
                             <div>
                                 <span class="text-title">문서종류</span>
-                                <span class="half-width">[[${view.status_cd}]]</span>
+                                <span class="half-width">[[${view.type_cd}]]</span>
                                 <span class="text-title">문서상태</span>
-                                <span>[[${view.type_cd}]]</span>
+                                <span>[[${view.status_cd}]]</span>
                             </div>
                             <div>
                                 <span class="text-title">반려문서번호</span>

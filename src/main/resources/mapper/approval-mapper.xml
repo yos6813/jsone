@@ -49,8 +49,8 @@
                 <if test="title == null or title == ''">
                         e.emp_nm, c.name,
                 </if>
-                CASE WHEN d.type_cd = '001' THEN '임시저장' WHEN d.type_cd = '002' THEN '진행중' WHEN d.type_cd = '003' THEN '반려' WHEN d.type_cd = '004' THEN '반려보관' ELSE '완료' END as type_cd,
-                CASE WHEN d.status_cd = '001' THEN '내부기안' WHEN d.status_cd = '002' THEN '외부발송' WHEN d.status_cd = '003' THEN '접수문서' WHEN d.status_cd = '004' THEN '보고문서' WHEN d.status_cd = '005' THEN '업무일지' WHEN d.status_cd = '006' THEN '연차신청' WHEN d.status_cd = '007' THEN '지출결의' ELSE '선택' END as status_cd,
+                CASE WHEN d.status_cd = '001' THEN '임시저장' WHEN d.status_cd = '002' THEN '진행중' WHEN d.status_cd = '003' THEN '반려' WHEN d.status_cd = '004' THEN '반려보관' ELSE '완료' END as status_cd,
+                CASE WHEN d.type_cd = '001' THEN '내부기안' WHEN d.type_cd = '002' THEN '외부발송' WHEN d.type_cd = '003' THEN '접수문서' WHEN d.type_cd = '004' THEN '보고문서' WHEN d.type_cd = '005' THEN '업무일지' WHEN d.type_cd = '006' THEN '연차신청' WHEN d.type_cd = '007' THEN '지출결의' ELSE '선택' END as type_cd,
                 (SELECT count(*) as cnt FROM t_approval_document_chat as c WHERE c.docid = d.docid) as cnt
                 FROM t_approval_document AS d
                 <if test="title != null and title != ''">
@@ -86,11 +86,11 @@
                                 </if>
                         </if>
                 </if>
-                <if test="type_cd != null">
-                        AND d.type_cd in (${type_cd})
+                <if test="status_cd != null">
+                        AND d.status_cd in (${status_cd})
                 </if>
-                <if test="status_cd != null and status_cd != ''">
-                        AND d.status_cd = ${status_cd}
+                <if test="type_cd != null and type_cd != ''">
+                        AND d.type_cd = ${type_cd}
                 </if>
                 <if test="startDate != null and startDate != '' and new_msg == null">
                         AND d.create_date <![CDATA[>=]]> '${startDate}'
@@ -108,7 +108,7 @@
                         AND (d.create_date <![CDATA[>=]]> DATEADD(DAY,-1, GETDATE()) AND d.create_date <![CDATA[<=]]> GETDATE())
                 </if>
                 <if test="end_msg != null and end_msg != ''">
-                        AND d.type_cd != '005'
+                        AND d.status_cd != '005'
                 </if>
                 order by d.create_date desc
                 OFFSET ${page ? page : 0} * 20 ROWS
@@ -157,11 +157,11 @@
                                 </if>
                         </if>
                 </if>
-                <if test="type_cd != null">
-                        AND d.type_cd in (${type_cd})
+                <if test="status_cd != null">
+                        AND d.status_cd in (${status_cd})
                 </if>
-                <if test="status_cd != null and status_cd != ''">
-                        AND d.status_cd = ${status_cd}
+                <if test="type_cd != null and type_cd != ''">
+                        AND d.type_cd = ${type_cd}
                 </if>
                 <if test="startDate != null and startDate != '' and new_msg == null">
                         AND d.create_date <![CDATA[>=]]> '${startDate}'
@@ -179,68 +179,68 @@
                         AND (d.create_date <![CDATA[>=]]> DATEADD(DAY,-1, GETDATE()) AND d.create_date <![CDATA[<=]]> GETDATE())
                 </if>
                 <if test="end_msg != null and end_msg != ''">
-                        AND d.type_cd != '005'
+                        AND d.status_cd != '005'
                 </if>
         </select>
         <!-- 파라미터 미포함 갯수(sub_nav용) -->
         <select id="subCnt" parameterType="map" resultType="subCnt">
                 SELECT
                 (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
-                WHERE e.empid = '${pid}' AND d.type_cd in (${type_cd})) AS 'all',
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd})) AS 'all',
                 (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
-                WHERE e.empid = '${pid}' AND d.type_cd in (${type_cd}) AND d.status_cd = '001') AS 'internal',
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '001') AS 'internal',
                 (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
-                WHERE e.empid = '${pid}' AND d.type_cd in (${type_cd}) AND d.status_cd = '002') AS 'external',
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '002') AS 'external',
                 (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
-                WHERE e.empid = '${pid}' AND d.type_cd in (${type_cd}) AND d.status_cd = '003') AS 'apply',
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '003') AS 'apply',
                 (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
-                WHERE e.empid = '${pid}' AND d.type_cd in (${type_cd}) AND d.status_cd = '004') AS 'report',
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '004') AS 'report',
                 (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
-                WHERE e.empid = '${pid}' AND d.type_cd in (${type_cd}) AND d.status_cd = '005') AS 'work',
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '005') AS 'work',
                 (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
-                WHERE e.empid = '${pid}' AND d.type_cd in (${type_cd}) AND d.status_cd = '006') AS 'annual',
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '006') AS 'annual',
                 (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
-                WHERE e.empid = '${pid}' AND d.type_cd in (${type_cd}) AND d.status_cd = '007') AS 'spend'
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '007') AS 'spend'
         </select>
         <!-- 파라미터 미포함 갯수(sub_nav용) 전자결재 & 결재문서 -->
         <select id="stepSubCnt" parameterType="map" resultType="subCnt">
                 <if test="title != null and title == '결재'">
                         SELECT
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE s.pos_cd = '${code}' AND d.type_cd in (${type_cd}) AND s.empid = '0') AS 'all',
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0') AS 'all',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE s.pos_cd = '${code}' AND d.type_cd in (${type_cd}) AND s.empid = '0' AND d.status_cd = '001') AS 'internal',
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '001') AS 'internal',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE s.pos_cd = '${code}' AND d.type_cd in (${type_cd}) AND s.empid = '0' AND d.status_cd = '002') AS 'external',
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '002') AS 'external',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE s.pos_cd = '${code}' AND d.type_cd in (${type_cd}) AND s.empid = '0' AND d.status_cd = '003') AS 'apply',
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '003') AS 'apply',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE s.pos_cd = '${code}' AND d.type_cd in (${type_cd}) AND s.empid = '0' AND d.status_cd = '004') AS 'report',
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '004') AS 'report',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE s.pos_cd = '${code}' AND d.type_cd in (${type_cd}) AND s.empid = '0' AND d.status_cd = '005') AS 'work',
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '005') AS 'work',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE s.pos_cd = '${code}' AND d.type_cd in (${type_cd}) AND s.empid = '0' AND d.status_cd = '006') AS 'annual',
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '006') AS 'annual',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE s.pos_cd = '${code}' AND d.type_cd in (${type_cd}) AND s.empid = '0' AND d.status_cd = '007') AS 'spend'
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '007') AS 'spend'
                 </if>
                 <if test="title != null and title == '결재문서'">
                         SELECT
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND s.empid = '${pid}') AS 'all',
+                        WHERE d.status_cd in (${status_cd}) AND s.empid = '${pid}') AS 'all',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '001' AND s.empid = '${pid}') AS 'internal',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '001' AND s.empid = '${pid}') AS 'internal',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '002' AND s.empid = '${pid}') AS 'external',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '002' AND s.empid = '${pid}') AS 'external',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '003' AND s.empid = '${pid}') AS 'apply',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '003' AND s.empid = '${pid}') AS 'apply',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '004' AND s.empid = '${pid}') AS 'report',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '004' AND s.empid = '${pid}') AS 'report',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '005' AND s.empid = '${pid}') AS 'work',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '005' AND s.empid = '${pid}') AS 'work',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '006' AND s.empid = '${pid}') AS 'annual',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '006' AND s.empid = '${pid}') AS 'annual',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '007' AND s.empid = '${pid}') AS 'spend'
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '007' AND s.empid = '${pid}') AS 'spend'
                 </if>
         </select>
         <!-- 파라미터 미포함 갯수(sub_nav용) 공람문서 & 공람확인 -->
@@ -248,40 +248,40 @@
                 <if test="title != null and title == '공람'">
                         SELECT
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE p.pub_cd = '${code}' AND d.type_cd in (${type_cd}) AND p.empid = '0') AS 'all',
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0') AS 'all',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE p.pub_cd = '${code}' AND d.type_cd in (${type_cd}) AND p.empid = '0' AND d.status_cd = '001') AS 'internal',
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '001') AS 'internal',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE p.pub_cd = '${code}' AND d.type_cd in (${type_cd}) AND p.empid = '0' AND d.status_cd = '002') AS 'external',
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '002') AS 'external',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE p.pub_cd = '${code}' AND d.type_cd in (${type_cd}) AND p.empid = '0' AND d.status_cd = '003') AS 'apply',
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '003') AS 'apply',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE p.pub_cd = '${code}' AND d.type_cd in (${type_cd}) AND p.empid = '0' AND d.status_cd = '004') AS 'report',
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '004') AS 'report',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE p.pub_cd = '${code}' AND d.type_cd in (${type_cd}) AND p.empid = '0' AND d.status_cd = '005') AS 'work',
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '005') AS 'work',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE p.pub_cd = '${code}' AND d.type_cd in (${type_cd}) AND p.empid = '0' AND d.status_cd = '006') AS 'annual',
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '006') AS 'annual',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE p.pub_cd = '${code}' AND d.type_cd in (${type_cd}) AND p.empid = '0' AND d.status_cd = '007') AS 'spend'
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '007') AS 'spend'
                 </if>
                 <if test="title != null and title == '공람문서'">
                         SELECT
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid 
-                        WHERE d.type_cd in (${type_cd}) AND p.empid = '${pid}') AS 'all',
+                        WHERE d.status_cd in (${status_cd}) AND p.empid = '${pid}') AS 'all',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '001' AND p.empid = '${pid}') AS 'internal',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '001' AND p.empid = '${pid}') AS 'internal',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '002' AND p.empid = '${pid}') AS 'external',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '002' AND p.empid = '${pid}') AS 'external',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '003' AND p.empid = '${pid}') AS 'apply',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '003' AND p.empid = '${pid}') AS 'apply',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '004' AND p.empid = '${pid}') AS 'report',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '004' AND p.empid = '${pid}') AS 'report',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '005' AND p.empid = '${pid}') AS 'work',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '005' AND p.empid = '${pid}') AS 'work',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '006' AND p.empid = '${pid}') AS 'annual',
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '006' AND p.empid = '${pid}') AS 'annual',
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
-                        WHERE d.type_cd in (${type_cd}) AND d.status_cd = '007' AND p.empid = '${pid}') AS 'spend'
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '007' AND p.empid = '${pid}') AS 'spend'
                 </if>
         </select>
         <!-- 파라미터 미포함 갯수(sub_nav용) 개인서류 -->
@@ -290,25 +290,25 @@
                 (SELECT count(*) AS cnt FROM t_approval_document
                 WHERE empid = '${empid}') AS 'all',
                 (SELECT count(*) AS cnt FROM t_approval_document
-                WHERE type_cd = '001' AND empid = '${empid}') AS 'draft',
+                WHERE status_cd = '001' AND empid = '${empid}') AS 'draft',
                 (SELECT count(*) AS cnt FROM t_approval_document
-                WHERE type_cd = '002' AND empid = '${empid}') AS 'ongoing',
+                WHERE status_cd = '002' AND empid = '${empid}') AS 'ongoing',
                 (SELECT count(*) AS cnt FROM t_approval_document
-                WHERE type_cd = '003' AND empid = '${empid}') AS 'refer',
+                WHERE status_cd = '003' AND empid = '${empid}') AS 'refer',
                 (SELECT count(*) AS cnt FROM t_approval_document
-                WHERE type_cd = '004' AND empid = '${empid}') AS 'storage',
+                WHERE status_cd = '004' AND empid = '${empid}') AS 'storage',
                 (SELECT count(*) AS cnt FROM t_approval_document
-                WHERE type_cd = '005' AND empid = '${empid}') AS 'complete'
+                WHERE status_cd = '005' AND empid = '${empid}') AS 'complete'
         </select>
         <!-- 뷰페이지 -->
         <select id="view" resultType="view" parameterType="Long">
                 SELECT e.emp_nm, d.docid, d.empid, d.title, d.contents, d.contents_text, d.copy_docid, d.reference_docid,
                 FORMAT(d.create_date, 'yyyy-MM-dd H:m:s') as create_date,
-                CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.docid) as doc_num,
-                CASE WHEN d.copy_docid IS NULL or d.copy_docid = 0 THEN '-' ELSE CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.copy_docid) END as copy_id,
-                CASE WHEN d.reference_docid IS NULL or d.reference_docid = 0 THEN '-' ELSE CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.reference_docid) END as reference_id,
-                CASE WHEN d.type_cd = '001' THEN '임시저장' WHEN d.type_cd = '002' THEN '진행중' WHEN d.type_cd = '003' THEN '반려' WHEN d.type_cd = '004' THEN '반려보관' ELSE '완료' END as type_cd,
-                CASE WHEN d.status_cd = '001' THEN '내부기안' WHEN d.status_cd = '002' THEN '외부발송' WHEN d.status_cd = '003' THEN '접수문서' WHEN d.status_cd = '004' THEN '보고문서' WHEN d.status_cd = '005' THEN '업무일지' WHEN d.status_cd = '006' THEN '연차신청' WHEN d.status_cd = '007' THEN '지출결의' ELSE '선택' END as status_cd
+                CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.type_cd, '-', d.docid) as doc_num,
+                CASE WHEN d.copy_docid IS NULL or d.copy_docid = 0 THEN '-' ELSE CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.type_cd, '-', d.copy_docid) END as copy_id,
+                CASE WHEN d.reference_docid IS NULL or d.reference_docid = 0 THEN '-' ELSE CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.type_cd, '-', d.reference_docid) END as reference_id,
+                CASE WHEN d.status_cd = '001' THEN '임시저장' WHEN d.status_cd = '002' THEN '진행중' WHEN d.status_cd = '003' THEN '반려' WHEN d.status_cd = '004' THEN '반려보관' ELSE '완료' END as status_cd,
+                CASE WHEN d.type_cd = '001' THEN '내부기안' WHEN d.type_cd = '002' THEN '외부발송' WHEN d.type_cd = '003' THEN '접수문서' WHEN d.type_cd = '004' THEN '보고문서' WHEN d.type_cd = '005' THEN '업무일지' WHEN d.type_cd = '006' THEN '연차신청' WHEN d.type_cd = '007' THEN '지출결의' ELSE '선택' END as type_cd
                 FROM t_approval_document as d
                 LEFT OUTER JOIN t_emp as e ON d.empid = e.empid
                 WHERE d.docid = ${id}
@@ -371,7 +371,7 @@
         </update>
         <!-- 회수 -->
         <update id="docCollect" parameterType="map">
-                UPDATE t_approval_document SET type_cd = '001' WHERE docid = '${docid}'
+                UPDATE t_approval_document SET status_cd = '001' WHERE docid = '${docid}'
         </update>
         <!-- 공람체크 -->
         <update id="viewerCheck" parameterType="map">
@@ -380,7 +380,7 @@
         <!-- 글 편집 후 저장 -->
         <update id="update" parameterType="map">
                 UPDATE t_approval_document
-                SET title = '${title}', status_cd = '${status_cd}', contents = '${contents}', reference_docid = '${reference_docid}', contents_text = '${contents_text}'
+                SET title = '${title}', type_cd = '${type_cd}', contents = '${contents}', reference_docid = '${reference_docid}', contents_text = '${contents_text}'
                 WHERE docid = '${id}'
         </update>
         <!-- 파일 데이터 업데이트 -->
@@ -405,7 +405,7 @@
         </select>
         <!-- 문서 상태 변경 -->
         <update id="approvalDoc" parameterType="map">
-                UPDATE t_approval_document SET type_cd = '${type_cd}' WHERE docid = '${id}'
+                UPDATE t_approval_document SET status_cd = '${status_cd}' WHERE docid = '${id}'
         </update>
         <!-- 글 삭제 -->
         <delete id="delDoc">

@@ -39,21 +39,21 @@
                                 <div>
                                     <span class="text-title">문서종류</span>
                                     <span>
-                                        <select class="status_cd" name="status_cd">
+                                        <select class="type_cd" name="type_cd">
                                             <option value="999">선택</option>
-                                            <option th:selected="${info.status_cd} == '내부기안'" value="001">내부기안</option>
-                                            <option th:selected="${info.status_cd} == '외부발송'" value="002">외부발송</option>
-                                            <option th:selected="${info.status_cd} == '접수문서'" value="003">접수문서</option>
-                                            <option th:selected="${info.status_cd} == '보고문서'" value="004">보고문서</option>
-                                            <option th:selected="${info.status_cd} == '업무일지'" value="005">업무일지</option>
-                                            <option th:selected="${info.status_cd} == '연차신청'" value="006">연차신청</option>
-                                            <option th:selected="${info.status_cd} == '지출결의'" value="007">지출결의</option>
+                                            <option th:selected="${info.type_cd} == '내부기안'" value="001">내부기안</option>
+                                            <option th:selected="${info.type_cd} == '외부발송'" value="002">외부발송</option>
+                                            <option th:selected="${info.type_cd} == '접수문서'" value="003">접수문서</option>
+                                            <option th:selected="${info.type_cd} == '보고문서'" value="004">보고문서</option>
+                                            <option th:selected="${info.type_cd} == '업무일지'" value="005">업무일지</option>
+                                            <option th:selected="${info.type_cd} == '연차신청'" value="006">연차신청</option>
+                                            <option th:selected="${info.type_cd} == '지출결의'" value="007">지출결의</option>
                                         </select>
                                     </span>
                                 </div>
                                 <div>
                                     <span class="text-title">문서상태</span>
-                                    <span th:text="${info.type_cd}"></span>
+                                    <span th:text="${info.status_cd}"></span>
                                 </div>
                                 <div>
                                     <span class="text-title">반려</span>

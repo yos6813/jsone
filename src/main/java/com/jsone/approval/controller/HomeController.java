@@ -179,13 +179,13 @@ public class HomeController {
 				approvalService.use(model.getAttribute("dbName").toString());
 
 				/* 진행중 문서 */
-				map.put("type_cd", "'002'");
+				map.put("status_cd", "'002'");
 				map.put("code", model.getAttribute("coopCd").toString());
 				map.put("title", "결재");
 
 				/* 현재 필터링 되고 있는 서브메뉴 */
-				if(map.get("status_cd") != null) {
-					map.put("status", map.get("status_cd"));
+				if(map.get("type_cd") != null) {
+					map.put("type", map.get("type_cd"));
 				}
 
 				List<UserDTO> users = approvalService.userAll();
@@ -223,13 +223,13 @@ public class HomeController {
 		if(model.getAttribute("error") != "") {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
-				map.put("type_cd", "'003','999','005'");
+				map.put("status_cd", "'003','999','005'");
 				map.put("pid", model.getAttribute("empid").toString());
 				map.put("title", "결재문서");
 
 				/* 현재 필터링 되고 있는 서브메뉴 */
-				if(map.get("status_cd") != null) {
-					map.put("status", map.get("status_cd"));
+				if(map.get("type_cd") != null) {
+					map.put("type", map.get("type_cd"));
 				}
 
 				List<UserDTO> users = approvalService.userAll();
@@ -267,7 +267,7 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
-				map.put("type_cd", "002");
+				map.put("status_cd", "002");
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
@@ -281,8 +281,8 @@ public class HomeController {
 					System.out.println("여기");
 				} else {
 					/* 현재 필터링 되고 있는 서브메뉴 */
-					if(map.get("status_cd") != null) {
-						map.put("status", map.get("status_cd"));
+					if(map.get("type_cd") != null) {
+						map.put("type", map.get("type_cd"));
 					}
 
 					List<ListDTO> listDTOList = approvalService.list(map);
@@ -319,7 +319,7 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
-				map.put("type_cd", "'002','003','999','005'");
+				map.put("status_cd", "'002','003','999','005'");
 				map.put("title", "공람문서");
 				map.put("pid", model.getAttribute("empid").toString());
 
@@ -328,8 +328,8 @@ public class HomeController {
 					model.addAttribute("cnt", null);
 				} else {
 					/* 현재 필터링 되고 있는 서브메뉴 */
-					if(map.get("status_cd") != null) {
-						map.put("status", map.get("status_cd"));
+					if(map.get("type_cd") != null) {
+						map.put("type", map.get("type_cd"));
 					}
 
 					List<ListDTO> listDTOList = approvalService.list(map);
@@ -368,9 +368,9 @@ public class HomeController {
 				approvalService.use(model.getAttribute("dbName").toString());
 
 				/* 현재 필터링 되고 있는 서브메뉴 */
-				if(map.get("type_cd") != null) {
-					String type = map.get("type_cd");
-					map.put("type", type);
+				if(map.get("status_cd") != null) {
+					String type = map.get("status_cd");
+					map.put("status", type);
 				}
 
 				String empid = session.getAttribute("empid").toString();
@@ -411,11 +411,11 @@ public class HomeController {
 				approvalService.use(model.getAttribute("dbName").toString());
 
 				/* 현재 필터링 되고 있는 서브메뉴 */
-				if(map.get("status_cd") != null) {
-					map.put("status", map.get("status_cd"));
+				if(map.get("type_cd") != null) {
+					map.put("type", map.get("type_cd"));
 				}
 
-				map.put("type_cd", "'002'");
+				map.put("status_cd", "'002'");
 				map.put("empid", model.getAttribute("empid").toString());
 				
 				/* 페이지네이션 기본값 */
@@ -579,7 +579,7 @@ public class HomeController {
 
 			return "redirect:/edit/" + map.get("id");
 		} else if("approval".equals(map.get("form_type"))) {
-			map.put("type_cd", "002");
+			map.put("status_cd", "002");
 			approvalService.approvalDoc(map);
 
 			return "redirect:/" + map.get("id");
