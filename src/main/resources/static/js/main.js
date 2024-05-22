@@ -7,12 +7,12 @@
 
         /* 기본 닫기 버튼 */
         $('.btn-close').click(function(){
-            history.back();
+            location.href = document.referrer;
         });
 
         /* 취소 버튼 */
         $('.close-btn').click(function(){
-            history.back();
+            location.href = document.referrer;
         });
 
         /* 로그아웃 버튼 */

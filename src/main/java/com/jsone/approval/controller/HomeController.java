@@ -552,6 +552,11 @@ public class HomeController {
 
 			map.put("contents_text", contentsText);
 
+			String contents = map.get("contents").replace("'", "&#39;");
+
+			map.remove("contents");
+			map.put("contents", contents);
+
 			approvalService.update(map);
 
 			if(fileName != null){
@@ -584,12 +589,12 @@ public class HomeController {
 				approvalService.insertViewer(viewMap);
 			}
 
-			return "redirect:/edit/" + map.get("id");
+			return "redirect:/personalDoc";
 		} else if("approval".equals(map.get("form_type"))) {
 			map.put("status_cd", "002");
 			approvalService.approvalDoc(map);
 
-			return "redirect:/" + map.get("id");
+			return "redirect:/personalDoc";
 		} else if("delete".equals(map.get("form_type"))) {
 			approvalService.delAttach(Long.parseLong(map.get("id")));
 			approvalService.delApproval(Long.parseLong(map.get("id")));

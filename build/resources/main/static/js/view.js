@@ -21,7 +21,7 @@
                 success : function(result) {
                     location.href = document.referrer;
                 },
-                error : function(request, status, error) { 
+                error : function(request, status, error) {
                     console.log(error);
                 }
             })
