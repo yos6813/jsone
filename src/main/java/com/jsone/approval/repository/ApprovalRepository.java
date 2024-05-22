@@ -109,6 +109,14 @@ public class ApprovalRepository {
         return sql.selectList("Approval.viewer", id);
     }
 
+    public List<ApproverDTO> allApprover () {
+        return sql.selectList("Approval.allApprover");
+    }
+
+    public List<ApproverDTO> allViewer () {
+        return sql.selectList("Approval.allViewer");
+    }
+
     public List<Long> docApprover (Long id) {
         return sql.selectList("Approval.docApprover", id);
     }
@@ -149,12 +157,20 @@ public class ApprovalRepository {
         sql.update("Approval.fileUpdate", map);
     }
 
-    public void deleteApprover (Map<String, Long> map) {
-        sql.insert("Approval.deleteApprover", map);
+    public void insertApprover (Map<String, String> map) {
+        sql.insert("Approval.insertApprover", map);
     }
 
-    public void deleteViewer (Map<String, Long> map) {
-        sql.insert("Approval.deleteViewer", map);
+    public void insertViewer (Map<String, String> map) {
+        sql.insert("Approval.insertViewer", map);
+    }
+
+    public void deleteApprover (Long id) {
+        sql.delete("Approval.deleteApprover", id);
+    }
+
+    public void deleteViewer (Long id) {
+        sql.delete("Approval.deleteViewer", id);
     }
 
     public Map<String, String> checkCd (Long empid) {

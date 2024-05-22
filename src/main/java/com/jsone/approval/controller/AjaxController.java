@@ -143,7 +143,7 @@ public class AjaxController {
 		Long approvCnt = approvalService.checkAppov(map);
 
 		if(approvCnt <= 0) {
-			map.put("type_cd", "005");
+			map.put("status_cd", "005");
 			map.put("id", map.get("docid"));
 			approvalService.approvalDoc(map);
 		}
@@ -162,7 +162,7 @@ public class AjaxController {
 		Long approvCnt = approvalService.checkAppov(map);
 
 		if(approvCnt <= 0) {
-			map.put("type_cd", "003");
+			map.put("status_cd", "003");
 			map.put("id", map.get("docid"));
 			approvalService.approvalDoc(map);
 		}

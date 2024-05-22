@@ -504,12 +504,28 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 				ViewDTO info = approvalService.view(id);
+				List<ApproverDTO> allApprover = approvalService.allApprover();
+				List<ApproverDTO> allViewer = approvalService.allViewer();
 				List<ApproverDTO> approver = approvalService.approver(id);
 				List<ApproverDTO> viewer = approvalService.viewer(id);
 				List<FileDTO> file = approvalService.file(id);
 
-				model.addAttribute("approver", approver);
-				model.addAttribute("viewer", viewer);
+				List<Long> a = new ArrayList<>();
+				List<Long> v = new ArrayList<>();
+
+				approver.forEach(list -> {
+					a.add(list.getEmpid());
+
+				});
+
+				viewer.forEach(list -> {
+					v.add(list.getEmpid());
+				});
+
+				model.addAttribute("allApprover", allApprover);
+				model.addAttribute("allViewer", allViewer);
+				model.addAttribute("approver", a);
+				model.addAttribute("viewer", v);
 				model.addAttribute("info", info);
 				model.addAttribute("id", id);
 				model.addAttribute("file", file);
@@ -525,7 +541,7 @@ public class HomeController {
 	
 	/* 글 저장 */
 	@PostMapping("/update")
-	public String update(@RequestParam Map<String, String> map, @RequestParam(name = "original_file_name", required = false) String[] fileName, @RequestParam("approver") Long[] approv, @RequestParam("viewer") Long[] view, Model model, HttpServletRequest request) {
+	public String update(@RequestParam Map<String, String> map, @RequestParam(name = "original_file_name", required = false) String[] fileName, @RequestParam("approver") String[] approv, @RequestParam("viewer") String[] view, Model model, HttpServletRequest request) {
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
@@ -549,32 +565,23 @@ public class HomeController {
 				}
 			}
 
-			List<Long> approver = approvalService.docApprover(Long.parseLong(map.get("id")));
-			List<Long> viewer = approvalService.docViewer(Long.parseLong(map.get("id")));
+			approvalService.deleteViewer(Long.parseLong(map.get("id")));
+			approvalService.deleteApprover(Long.parseLong(map.get("id")));
 
+			for(Integer i=0;i<approv.length;i++){
+				Map<String, String> appMap = new HashMap<>();
 
-			Map<String, Long> appList = new HashMap<>();
-			appList.put("id", Long.parseLong(map.get("id")));
-			if(approver.size() > approv.length) {
-				for (Long item : approv) {
-					if(approvalService.checkCd(item).get("coop_cd") != null) {
-						appList.put("coop_cd", Long.parseLong(approvalService.checkCd(item).get("coop_cd")));
-			
-						approvalService.deleteApprover(appList);
-					}
-				}
+				appMap.put("id", map.get("id"));
+				appMap.put("code", approv[i]);
+				approvalService.insertApprover(appMap);
 			}
 
-			Map<String, Long> viewList = new HashMap<>();
-			viewList.put("id", Long.parseLong(map.get("id")));
-			if(viewer.size() > view.length) {
-				for (Long item : view) {
-					if(approvalService.checkCd(item).get("pos_cd") != null) {
-						viewList.put("pos_cd", Long.parseLong(approvalService.checkCd(item).get("pos_cd")));
-				
-						approvalService.deleteViewer(viewList);
-					}
-				}
+			for(Integer i=0;i<view.length;i++){
+				Map<String, String> viewMap = new HashMap<>();
+
+				viewMap.put("id", map.get("id"));
+				viewMap.put("code", view[i]);
+				approvalService.insertViewer(viewMap);
 			}
 
 			return "redirect:/edit/" + map.get("id");

@@ -109,6 +109,14 @@ public class ApprovalService {
 		return approvalRepository.viewer(id);
 	}
 
+	public List<ApproverDTO> allApprover () {
+		return approvalRepository.allApprover();
+	}
+
+	public List<ApproverDTO> allViewer () {
+		return approvalRepository.allViewer();
+	}
+
 	public List<Long> docApprover (Long id) {
 		return approvalRepository.docApprover(id);
 	}
@@ -149,12 +157,20 @@ public class ApprovalService {
 		approvalRepository.fileUpdate(map);
 	}
 
-	public void deleteApprover(Map<String, Long> map) {
-		approvalRepository.deleteApprover(map);
+	public void insertApprover(Map<String, String> map) {
+		approvalRepository.insertApprover(map);
 	}
 
-	public void deleteViewer(Map<String, Long> map) {
-		approvalRepository.deleteViewer(map);
+	public void insertViewer(Map<String, String> map) {
+		approvalRepository.insertViewer(map);
+	}
+
+	public void deleteApprover(Long id) {
+		approvalRepository.deleteApprover(id);
+	}
+
+	public void deleteViewer(Long id) {
+		approvalRepository.deleteViewer(id);
 	}
 
 	public Map<String, String> checkCd (Long empid) {

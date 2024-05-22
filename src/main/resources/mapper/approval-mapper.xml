@@ -345,8 +345,22 @@
                 WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND p.docid = '${docid}'
                 ORDER BY c.seq
         </select>
+        <!-- 모든 결재자 조회 -->
+        <select id="allApprover" resultType="approver" parameterType="Long">
+                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code AS c
+                JOIN t_emp AS e ON c.code = e.pos_cd
+                WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND (e.pos_cd != 0 AND e.pos_cd IS NOT NULL)
+                ORDER BY c.seq
+        </select>
+        <!-- 모든 공람자 조회 -->
+        <select id="allViewer" resultType="approver">
+                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code AS c
+                JOIN t_emp AS e ON c.code = e.coop_cd
+                WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND (e.coop_cd != 0 AND e.coop_cd IS NOT NULL)
+                ORDER BY c.seq
+        </select>
         <!-- 문서 별 결재 완료자 -->
-        <select id="docApprover" parameterType="Long" resultType="Long">
+        <select id="docApprover" resultType="Long">
                 SELECT e.empid FROM t_code AS c
                 JOIN t_approval_document_step AS s ON s.pos_cd = c.code
                 JOIN t_emp AS e ON c.code = e.pos_cd
@@ -387,13 +401,21 @@
         <insert id="fileUpdate" parameterType="map">
                 INSERT t_approval_document_attach VALUES ('${id}', '${file_path}', '${fileName}', getDate())
         </insert>
-        <!-- 결재자 삭제 -->
-        <delete id="deleteApprover" parameterType="map">
-                DELETE FROM t_approval_doccument_step WHERE docid = '${id}' AND pos_cd != '${coop_cd}'
+        <!-- 결재자 추가 -->
+        <insert id="insertApprover" parameterType="map">
+                INSERT t_approval_document_step VALUES ('${id}', 1, '${code}', 0, '', getDATE(), null, null)
+        </insert>
+        <!-- 공람자 추가 -->
+        <insert id="insertViewer" parameterType="map">
+                INSERT t_approval_document_public VALUES ('${id}', '${code}', 0, getDATE(), null, null)
+        </insert>
+        <!-- 결재자 모두 삭제 -->
+        <delete id="deleteApprover" parameterType="Long">
+                DELETE FROM t_approval_document_step WHERE docid = '${id}'
         </delete>
-        <!-- 공람자 삭제 -->
-        <delete id="deleteViewer" parameterType="map">
-                DELETE FROM t_approval_doccument_step WHERE docid = '${id}' AND pub_cd != '${pos_cd}'
+        <!-- 공람자 모두 삭제 -->
+        <delete id="deleteViewer" parameterType="Long">
+                DELETE FROM t_approval_document_public WHERE docid = '${id}'
         </delete>
         <!-- 공람자, 결재자 코드 조회 coop_cd: 결재자, pos_cd: 공람자 -->
         <select id="checkCd" parameterType="map" resultType="map">

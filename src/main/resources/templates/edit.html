@@ -79,10 +79,10 @@
                                 <span class="title-txt">결재</span>
                                 <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
                             </span>
-                            <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
+                            <div th:if="!${#lists.isEmpty(allApprover)}" th:each="list: ${allApprover}">
                                 <div>
                                     <span th:text="${list.emp_nm}"></span>
-                                    <input type="checkbox" name="approver[]" th:value="${list.empid}" checked />
+                                    <input type="checkbox" name="approver[]" th:value="${list.code}" th:checked="!${#lists.isEmpty(approver)} and ${#lists.contains(approver, list.empid)}" />
                                     <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
                                 </div>
                             </div>
@@ -92,10 +92,10 @@
                                 <span class="title-txt">공람(모든 공람 선택/해제)</span>
                                 <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
                             </span>
-                            <div th:if="!${#lists.isEmpty(viewer)}" th:each="view: ${viewer}">
+                            <div th:if="!${#lists.isEmpty(allViewer)}" th:each="view: ${allViewer}">
                                 <div>
                                     <span th:text="${view.emp_nm}"></span>
-                                    <input type="checkbox" name="viewer[]" th:value="${view.empid}" checked />
+                                    <input type="checkbox" name="viewer[]" th:value="${view.code}" th:checked="!${#lists.isEmpty(viewer)} and ${#lists.contains(viewer, view.empid)}" />
                                     <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span>
                                 </div>
                             </div>
