@@ -87,6 +87,8 @@ public class AjaxController {
 		//알림톡 전송 요청 보내기
         ResponseEntity<String> response = sms.sendKakao(kakaoData);
 
+		System.out.println(response.getBody());
+
         return response;
 	}
 	
