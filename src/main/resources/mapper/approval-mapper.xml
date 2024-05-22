@@ -302,9 +302,10 @@
         </select>
         <!-- 뷰페이지 -->
         <select id="view" resultType="view" parameterType="Long">
-                SELECT e.emp_nm, d.docid, d.empid, d.title, d.contents, d.contents_text, d.reference_docid,
+                SELECT e.emp_nm, d.docid, d.empid, d.title, d.contents, d.contents_text, d.copy_docid, d.reference_docid,
                 FORMAT(d.create_date, 'yyyy-MM-dd H:m:s') as create_date,
                 CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.docid) as doc_num,
+                CASE WHEN d.copy_docid IS NULL or d.copy_docid = 0 THEN '-' ELSE CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.copy_docid) END as copy_id,
                 CASE WHEN d.reference_docid IS NULL or d.reference_docid = 0 THEN '-' ELSE CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.reference_docid) END as reference_id,
                 CASE WHEN d.type_cd = '001' THEN '임시저장' WHEN d.type_cd = '002' THEN '진행중' WHEN d.type_cd = '003' THEN '반려' WHEN d.type_cd = '004' THEN '반려보관' ELSE '완료' END as type_cd,
                 CASE WHEN d.status_cd = '001' THEN '내부기안' WHEN d.status_cd = '002' THEN '외부발송' WHEN d.status_cd = '003' THEN '접수문서' WHEN d.status_cd = '004' THEN '보고문서' WHEN d.status_cd = '005' THEN '업무일지' WHEN d.status_cd = '006' THEN '연차신청' WHEN d.status_cd = '007' THEN '지출결의' ELSE '선택' END as status_cd

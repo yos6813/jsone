@@ -9,6 +9,7 @@ import lombok.Setter;
 @ToString
 public class ViewDTO {
     private Long docid;
+    private Long copy_docid;
     private Long reference_docid;
     private Long empid;
     private String emp_nm;
@@ -18,6 +19,7 @@ public class ViewDTO {
     private String contents;
     private String contents_text;
     private String create_date;
+    private String copy_id;
     private String reference_id;
     private String doc_num;
 }
