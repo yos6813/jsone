@@ -70,13 +70,13 @@ public class AjaxController {
 
 		for(Integer i = 0; i < checkLoginid.size(); i++){
 			kakaoData.put("receiver_" + (i + 1), checkLoginid.get(i).toString());
+			kakaoData.put("message_" + (i + 1), name + "님의 \"" + title + "\" 전자결재 문서가 도착하였습니다");
+			kakaoData.put("emtitle_" + (i + 1), "전자결재 알림서비스");
+			kakaoData.put("button_" + (i + 1), button);
 		}
 		
         kakaoData.put("userid", "jsoftone");
         kakaoData.put("apikey", "xg7d36hj0xavo5a40vq98ch7pu9339za");
-        kakaoData.put("message_1", name + "님의 \"" + title + "\" 전자결재 문서가 도착하였습니다");
-        kakaoData.put("emtitle_1", "전자결재 알림서비스");
-        kakaoData.put("button_1", button);
 		kakaoData.put("senderkey", "7b7f39a82a33c7d0069be9ecb4df9a477df974a6");
 		kakaoData.put("tpl_code", "TS_9675"); //템플릿 코드
         kakaoData.put("sender", "0220384812");

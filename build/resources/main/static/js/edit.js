@@ -139,8 +139,8 @@
                                 "name": "결재문서 확인하기",
                                 "linkType": "WL",
                                 "linkTypeName": "웹링크",
-                                "linkMo": "://jsoftone4.cafe24.com",
-                                "linkPc": "://전자결재.com"
+                                "linkMo": "http://jsoftone4.cafe24.com",
+                                "linkPc": "http://전자결재.com"
                             }
                         ]
                     })
