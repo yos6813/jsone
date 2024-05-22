@@ -1,14 +1,12 @@
 (function($) {
     $(document).ready(function(){
         $('.btn-box button').click(function(){
-            var code;
+            var code = 0;
 
-            if($('#pos_cd').length) {
+            if($(this).attr('id') != 'viewerCheck') {
                 code = $('#pos_cd').val();
-            } else if($('#coop_cd').length) {
-                code = $("#coop_cd").val();
             } else {
-                code = 0;
+                code = $("#coop_cd").val();
             }
             $.ajax({
                 type : 'POST',
