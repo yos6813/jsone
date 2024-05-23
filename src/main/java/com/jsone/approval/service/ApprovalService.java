@@ -181,6 +181,10 @@ public class ApprovalService {
 		return approvalRepository.checkStep(map);
 	}
 
+	public Long checkStepLine (Map<String, String> map) {
+        return approvalRepository.checkStepLine(map);
+    }
+
 	public void approvalDoc (Map<String, String> map){
 		approvalRepository.approvalDoc(map);
 	}

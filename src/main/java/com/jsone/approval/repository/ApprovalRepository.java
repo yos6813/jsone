@@ -181,6 +181,10 @@ public class ApprovalRepository {
         return sql.selectOne("Approval.checkStep", map);
     }
 
+    public Long checkStepLine (Map<String, String> map) {
+        return sql.selectOne("Approval.checkStepLine", map);
+    }
+
     public void approvalDoc (Map<String, String> map) {
         sql.update("Approval.approvalDoc", map);
     }

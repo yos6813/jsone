@@ -155,12 +155,18 @@ public class AjaxController {
 
 		if(approvCnt <= 0) {
 			map.put("status_cd", "005");
-			
+			approvalService.changeStep(Long.parseLong(map.get("docid")));
 			approvalService.approvalDoc(map);
 		} else {
 			Long step = approvalService.checkStep(map);
 
-			approvalService.changeStep(Long.parseLong(map.get("docid")));
+			map.put("step", step.toString());
+
+			Long stepCnt = approvalService.checkStepLine(map);
+
+			if(stepCnt <= 0) {
+				approvalService.changeStep(Long.parseLong(map.get("docid")));
+			}
 
 			Map<String, String> param = new HashMap<>();
 			param.put("empid", step.toString());

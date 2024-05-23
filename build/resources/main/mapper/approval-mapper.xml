@@ -486,6 +486,10 @@
         <select id="checkStep" parameterType="map" resultType="Long">
                 SELECT s.step FROM t_approval_document_step AS s JOIN t_emp AS e ON s.pos_cd = e.pos_cd WHERE e.empid = ${empid} AND s.docid = ${id}
         </select>
+        <!-- 같은 결재라인의 사람이 결재 승인을 했는지 체크 -->
+        <select id="checkStepLine" parameterType="map" resultType="Long">
+                SELECT COUNT(*) cnt FROM t_approval_document_step AS s JOIN t_emp AS e ON s.pos_cd = e.pos_cd WHERE s.step = ${step} AND s.docid = ${id} AND s.empid = 0
+        </select>
         <!-- 결재자가 모두 체크했는지 확인 -->
         <select id="checkAppov" parameterType="map" resultType="Long">
                 SELECT COUNT(*) AS cnt FROM t_approval_document_step WHERE docid = '${docid}' AND empid = '0'
