@@ -151,10 +151,11 @@ public class AjaxController {
 		approvalService.docCheck(map);
 
 		Long approvCnt = approvalService.checkAppov(map);
+		map.put("id", map.get("docid"));
 
 		if(approvCnt <= 0) {
 			map.put("status_cd", "005");
-			map.put("id", map.get("docid"));
+			
 			approvalService.approvalDoc(map);
 		} else {
 			Long step = approvalService.checkStep(map);

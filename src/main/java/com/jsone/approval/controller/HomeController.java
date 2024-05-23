@@ -472,6 +472,12 @@ public class HomeController {
 
 				Map<String, String> user = approvalService.checkCd(Long.parseLong(model.getAttribute("empid").toString()));
 
+				Map<String, String> map = new HashMap<>();
+				map.put("empid", model.getAttribute("empid").toString());
+				map.put("id", id.toString());
+
+				Long step = approvalService.checkStep(map);
+
 				/* 결재자와 공람자 empid 비교를 위해 empid만 따로 저장 */
 				List<Long> allApprover = new ArrayList<Long>();
 				List<Long> allViewer = new ArrayList<Long>();
@@ -495,6 +501,7 @@ public class HomeController {
 				model.addAttribute("docid", id);
 				model.addAttribute("file", file);
 				model.addAttribute("user", user);
+				model.addAttribute("step", step);
 				
 				return "view";
 			} else {
