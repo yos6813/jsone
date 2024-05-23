@@ -615,6 +615,50 @@ public class HomeController {
 
 			return "redirect:/personalDoc";
 		} else if("approval".equals(map.get("form_type"))) {
+			CommonUtil commonUtil = new CommonUtil();
+			String contentsText = commonUtil.removeTagString(map.get("contents").toString());
+
+			map.put("contents_text", contentsText);
+
+			String contents = map.get("contents").replace("'", "&#39;");
+
+			map.remove("contents");
+			map.put("contents", contents);
+
+			approvalService.update(map);
+
+			if(fileName != null){
+				for (String item : fileName) {
+					String filePath = "/files" + File.separator + item;
+
+					map.put("file_path", filePath);
+					map.put("fileName", item);
+
+					approvalService.fileUpdate(map);
+				}
+			}
+
+			approvalService.deleteViewer(Long.parseLong(map.get("id")));
+			approvalService.deleteApprover(Long.parseLong(map.get("id")));
+
+			for(Integer i=0;i<approv.length;i++){
+				Map<String, String> appMap = new HashMap<>();
+
+				appMap.put("id", map.get("id"));
+				appMap.put("code", approv[i]);
+				approvalService.insertApprover(appMap);
+			}
+
+			if(view != null) {
+				for(Integer i=0;i<view.length;i++){
+					Map<String, String> viewMap = new HashMap<>();
+
+					viewMap.put("id", map.get("id"));
+					viewMap.put("code", view[i]);
+					approvalService.insertViewer(viewMap);
+				}
+			}
+			
 			map.put("status_cd", "002");
 			approvalService.approvalDoc(map);
 
