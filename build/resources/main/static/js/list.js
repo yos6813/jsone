@@ -59,7 +59,7 @@
                         if(result[i].type_cd == '임시저장') {
                             href = 'edit/' + result[i].docid;
                         } else {
-                            href = result[i].docid;
+                            href = $('#path').val() + '/' + result[i].docid;
                         }
 
                         $(".list-box").append(

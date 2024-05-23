@@ -109,12 +109,12 @@ public class ApprovalRepository {
         return sql.selectList("Approval.viewer", id);
     }
 
-    public List<ApproverDTO> allApprover () {
-        return sql.selectList("Approval.allApprover");
+    public List<ApproverDTO> allApprover (String empid) {
+        return sql.selectList("Approval.allApprover", empid);
     }
 
-    public List<ApproverDTO> allViewer () {
-        return sql.selectList("Approval.allViewer");
+    public List<ApproverDTO> allViewer (String empid) {
+        return sql.selectList("Approval.allViewer", empid);
     }
 
     public List<Long> docApprover (Long id) {

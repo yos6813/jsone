@@ -48,7 +48,8 @@
                         </form>
                     </div>
                     <div class="list-box">
-                        <div class="list" th:attr="data-href=${list.status_cd} != '임시저장' ? ${list.docid} : 'edit/' + ${list.docid} " th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
+                        <input type="hidden" id="path" th:value="${path}" />
+                        <div class="list" th:attr="data-href=${list.status_cd} != '임시저장' ? ${path} + '/' + ${list.docid} : 'edit/' + ${list.docid} " th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
                             <span th:text="${list.title}"></span><i th:if="${list.cnt} > 0" class="fa-regular fa-file-lines"></i>
                             <span class="second-line" th:text="${list.create_date} + ' / ' + ${list.status_cd} + ' / ' + ${list.type_cd} + ' / ' + ${list.emp_nm} + ' / ' + ${list.name}"></span>
                             <span th:text="${list.contents_text}"></span>

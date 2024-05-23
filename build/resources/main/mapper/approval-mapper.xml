@@ -347,16 +347,18 @@
         </select>
         <!-- 모든 결재자 조회 -->
         <select id="allApprover" resultType="approver" parameterType="Long">
-                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code AS c
+                SELECT c.id, c.name, e.empid, e.emp_nm, c.code, c.seq FROM t_code AS c
                 JOIN t_emp AS e ON c.code = e.pos_cd
                 WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND (e.pos_cd != 0 AND e.pos_cd IS NOT NULL)
+                AND e.empid != '${empid}'
                 ORDER BY c.seq
         </select>
         <!-- 모든 공람자 조회 -->
-        <select id="allViewer" resultType="approver">
+        <select id="allViewer" resultType="approver" parameterType="Long">
                 SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code AS c
                 JOIN t_emp AS e ON c.code = e.coop_cd
                 WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND (e.coop_cd != 0 AND e.coop_cd IS NOT NULL)
+                AND e.empid != '${empid}'
                 ORDER BY c.seq
         </select>
         <!-- 문서 별 결재 완료자 -->

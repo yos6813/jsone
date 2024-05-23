@@ -109,12 +109,12 @@ public class ApprovalService {
 		return approvalRepository.viewer(id);
 	}
 
-	public List<ApproverDTO> allApprover () {
-		return approvalRepository.allApprover();
+	public List<ApproverDTO> allApprover (String empid) {
+		return approvalRepository.allApprover(empid);
 	}
 
-	public List<ApproverDTO> allViewer () {
-		return approvalRepository.allViewer();
+	public List<ApproverDTO> allViewer (String empid) {
+		return approvalRepository.allViewer(empid);
 	}
 
 	public List<Long> docApprover (Long id) {

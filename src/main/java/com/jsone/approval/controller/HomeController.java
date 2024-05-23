@@ -169,6 +169,7 @@ public class HomeController {
 	public String sign(@RequestParam Map<String, String> map, @ModelAttribute ListDTO listDTO, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "전자결재");
 		model.addAttribute("map", map);
+		model.addAttribute("path", "sign");
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -216,6 +217,7 @@ public class HomeController {
 	public String signDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "결재문서");
 		model.addAttribute("map", map);
+		model.addAttribute("path", "signDoc");
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -223,7 +225,7 @@ public class HomeController {
 		if(model.getAttribute("error") != "") {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
-				map.put("status_cd", "'003','999','005'");
+				map.put("status_cd", "'002','003','999','005'");
 				map.put("pid", model.getAttribute("empid").toString());
 				map.put("title", "결재문서");
 
@@ -260,6 +262,8 @@ public class HomeController {
 	public String announcementCheck(@RequestParam Map<String, String> map, Model model, HttpServletRequest request, HttpSession session) {
 		model.addAttribute("title", "공람확인");
 		model.addAttribute("map", map);
+		model.addAttribute("path", "announcementCheck");
+
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
@@ -311,6 +315,7 @@ public class HomeController {
 	public String announcementDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request, HttpSession session) {
 		model.addAttribute("title", "공람문서");
 		model.addAttribute("map", map);
+		model.addAttribute("path", "announcementDoc");
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -360,6 +365,8 @@ public class HomeController {
 	public String personalDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request, HttpSession session) {
 		model.addAttribute("title", "개인서류");
 		model.addAttribute("map", map);
+		model.addAttribute("path", "personalDoc");
+
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
@@ -402,6 +409,7 @@ public class HomeController {
 	public String prograssDoc(@RequestParam Map<String, String> map, Model model, HttpServletRequest request) {
 		model.addAttribute("title", "진행서류");
 		model.addAttribute("map", map);
+		model.addAttribute("path", "prograssDoc");
 
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
@@ -410,17 +418,19 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
+				/* 진행중 문서 */
+				map.put("status_cd", "'002'");
+				map.put("code", model.getAttribute("coopCd").toString());
+				map.put("title", "결재");
+
 				/* 현재 필터링 되고 있는 서브메뉴 */
 				if(map.get("type_cd") != null) {
 					map.put("type", map.get("type_cd"));
 				}
 
-				map.put("status_cd", "'002'");
-				map.put("empid", model.getAttribute("empid").toString());
-				
-				/* 페이지네이션 기본값 */
-				map.put("page", "0");
-				
+				List<UserDTO> users = approvalService.userAll();
+				model.addAttribute("users", users);
+
 				List<ListDTO> listDTOList = approvalService.list(map);
 				model.addAttribute("approvalList", listDTOList);
 
@@ -429,9 +439,9 @@ public class HomeController {
 				model.addAttribute("cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
-				SubCntDTO subCnt = approvalService.subCnt(map);
+				SubCntDTO subCnt = approvalService.stepSubCnt(map);
 				model.addAttribute("subCnt", subCnt);
-
+			
 				return "list";
 			} else {
 				return "redirect:/";
@@ -442,11 +452,13 @@ public class HomeController {
 	}
 
 	/* 뷰페이지 */
-	@GetMapping("/{id}")
-	public String view(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+	@GetMapping("/{path}/{id:[0-9]+}")
+	public String view(@PathVariable("path") String path, @PathVariable("id") Long id, Model model, HttpServletRequest request) {
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
+		model.addAttribute("path", path);
+
 		if(model.getAttribute("error") != "") {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
@@ -503,15 +515,18 @@ public class HomeController {
 		if(model.getAttribute("error") != "") {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
+
+				String empid = model.getAttribute("empid").toString();
+
 				ViewDTO info = approvalService.view(id);
-				List<ApproverDTO> allApprover = approvalService.allApprover();
-				List<ApproverDTO> allViewer = approvalService.allViewer();
+				List<ApproverDTO> allApprover = approvalService.allApprover(empid);
+				List<ApproverDTO> allViewer = approvalService.allViewer(empid);
 				List<ApproverDTO> approver = approvalService.approver(id);
 				List<ApproverDTO> viewer = approvalService.viewer(id);
 				List<FileDTO> file = approvalService.file(id);
 
-				List<Long> a = new ArrayList<>();
-				List<Long> v = new ArrayList<>();
+				List<Long> a = new ArrayList<Long>();
+				List<Long> v = new ArrayList<Long>();
 
 				approver.forEach(list -> {
 					a.add(list.getEmpid());
