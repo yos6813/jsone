@@ -36,8 +36,67 @@
                 SELECT empid, emp_nm, coop_cd, pos_cd FROM t_emp WHERE empid = '${empid}'
         </select>
         <!-- 해당 회사의 회원 모두 조회 -->
-        <select id="allUser" resultType="user">
-                SELECT empid, emp_nm FROM t_emp WHERE use_yn = 'Y'
+        <select id="allUser" resultType="user" parameterType="map">
+                SELECT distinct d.empid,
+                (SELECT e1.emp_nm FROM t_emp AS e1 JOIN t_code AS c1 ON e1.dept_cd = c1.code WHERE e1.empid = d.empid AND c1.category = '부서코드' AND isnull(c1.id_parent, '') <![CDATA[<>]]> '' AND c1.usyn = '1') AS emp_nm
+                FROM t_approval_document AS d
+                <if test="title != null and title != ''">
+                        <if test="title == '공람' or title == '공람문서'">
+                                JOIN t_approval_document_public AS p ON d.docid = p.docid
+                                JOIN t_emp e ON e.coop_cd = p.pub_cd
+                        </if>
+                        <if test="title == '결재' or title == '결재문서'">
+                                JOIN t_approval_document_step AS s ON d.docid = s.docid
+                                JOIN t_emp e ON e.pos_cd = s.pos_cd
+                        </if>
+                </if>
+                <if test="title == null or title == ''">
+                        JOIN t_emp e ON e.empid = d.empid
+                        JOIN t_code AS c ON e.dept_cd = c.code
+                        WHERE c.category = '부서코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1'
+                </if>
+                <if test="title != null and title != ''">
+                        <if test="code != null and code != ''">
+                                <if test="title =='결재'">
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0)
+                                </if>
+                                <if test="title =='공람'">
+                                        WHERE (p.pub_cd = '${code}' AND p.empid = 0)
+                                </if>
+                        </if>
+                        <if test="pid != null">
+                                <if test="title == '공람문서'">
+                                        WHERE p.empid = '${pid}'
+                                </if>
+                                <if test="title == '결재문서'">
+                                        WHERE s.empid = '${pid}'
+                                </if>
+                        </if>
+                </if>
+                <if test="status_cd != null">
+                        AND d.status_cd in (${status_cd})
+                </if>
+                <if test="type_cd != null and type_cd != ''">
+                        AND d.type_cd = ${type_cd}
+                </if>
+                <if test="startDate != null and startDate != '' and new_msg == null">
+                        AND d.create_date <![CDATA[>=]]> '${startDate}'
+                </if>
+                <if test="endDate != null and endDate != '' and new_msg == null">
+                        AND d.create_date <![CDATA[<=]]> '${endDate}'
+                </if>
+                <if test="search != null and search != ''">
+                        AND (d.title LIKE '%${search}%')
+                </if>
+                <if test="empid != null and empid gt 0">
+                        AND d.empid <![CDATA[=]]> '${empid}'
+                </if>
+                <if test="new_msg != null and new_msg != ''">
+                        AND (d.create_date <![CDATA[>=]]> DATEADD(DAY,-1, GETDATE()) AND d.create_date <![CDATA[<=]]> GETDATE())
+                </if>
+                <if test="end_msg != null and end_msg != ''">
+                        AND d.status_cd != '005'
+                </if>
         </select>
         <!-- 리스트 페이지 -->
         <select id="list" resultType="map" parameterType="map">
@@ -71,7 +130,7 @@
                 <if test="title != null and title != ''">
                         <if test="code != null and code != ''">
                                 <if test="title =='결재'">
-                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0)
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = d.step
                                 </if>
                                 <if test="title =='공람'">
                                         WHERE (p.pub_cd = '${code}' AND p.empid = 0)
@@ -419,9 +478,13 @@
         <delete id="deleteViewer" parameterType="Long">
                 DELETE FROM t_approval_document_public WHERE docid = '${id}'
         </delete>
-        <!-- 공람자, 결재자 코드 조회 coop_cd: 결재자, pos_cd: 공람자 -->
+        <!-- 공람자, 결재자 코드 조회 coop_cd: 공람자, pos_cd: 결재자 -->
         <select id="checkCd" parameterType="map" resultType="map">
                 SELECT coop_cd, pos_cd FROM t_emp WHERE empid = '${empid}'
+        </select>
+        <!-- 현재 결재자의 결재 순서 검색 -->
+        <select id="checkStep" parameterType="map" resultType="Long">
+                SELECT s.step FROM t_approval_document_step AS s JOIN t_emp AS e ON s.pos_cd = e.pos_cd WHERE e.empid = ${empid} AND s.docid = ${id}
         </select>
         <!-- 결재자가 모두 체크했는지 확인 -->
         <select id="checkAppov" parameterType="map" resultType="Long">
@@ -431,20 +494,40 @@
         <update id="approvalDoc" parameterType="map">
                 UPDATE t_approval_document SET status_cd = '${status_cd}' WHERE docid = '${id}'
         </update>
+        <!-- 문서 결재 단계 변경 -->
+        <update id="changeStep" parameterType="Long">
+                UPDATE t_approval_document SET step = (step + 1) WHERE docid = '${id}'
+        </update>
         <!-- 글 삭제 -->
         <delete id="delDoc">
                 DELETE FROM t_approval_document WHERE docid = '${id}'
         </delete>
+        <!-- 파일 삭제 -->
         <delete id="delAttach">
                 DELETE FROM t_approval_document_attach WHERE docid = '${id}'
         </delete>
+        <!-- 문서 별 결재자 삭제 -->
         <delete id="delApproval">
                 DELETE FROM t_approval_document_step WHERE docid = '${id}'
         </delete>
+        <!-- 문서 별 공람자 삭제 -->
         <delete id="delViewer">
                 DELETE FROM t_approval_document_public WHERE docid = '${id}'
         </delete>
-        <select id="checkLoginid" parameterType="String" resultType="String">
-                SELECT REPlACE(mbl_tel_no, '-', '') as loginid FROM t_emp WHERE empid IN (${empid});
+        <!-- 결재 올렸을 때 첫 차례 결재자 검색 -->
+        <select id="checkLoginid" parameterType="map" resultType="String">
+                SELECT loginid FROM 
+                (SELECT REPlACE(e.mbl_tel_no, '-', '') as loginid, RANK() OVER(ORDER BY c.seq ASC) AS rank
+                FROM t_code AS c JOIN t_emp AS e ON e.pos_cd = c.code
+                JOIN t_approval_document_step AS s ON s.pos_cd = e.pos_cd
+                WHERE e.empid IN (${empid}) AND s.docid = ${docid} AND c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1') AS r
+                WHERE r.rank = 1
+        </select>
+        <!-- 이전 결재자가 승인했을 때 그 다음 결재자 검색 -->
+        <select id="nextApprover" parameterType="map" resultType="String">
+                SELECT loginid FROM (SELECT REPlACE(e.mbl_tel_no, '-', '') as loginid, RANK() OVER(ORDER BY s.step ASC) AS rank
+                FROM t_emp AS e JOIN t_approval_document_step AS s ON s.pos_cd = e.pos_cd
+                WHERE s.docid = ${docid} AND s.step  <![CDATA[>]]> ${step} AND s.empid = 0) AS r
+                WHERE r.rank = 1
         </select>
 </mapper>

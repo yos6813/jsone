@@ -16,7 +16,18 @@
                 data : JSON.stringify({
                     docid: $('#docid').val(),
                     empid: $('#empid').val(),
-                    code: code
+                    code: code,
+                    button: JSON.stringify({
+                        "button": [
+                            {
+                                "name": "결재문서 확인하기",
+                                "linkType": "WL",
+                                "linkTypeName": "웹링크",
+                                "linkMo": "http://jsoftone4.cafe24.com",
+                                "linkPc": "http://전자결재.com"
+                            }
+                        ]
+                    })
                 }),
                 success : function(result) {
                     location.href = document.referrer;

@@ -177,8 +177,16 @@ public class ApprovalService {
 		return approvalRepository.checkCd(empid);
 	}
 
+	public Long checkStep (Map<String, String> map) {
+		return approvalRepository.checkStep(map);
+	}
+
 	public void approvalDoc (Map<String, String> map){
 		approvalRepository.approvalDoc(map);
+	}
+
+	public void changeStep (Long id){
+		approvalRepository.changeStep(id);
 	}
 
 	public void delDoc (Long id){
@@ -197,7 +205,11 @@ public class ApprovalService {
 		approvalRepository.delViewer(id);
 	}
 
-	public List<String> checkLoginid (String empid) {
-		return approvalRepository.checkLoginid(empid);
+	public List<String> checkLoginid (Map<String, String> map) {
+		return approvalRepository.checkLoginid(map);
+	}
+
+	public List<String> nextApprover (Map<String, String> map) {
+		return approvalRepository.nextApprover(map);
 	}
 }

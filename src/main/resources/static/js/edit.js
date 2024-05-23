@@ -130,6 +130,7 @@
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify({
+                    id: $('.id').val(),
                     name: $('.emp_nm').val(),
                     title: $('.title').val(),
                     telNo: telNo.toString(),

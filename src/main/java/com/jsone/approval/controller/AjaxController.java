@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.jsone.approval.dto.ChatAjaxDTO;
 import com.jsone.approval.dto.ListDTO;
+import com.jsone.approval.dto.ViewDTO;
 import com.jsone.approval.service.ApprovalService;
 import com.jsone.approval.util.SmsUtil;
 
@@ -64,12 +65,18 @@ public class AjaxController {
 		String title = map.get("title");
 		String button = map.get("button");
 		String telNo = map.get("telNo");
+		String id = map.get("id");
 
-		List<String> checkLoginid = approvalService.checkLoginid(telNo);
+		Map<String, String> param = new HashMap<>();
+
+		param.put("telNo", telNo);
+		param.put("docid", id);
+
+		List<String> checkLoginid = approvalService.checkLoginid(param);
 		Map<String, String> kakaoData = new HashMap<>();
 
 		for(Integer i = 0; i < checkLoginid.size(); i++){
-			kakaoData.put("receiver_" + (i + 1), checkLoginid.get(i).toString());
+			kakaoData.put("receiver_" + (i + 1), checkLoginid.get(i));
 			kakaoData.put("message_" + (i + 1), name + "님의 \"" + title + "\" 전자결재 문서가 도착하였습니다");
 			kakaoData.put("emtitle_" + (i + 1), "전자결재 알림서비스");
 			kakaoData.put("button_" + (i + 1), button);
@@ -139,7 +146,8 @@ public class AjaxController {
 
 	/* 결재 */
 	@PostMapping("/docCheck")
-	public Map<String, String> docCheck(@RequestBody Map<String, String> map) {
+	public Map<String, String> docCheck(@RequestBody Map<String, String> map, RestTemplate restTemplate) {
+		SmsUtil sms = new SmsUtil(restTemplate);
 		approvalService.docCheck(map);
 
 		Long approvCnt = approvalService.checkAppov(map);
@@ -148,6 +156,36 @@ public class AjaxController {
 			map.put("status_cd", "005");
 			map.put("id", map.get("docid"));
 			approvalService.approvalDoc(map);
+		} else {
+			Long step = approvalService.checkStep(map);
+
+			approvalService.changeStep(Long.parseLong(map.get("docid")));
+
+			Map<String, String> param = new HashMap<>();
+			param.put("empid", step.toString());
+			param.put("docid", map.get("docid"));
+
+			List<String> checkLoginid = approvalService.checkLoginid(param);
+			Map<String, String> kakaoData = new HashMap<>();
+
+			ViewDTO view = approvalService.view(Long.parseLong(map.get("docid")));
+
+			for(Integer i = 0; i < checkLoginid.size(); i++){
+				kakaoData.put("receiver_" + (i + 1), checkLoginid.get(i));
+				kakaoData.put("message_" + (i + 1), view.getEmp_nm() + "님의 \"" + view.getTitle() + "\" 전자결재 문서가 도착하였습니다");
+				kakaoData.put("emtitle_" + (i + 1), "전자결재 알림서비스");
+				kakaoData.put("button_" + (i + 1), map.get("button").toString());
+			}
+			
+			kakaoData.put("userid", "jsoftone");
+			kakaoData.put("apikey", "xg7d36hj0xavo5a40vq98ch7pu9339za");
+			kakaoData.put("senderkey", "7b7f39a82a33c7d0069be9ecb4df9a477df974a6");
+			kakaoData.put("tpl_code", "TS_9675"); //템플릿 코드
+			kakaoData.put("sender", "0220384812");
+			//kakaoData.put("testmode_yn", "Y");
+
+			//알림톡 전송 요청 보내기
+			ResponseEntity<String> response = sms.sendKakao(kakaoData);
 		}
 
 		Map<String, String> result = new HashMap<String, String>();
