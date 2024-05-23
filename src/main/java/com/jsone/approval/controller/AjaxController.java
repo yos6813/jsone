@@ -69,7 +69,7 @@ public class AjaxController {
 
 		Map<String, String> param = new HashMap<>();
 
-		param.put("telNo", telNo);
+		param.put("empid", telNo);
 		param.put("docid", id);
 
 		List<String> checkLoginid = approvalService.checkLoginid(param);
