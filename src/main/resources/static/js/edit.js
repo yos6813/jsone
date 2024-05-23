@@ -110,9 +110,15 @@
         $('.save-btn').click(function(){
             $(".form_type").val('update');
 
-            if($(".form_type").val() == 'update') {
-                $('#update').submit();
+            if($('input[name="approver[]"]:checked').length) {
+                if($(".form_type").val() == 'update') {
+                    $('#update').submit();
+                }
+            } else {
+                alert('결재자를 선택해주세요.');
             }
+
+            
         });
 
         /* 결재올리기 */

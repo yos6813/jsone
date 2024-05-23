@@ -563,7 +563,7 @@ public class HomeController {
 	
 	/* 글 저장 */
 	@PostMapping("/update")
-	public String update(@RequestParam Map<String, String> map, @RequestParam(name = "original_file_name", required = false) String[] fileName, @RequestParam("approver") String[] approv, @RequestParam("viewer") String[] view, Model model, HttpServletRequest request) {
+	public String update(@RequestParam Map<String, String> map, @RequestParam(name = "original_file_name", required = false) String[] fileName, @RequestParam("approver") String[] approv, @RequestParam(name = "viewer", required = false) String[] view, Model model, HttpServletRequest request) {
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
