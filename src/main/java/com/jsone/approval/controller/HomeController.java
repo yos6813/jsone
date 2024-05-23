@@ -603,12 +603,14 @@ public class HomeController {
 				approvalService.insertApprover(appMap);
 			}
 
-			for(Integer i=0;i<view.length;i++){
-				Map<String, String> viewMap = new HashMap<>();
+			if(view != null) {
+				for(Integer i=0;i<view.length;i++){
+					Map<String, String> viewMap = new HashMap<>();
 
-				viewMap.put("id", map.get("id"));
-				viewMap.put("code", view[i]);
-				approvalService.insertViewer(viewMap);
+					viewMap.put("id", map.get("id"));
+					viewMap.put("code", view[i]);
+					approvalService.insertViewer(viewMap);
+				}
 			}
 
 			return "redirect:/personalDoc";
