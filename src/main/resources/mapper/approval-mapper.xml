@@ -130,7 +130,7 @@
                 <if test="title != null and title != ''">
                         <if test="code != null and code != ''">
                                 <if test="title =='결재'">
-                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = d.step
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = (d.step + 1)
                                 </if>
                                 <if test="title =='공람'">
                                         WHERE (p.pub_cd = '${code}' AND p.empid = 0)
@@ -201,7 +201,7 @@
                 <if test="title != null and title != ''">
                         <if test="code != null and code != ''">
                                 <if test="title =='결재'">
-                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0)
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = (d.step + 1)
                                 </if>
                                 <if test="title =='공람'">
                                         WHERE (p.pub_cd = '${code}' AND p.empid = 0)
