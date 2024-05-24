@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.jsone.approval.dto.ApproverDTO;
 import com.jsone.approval.dto.ChatAjaxDTO;
 import com.jsone.approval.dto.ChatDTO;
+import com.jsone.approval.dto.CodeDTO;
 import com.jsone.approval.dto.CustDTO;
 import com.jsone.approval.dto.FileDTO;
 import com.jsone.approval.dto.ListDTO;
@@ -155,6 +156,10 @@ public class ApprovalService {
 
 	public void fileUpdate(Map<String, String> map) {
 		approvalRepository.fileUpdate(map);
+	}
+
+	public List<CodeDTO> checkSeq(String code) {
+		return approvalRepository.checkSeq(code);
 	}
 
 	public void insertApprover(Map<String, String> map) {

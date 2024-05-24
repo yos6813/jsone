@@ -13,5 +13,6 @@
         <typeAlias type="com.jsone.approval.dto.ApproverDTO" alias="approver"></typeAlias>
         <typeAlias type="com.jsone.approval.dto.SubCntDTO" alias="subCnt"></typeAlias>
         <typeAlias type="com.jsone.approval.dto.FileDTO" alias="file"></typeAlias>
+        <typeAlias type="com.jsone.approval.dto.CodeDTO" alias="code"></typeAlias>
     </typeAliases>
 </configuration>

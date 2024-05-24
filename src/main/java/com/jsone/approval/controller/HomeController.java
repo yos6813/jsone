@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jsone.approval.dto.ApproverDTO;
 import com.jsone.approval.dto.ChatDTO;
+import com.jsone.approval.dto.CodeDTO;
 import com.jsone.approval.dto.CustDTO;
 import com.jsone.approval.dto.FileDTO;
 import com.jsone.approval.dto.ListDTO;
@@ -568,6 +569,21 @@ public class HomeController {
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 
+		String codes = "";
+		for(int i=0 ; i<approv.length ; i++) {
+			codes += "'" + approv[i] + "'";
+			if((i+1) != approv.length) {
+				codes += ",";
+			}
+		}
+
+		List<CodeDTO> step = approvalService.checkSeq(codes);
+		Map<String, String> stepMap = new HashMap<>();
+
+		step.forEach(a -> {
+			stepMap.put(a.getCode(), a.getStep());
+		});
+
 		if("update".equals(map.get("form_type"))) {
 			CommonUtil commonUtil = new CommonUtil();
 			String contentsText = commonUtil.removeTagString(map.get("contents").toString());
@@ -600,6 +616,8 @@ public class HomeController {
 
 				appMap.put("id", map.get("id"));
 				appMap.put("code", approv[i]);
+				appMap.put("step", stepMap.get(approv[i]));
+
 				approvalService.insertApprover(appMap);
 			}
 
@@ -640,12 +658,14 @@ public class HomeController {
 
 			approvalService.deleteViewer(Long.parseLong(map.get("id")));
 			approvalService.deleteApprover(Long.parseLong(map.get("id")));
-
+			
 			for(Integer i=0;i<approv.length;i++){
 				Map<String, String> appMap = new HashMap<>();
 
 				appMap.put("id", map.get("id"));
 				appMap.put("code", approv[i]);
+				appMap.put("step", stepMap.get(approv[i]));
+
 				approvalService.insertApprover(appMap);
 			}
 
@@ -658,7 +678,7 @@ public class HomeController {
 					approvalService.insertViewer(viewMap);
 				}
 			}
-			
+
 			map.put("status_cd", "002");
 			approvalService.approvalDoc(map);
 

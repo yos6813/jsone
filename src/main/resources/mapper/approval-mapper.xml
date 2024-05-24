@@ -462,9 +462,13 @@
         <insert id="fileUpdate" parameterType="map">
                 INSERT t_approval_document_attach VALUES ('${id}', '${file_path}', '${fileName}', getDate())
         </insert>
+        <select id="checkSeq" parameterType="String" resultType="code">
+                SELECT RANK() OVER(ORDER BY seq ASC) as step, code FROM t_code
+                WHERE category = '결재직위코드' AND isnull(id_parent, '') <![CDATA[<>]]> '' AND usyn = '1' AND code IN (${code})
+        </select>
         <!-- 결재자 추가 -->
         <insert id="insertApprover" parameterType="map">
-                INSERT t_approval_document_step VALUES ('${id}', 1, '${code}', 0, '', getDATE(), null, null)
+                INSERT t_approval_document_step VALUES ('${id}', ${step}, '${code}', 0, '', getDATE(), null, null)
         </insert>
         <!-- 공람자 추가 -->
         <insert id="insertViewer" parameterType="map">
