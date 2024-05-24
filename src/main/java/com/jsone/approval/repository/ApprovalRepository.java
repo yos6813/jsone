@@ -74,6 +74,10 @@ public class ApprovalRepository {
         return sql.selectOne("Approval.subCnt", param);
     }
 
+    public SubCntDTO progressSubCnt (Map<String, String> param) {
+        return sql.selectOne("Approval.progressSubCnt", param);
+    }
+
     public SubCntDTO publicSubCnt (Map<String, String> param) {
         return sql.selectOne("Approval.publicSubCnt", param);
     }

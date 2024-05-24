@@ -422,7 +422,7 @@ public class HomeController {
 				/* 진행중 문서 */
 				map.put("status_cd", "'002'");
 				map.put("code", model.getAttribute("coopCd").toString());
-				map.put("title", "결재");
+				map.put("title", "진행");
 
 				/* 현재 필터링 되고 있는 서브메뉴 */
 				if(map.get("type_cd") != null) {
@@ -440,8 +440,8 @@ public class HomeController {
 				model.addAttribute("cnt", cnt);
 
 				/* 서브 메뉴 별 개수 */
-				SubCntDTO subCnt = approvalService.stepSubCnt(map);
-				model.addAttribute("subCnt", subCnt);
+				SubCntDTO progressSubCnt = approvalService.progressSubCnt(map);
+				model.addAttribute("subCnt", progressSubCnt);
 			
 				return "list";
 			} else {

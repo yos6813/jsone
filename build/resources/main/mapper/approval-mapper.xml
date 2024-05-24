@@ -117,7 +117,7 @@
                                 JOIN t_approval_document_public AS p ON d.docid = p.docid
                                 JOIN t_emp e ON e.coop_cd = p.pub_cd
                         </if>
-                        <if test="title == '결재' or title == '결재문서'">
+                        <if test="title == '결재' or title == '결재문서' or title == '진행'">
                                 JOIN t_approval_document_step AS s ON d.docid = s.docid
                                 JOIN t_emp e ON e.pos_cd = s.pos_cd
                         </if>
@@ -134,6 +134,9 @@
                                 </if>
                                 <if test="title =='공람'">
                                         WHERE (p.pub_cd = '${code}' AND p.empid = 0)
+                                </if>
+                                <if test="title =='진행'">
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.empid = 0 AND s.step = (d.step + 2)
                                 </if>
                         </if>
                         <if test="pid != null">
@@ -188,7 +191,7 @@
                                 JOIN t_approval_document_public AS p ON d.docid = p.docid
                                 JOIN t_emp e ON e.coop_cd = p.pub_cd
                         </if>
-                        <if test="title == '결재' or title == '결재문서'">
+                        <if test="title == '결재' or title == '결재문서' or title == '진행'">
                                 JOIN t_approval_document_step AS s ON d.docid = s.docid
                                 JOIN t_emp e ON e.pos_cd = s.pos_cd
                         </if>
@@ -205,6 +208,9 @@
                                 </if>
                                 <if test="title =='공람'">
                                         WHERE (p.pub_cd = '${code}' AND p.empid = 0)
+                                </if>
+                                <if test="title =='진행'">
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = (d.step + 2)
                                 </if>
                         </if>
                         <if test="pid != null">
@@ -261,9 +267,29 @@
                 (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
                 WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '007') AS 'spend'
         </select>
+        <!-- 파라미터 미포함 갯수(sub_nav용) 진행서류 -->
+        <select id="progressSubCnt" parameterType="map" resultType="subCnt">
+                SELECT
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0') AS 'all',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '001') AS 'internal',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '002') AS 'external',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '003') AS 'apply',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '004') AS 'report',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '005') AS 'work',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '006') AS 'annual',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '007') AS 'spend'
+        </select>
         <!-- 파라미터 미포함 갯수(sub_nav용) 전자결재 & 결재문서 -->
         <select id="stepSubCnt" parameterType="map" resultType="subCnt">
-                <if test="title != null and title == '결재'">
+                <if test="(title != null and title == '결재') or title == '진행' ">
                         SELECT
                         (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
                         WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0') AS 'all',
@@ -409,7 +435,6 @@
                 SELECT c.id, c.name, e.empid, e.emp_nm, c.code, c.seq FROM t_code AS c
                 JOIN t_emp AS e ON c.code = e.pos_cd
                 WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND (e.pos_cd != 0 AND e.pos_cd IS NOT NULL)
-                AND e.empid != '${empid}'
                 ORDER BY c.seq
         </select>
         <!-- 모든 공람자 조회 -->

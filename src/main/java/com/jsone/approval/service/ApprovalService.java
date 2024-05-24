@@ -74,6 +74,10 @@ public class ApprovalService {
 		return approvalRepository.subCnt(param);
 	}
 
+	public SubCntDTO progressSubCnt (Map<String, String> param) {
+		return approvalRepository.progressSubCnt(param);
+	}
+
 	public SubCntDTO publicSubCnt (Map<String, String> param) {
 		return approvalRepository.publicSubCnt(param);
 	}
