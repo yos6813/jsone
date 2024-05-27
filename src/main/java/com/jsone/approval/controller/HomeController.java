@@ -663,8 +663,7 @@ public class HomeController {
 					}
 				}
 	
-				map.put("status_cd", "002");
-				approvalService.approvalDoc(map);
+				approvalService.returnKeep(map);
 	
 				return "redirect:/personalDoc";
 			} 
