@@ -459,9 +459,14 @@ input[type="checkbox"]:checked + span{
 
 .view-body .btn-box {
     padding-bottom: 10px;
-    text-align: left;
-    width: 90%;
+    text-align: right;
+    width: 340px;
     margin: 0 auto;
+}
+
+.view-body .body-top {
+    clear: both;
+    padding-top: 5px;
 }
 
 .view-body .body-middle .info-box {
@@ -490,7 +495,7 @@ input[type="checkbox"]:checked + span{
 .view-body .body-middle .info-box .info .text-title {
     color: #999999;
     margin-right: 10px;
-    width: 50px;
+    width: 60px;
 }
 
 .view-body .body-middle .info-box .info .half-width {

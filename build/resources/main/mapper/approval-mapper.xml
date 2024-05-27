@@ -130,13 +130,13 @@
                 <if test="title != null and title != ''">
                         <if test="code != null and code != ''">
                                 <if test="title =='결재'">
-                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = (d.step + 1)
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = d.step
                                 </if>
                                 <if test="title =='공람'">
                                         WHERE (p.pub_cd = '${code}' AND p.empid = 0)
                                 </if>
                                 <if test="title =='진행'">
-                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.empid = 0 AND s.step = (d.step + 2)
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.empid = 0 AND s.step = (d.step + 1)
                                 </if>
                         </if>
                         <if test="pid != null">
@@ -204,13 +204,13 @@
                 <if test="title != null and title != ''">
                         <if test="code != null and code != ''">
                                 <if test="title =='결재'">
-                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = (d.step + 1)
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = d.step
                                 </if>
                                 <if test="title =='공람'">
                                         WHERE (p.pub_cd = '${code}' AND p.empid = 0)
                                 </if>
                                 <if test="title =='진행'">
-                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = (d.step + 2)
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = (d.step + 1)
                                 </if>
                         </if>
                         <if test="pid != null">
@@ -480,7 +480,7 @@
         <!-- 글 편집 후 저장 -->
         <update id="update" parameterType="map">
                 UPDATE t_approval_document
-                SET title = '${title}', type_cd = '${type_cd}', contents = '${contents}', reference_docid = '${reference_docid}', contents_text = '${contents_text}'
+                SET title = '${title}', step = '${step}', type_cd = '${type_cd}', contents = '${contents}', reference_docid = '${reference_docid}', contents_text = '${contents_text}'
                 WHERE docid = '${id}'
         </update>
         <!-- 파일 데이터 업데이트 -->
@@ -565,34 +565,16 @@
         </select>
         <!-- 글 반려 후 저장 -->
         <insert id="insert" parameterType="map">
-                INSERT INTO t_approval_document
-				(docid,
-				type_cd,
-                                status_cd,
-                                empid,
-                                step,
-                                end_step,
-                                title,
-                                contents,
-                                contents_text,
-                                create_date
-                                copy_docid,
-				)
-				select (select max(docid)+1 from t_approval_document)
-                                ,type_cd
-                        ,'001'
-                        ,empid
-                        ,step
-                        ,end_step
-                        ,title
-                        ,contents
-                        ,contents_text
-                        ,,getdate()
-                        ,docid
-                        from t_approval_document
-                        where docid = ${id}
+                INSERT INTO t_approval_document (type_cd, status_cd, empid, step, end_step, title, contents, contents_text, create_date, copy_docid)
+                SELECT type_cd, '001', empid, step, end_step, title, contents, contents_text, getdate(), docid
+                FROM t_approval_document
+                where docid = ${id}
         </insert>
         <select id="nextDocid" resultType="Long">
-        	select max(docid)+1 from t_approval_document
+                SELECT max(docid)+1 FROM t_approval_document
         </select>
+        <!-- 반려 문서에서 저장 및 결재 할때 기존 반려문서 반려보관상태로 변경 -->
+        <update id="returnKeep" parameterType="map">
+                UPDATE t_approval_document SET status_cd = '004' WHERE docid = '${id}'
+        </update>
 </mapper>

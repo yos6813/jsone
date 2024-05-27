@@ -562,7 +562,6 @@ public class HomeController {
 		}
 	}
 	
-		
 	/* 글 저장 */
 	@PostMapping("/update")
 	public String update(@RequestParam Map<String, String> map, @RequestParam(name = "original_file_name", required = false) String[] fileName, @RequestParam("approver") String[] approv, @RequestParam(name = "viewer", required = false) String[] view, Model model, HttpServletRequest request) {
@@ -601,6 +600,7 @@ public class HomeController {
 				map.remove("contents");
 				map.put("contents", contents);
 				map.put("docid", docid.toString());
+				map.put("step", "0");
 	
 				approvalService.insert(map);
 				
@@ -628,6 +628,7 @@ public class HomeController {
 	
 				map.remove("contents");
 				map.put("contents", contents);
+				map.put("step", "1");
 	
 				approvalService.insert(map);
 	
@@ -641,8 +642,27 @@ public class HomeController {
 						approvalService.fileUpdate(map);
 					}
 				}
+
+				for(Integer i=0;i<approv.length;i++){
+					Map<String, String> appMap = new HashMap<>();
+
+					appMap.put("id", map.get("id"));
+					appMap.put("code", approv[i]);
+					appMap.put("step", stepMap.get(approv[i]));
+
+					approvalService.insertApprover(appMap);
+				}
+
+				if(view != null) {
+					for(Integer i=0;i<view.length;i++){
+						Map<String, String> viewMap = new HashMap<>();
+
+						viewMap.put("id", map.get("id"));
+						viewMap.put("code", view[i]);
+						approvalService.insertViewer(viewMap);
+					}
+				}
 	
-				
 				map.put("status_cd", "002");
 				approvalService.approvalDoc(map);
 	
@@ -660,6 +680,7 @@ public class HomeController {
 	
 				map.remove("contents");
 				map.put("contents", contents);
+				map.put("step", "0");
 	
 				approvalService.update(map);
 	
@@ -686,11 +707,11 @@ public class HomeController {
 
 					approvalService.insertApprover(appMap);
 				}
-	
+
 				if(view != null) {
 					for(Integer i=0;i<view.length;i++){
 						Map<String, String> viewMap = new HashMap<>();
-	
+
 						viewMap.put("id", map.get("id"));
 						viewMap.put("code", view[i]);
 						approvalService.insertViewer(viewMap);
@@ -708,6 +729,7 @@ public class HomeController {
 	
 				map.remove("contents");
 				map.put("contents", contents);
+				map.put("step", "1");
 	
 				approvalService.update(map);
 	

@@ -10,12 +10,20 @@
 
         /* 기본 닫기 버튼 */
         $('.btn-close').click(function(){
-            location.href = '/' + path[1];
+            if(path[1] == 'edit') {
+                location.href = document.referrer;
+            } else {
+                location.href = '/' + path[1];
+            }
         });
 
         /* 취소 버튼 */
         $('.close-btn').click(function(){
-            location.href = '/' + path[1];
+            if(path[1] == 'edit') {
+                location.href = document.referrer;
+            } else {
+                location.href = '/' + path[1];
+            }
         });
 
         /* 로그아웃 버튼 */
