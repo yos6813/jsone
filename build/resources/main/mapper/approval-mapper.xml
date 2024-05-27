@@ -563,18 +563,21 @@
                 WHERE s.docid = ${docid} AND s.step  <![CDATA[>]]> ${step} AND s.empid = 0) AS r
                 WHERE r.rank = 1
         </select>
-        <!-- 글 반려 후 저장 -->
+        <!-- 반려 문서에서 저장 및 결재 -->
         <insert id="insert" parameterType="map">
-                INSERT INTO t_approval_document (type_cd, status_cd, empid, step, end_step, title, contents, contents_text, create_date, copy_docid)
-                SELECT type_cd, '001', empid, step, end_step, title, contents, contents_text, getdate(), docid
+                SET IDENTITY_INSERT t_approval_document ON;
+                INSERT INTO t_approval_document(docid, type_cd, status_cd, empid, step, end_step, title, contents, contents_text, create_date, copy_docid)
+                SELECT  ${docid}, '${type_cd}', '001', empid, step, end_step, '${title}', '${contents}', '${contents_text}', getdate(), docid
                 FROM t_approval_document
-                where docid = ${id}
+                WHERE docid = ${id};
+                SET IDENTITY_INSERT t_approval_document OFF;
         </insert>
+        <!-- 반려 문서에서 저장 및 결재 할때 문서번호 생성 -->
         <select id="nextDocid" resultType="Long">
-                SELECT max(docid)+1 FROM t_approval_document
+        SELECT max(docid)+1 FROM t_approval_document
         </select>
         <!-- 반려 문서에서 저장 및 결재 할때 기존 반려문서 반려보관상태로 변경 -->
         <update id="returnKeep" parameterType="map">
-                UPDATE t_approval_document SET status_cd = '004' WHERE docid = '${id}'
+        UPDATE t_approval_document SET status_cd = '004' WHERE docid = '${id}'
         </update>
 </mapper>

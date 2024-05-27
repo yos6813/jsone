@@ -39,13 +39,13 @@
         });
 
         $('.copy_id').click(function(){
-            var href = $(this).data('href');
-            location.href = location.origin + "/" + href;
+            var href = location.origin + "/" + $(this).data('href');
+            window.open(href, 'copyView', 'width=430, height=500, location=no, status=no, scrollbars=yes');
         });
 
         $('.refer_id').click(function(){
-            var href = $(this).data('href');
-            location.href = location.origin + "/" + href;
+            var href = location.origin + "/" + $(this).data('href');
+            window.open(href, 'referView', 'width=430, height=500, location=no, status=no, scrollbars=yes');
         });
 
         /* 뷰 하단 대화 전송 시 AJAX 처리 */

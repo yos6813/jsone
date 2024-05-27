@@ -597,8 +597,14 @@ input[type="checkbox"]:checked + span{
 }
 
 /* 편집 */
+#edit {
+    margin: 0 auto;
+}
+
 .edit-head {
     padding-top: 20px;
+    text-align: right;
+    width: 340px;
 }
 
 .edit-head button {
