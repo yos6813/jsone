@@ -126,39 +126,43 @@
             $(".form_type").val('approval');
             var telNo = new Array();
             
-            $('input[name="approver[]"]:checked').each(function(index) {
-                telNo[index] = $(this).data("id");
-            });
+            if($('input[name="approver[]"]:checked').length) {
+                $('input[name="approver[]"]:checked').each(function(index) {
+                    telNo[index] = $(this).data("id");
+                });
 
-            $.ajax({
-                type: 'POST',
-                url: '/sendApproval',
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify({
-                    id: $('.id').val(),
-                    name: $('.emp_nm').val(),
-                    title: $('.title').val(),
-                    telNo: telNo.toString(),
-                    button: JSON.stringify({
-                        "button": [
-                            {
-                                "name": "결재문서 확인하기",
-                                "linkType": "WL",
-                                "linkTypeName": "웹링크",
-                                "linkMo": "http://jsoftone4.cafe24.com",
-                                "linkPc": "http://전자결재.com"
-                            }
-                        ]
-                    })
-                }),
-                success: function(response) {
-                    $('#update').submit();
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
-                }
-            });
+                $.ajax({
+                    type: 'POST',
+                    url: '/sendApproval',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        id: $('.id').val(),
+                        name: $('.emp_nm').val(),
+                        title: $('.title').val(),
+                        telNo: telNo.toString(),
+                        button: JSON.stringify({
+                            "button": [
+                                {
+                                    "name": "결재문서 확인하기",
+                                    "linkType": "WL",
+                                    "linkTypeName": "웹링크",
+                                    "linkMo": "http://jsoftone4.cafe24.com",
+                                    "linkPc": "http://전자결재.com"
+                                }
+                            ]
+                        })
+                    }),
+                    success: function(response) {
+                        $('#update').submit();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+            } else {
+                alert('결재자를 선택해주세요.');
+            }
         });
     })
 })(jQuery)
