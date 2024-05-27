@@ -157,7 +157,19 @@ public class ApprovalRepository {
     public void update (Map<String, String> map) {
         sql.update("Approval.update", map);
     }
-
+    
+    public void insert (Map<String, String> map) {
+        sql.update("Approval.insert", map);
+    }
+    
+    public void returnKeep (Map<String, String> map) {
+        sql.update("Approval.returnKeep", map);
+    }
+    
+    public Long nextDocid () {
+    	return sql.selectOne("Approval.nextDocid");
+    }
+    
     public void fileUpdate (Map<String, String> map) {
         sql.update("Approval.fileUpdate", map);
     }

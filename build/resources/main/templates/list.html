@@ -6,24 +6,24 @@
                     <span class="sub-title">[[${title}]] <i class="fa-solid fa-chevron-right"></i></span>
                     <ul th:if="${title == '개인서류'}" class="sub-nav">
                         <li><a class="black-txt all_report">전체 [[${subCnt['all']} ? '(' + ${subCnt['all']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?status_cd=001">임시저장 [[${subCnt['draft']} ? '(' + ${subCnt['draft']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?status_cd=002">진행중 [[${subCnt['ongoing']} ? '(' + ${subCnt['ongoing']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?status_cd=003">반려 [[${subCnt['refer']} ? '(' + ${subCnt['refer']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?status_cd=004">반려보관 [[${subCnt['storage']} ? '(' + ${subCnt['storage']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?status_cd=005">완료 [[${subCnt['complete']} ? '(' + ${subCnt['complete']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=001">임시저장 [[${subCnt['draft']} ? '(' + ${subCnt['draft']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=002">진행중 [[${subCnt['ongoing']} ? '(' + ${subCnt['ongoing']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=003">반려 [[${subCnt['refer']} ? '(' + ${subCnt['refer']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=004">반려보관 [[${subCnt['storage']} ? '(' + ${subCnt['storage']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?type_cd=005">완료 [[${subCnt['complete']} ? '(' + ${subCnt['complete']} + ')' : '']]</a></li>
                     </ul>
                     <ul th:unless="${title == '개인서류'}" class="sub-nav">
                         <li><a class="black-txt all_report">전체 [[${subCnt['all']} ? '(' + ${subCnt['all']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?type_cd=005">업무일지 [[${subCnt['work']} ? '(' + ${subCnt['work']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?type_cd=003">접수문서 [[${subCnt['apply']} ? '(' + ${subCnt['apply']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?type_cd=002">외부발송 [[${subCnt['external']} ? '(' + ${subCnt['external']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?type_cd=001">내부기안 [[${subCnt['internal']} ? '(' + ${subCnt['internal']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?type_cd=004">보고문서 [[${subCnt['report']} ? '(' + ${subCnt['report']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?type_cd=006">연차신청 [[${subCnt['annual']} ? '(' + ${subCnt['annual']} + ')' : '']]</a></li>
-                        <li><a class="black-txt" href="?type_cd=007">지출결의 [[${subCnt['spend']} ? '(' + ${subCnt['spend']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=005">업무일지 [[${subCnt['work']} ? '(' + ${subCnt['work']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=003">접수문서 [[${subCnt['apply']} ? '(' + ${subCnt['apply']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=002">외부발송 [[${subCnt['external']} ? '(' + ${subCnt['external']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=001">내부기안 [[${subCnt['internal']} ? '(' + ${subCnt['internal']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=004">보고문서 [[${subCnt['report']} ? '(' + ${subCnt['report']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=006">연차신청 [[${subCnt['annual']} ? '(' + ${subCnt['annual']} + ')' : '']]</a></li>
+                        <li><a class="black-txt" href="?status_cd=007">지출결의 [[${subCnt['spend']} ? '(' + ${subCnt['spend']} + ')' : '']]</a></li>
                     </ul>
-                    <span th:if="${title == '개인서류'}" class="list-nav">[[${title}]]/[[${map['status']} != null ? ${cnt.status_cd} : '전체']]([[${cnt != null ? cnt.full_cnt : 0}]])</span>
-                    <span th:unless="${title == '개인서류'}" class="list-nav">[[${title}]]/[[${map['type']} != null ? ${cnt.type_cd} : '전체']]([[${cnt != null ? cnt.full_cnt : 0}]])</span>
+                    <span th:if="${title == '개인서류'}" class="list-nav">[[${title}]]/[[${map['type']} != null ? ${cnt.type_cd} : '전체']]([[${cnt != null ? cnt.full_cnt : 0}]])</span>
+                    <span th:unless="${title == '개인서류'}" class="list-nav">[[${title}]]/[[${map['status']} != null ? ${cnt.status_cd} : '전체']]([[${cnt != null ? cnt.full_cnt : 0}]])</span>
                 </div>
                 <div class="sign-body">
                     <div class="search-box">
@@ -48,10 +48,9 @@
                         </form>
                     </div>
                     <div class="list-box">
-                        <input type="hidden" id="path" th:value="${path}" />
-                        <div class="list" th:attr="data-href=${list.status_cd} != '임시저장' ? ${path} + '/' + ${list.docid} : 'edit/' + ${list.docid} " th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
+                        <div class="list" th:attr="data-href=${list.type_cd} != '임시저장' ? ${path} + '/' + ${list.docid} : 'edit/' + ${list.docid} " th:if="!${#lists.isEmpty(approvalList)}" th:each="list: ${approvalList}">
                             <span th:text="${list.title}"></span><i th:if="${list.cnt} > 0" class="fa-regular fa-file-lines"></i>
-                            <span class="second-line" th:text="${list.create_date} + ' / ' + ${list.status_cd} + ' / ' + ${list.type_cd} + ' / ' + ${list.emp_nm} + ' / ' + ${list.name}"></span>
+                            <span class="second-line" th:text="${list.create_date} + ' / ' + ${list.type_cd} + ' / ' + ${list.status_cd} + ' / ' + ${list.emp_nm} + ' / ' + ${list.name}"></span>
                             <span th:text="${list.contents_text}"></span>
                         </div>
                         <div class="list" th:unless="!${#lists.isEmpty(approvalList)}">
@@ -60,7 +59,7 @@
                     </div>
                     <div th:if="${cnt != null} and ${cnt.full_cnt > 20}">
                         <input type="hidden" id="full_cnt" th:value="${cnt.full_cnt}" />
-                        <input type="hidden" id="status_cd" th:value="${map['status_cd']}" />
+                        <input type="hidden" id="type_cd" th:value="${map['type_cd']}" />
                         <input type="hidden" id="page" th:value="1" />
                         <button type="button" class="more-btn btn secondary">더보기</button>
                     </div>

@@ -157,6 +157,19 @@ public class ApprovalService {
 	public void update (Map<String, String> map) {
 		approvalRepository.update(map);
 	}
+	
+	public void insert (Map<String, String> map) {
+		approvalRepository.insert(map);
+	}
+	
+	public void returnKeep (Map<String, String> map) {
+		approvalRepository.returnKeep(map);
+	}
+	
+	public Long nextDocid() {
+		return approvalRepository.nextDocid();
+	}
+	
 
 	public void fileUpdate(Map<String, String> map) {
 		approvalRepository.fileUpdate(map);

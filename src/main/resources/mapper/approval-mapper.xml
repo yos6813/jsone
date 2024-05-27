@@ -563,4 +563,36 @@
                 WHERE s.docid = ${docid} AND s.step  <![CDATA[>]]> ${step} AND s.empid = 0) AS r
                 WHERE r.rank = 1
         </select>
+        <!-- 글 반려 후 저장 -->
+        <insert id="insert" parameterType="map">
+                INSERT INTO t_approval_document
+				(docid,
+				type_cd,
+                                status_cd,
+                                empid,
+                                step,
+                                end_step,
+                                title,
+                                contents,
+                                contents_text,
+                                create_date
+                                copy_docid,
+				)
+				select (select max(docid)+1 from t_approval_document)
+                                ,type_cd
+                        ,'001'
+                        ,empid
+                        ,step
+                        ,end_step
+                        ,title
+                        ,contents
+                        ,contents_text
+                        ,,getdate()
+                        ,docid
+                        from t_approval_document
+                        where docid = ${id}
+        </insert>
+        <select id="nextDocid" resultType="Long">
+        	select max(docid)+1 from t_approval_document
+        </select>
 </mapper>

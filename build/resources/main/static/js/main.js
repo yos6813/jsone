@@ -5,14 +5,17 @@
             opacity: 0
         }, 3000);
 
+        var pathname = location.pathname;
+        var path = pathname.split('/');
+
         /* 기본 닫기 버튼 */
         $('.btn-close').click(function(){
-            location.href = document.referrer;
+            location.href = '/' + path[1];
         });
 
         /* 취소 버튼 */
         $('.close-btn').click(function(){
-            location.href = document.referrer;
+            location.href = '/' + path[1];
         });
 
         /* 로그아웃 버튼 */

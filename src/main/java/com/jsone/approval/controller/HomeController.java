@@ -562,6 +562,7 @@ public class HomeController {
 		}
 	}
 	
+		
 	/* 글 저장 */
 	@PostMapping("/update")
 	public String update(@RequestParam Map<String, String> map, @RequestParam(name = "original_file_name", required = false) String[] fileName, @RequestParam("approver") String[] approv, @RequestParam(name = "viewer", required = false) String[] view, Model model, HttpServletRequest request) {
@@ -584,112 +585,178 @@ public class HomeController {
 			stepMap.put(a.getCode(), a.getStep());
 		});
 
-		if("update".equals(map.get("form_type"))) {
-			CommonUtil commonUtil = new CommonUtil();
-			String contentsText = commonUtil.removeTagString(map.get("contents").toString());
 
-			map.put("contents_text", contentsText);
-
-			String contents = map.get("contents").replace("'", "&#39;");
-
-			map.remove("contents");
-			map.put("contents", contents);
-
-			approvalService.update(map);
-
-			if(fileName != null){
-				for (String item : fileName) {
-					String filePath = "/files" + File.separator + item;
-
-					map.put("file_path", filePath);
-					map.put("fileName", item);
-
-					approvalService.fileUpdate(map);
-				}
-			}
-
-			approvalService.deleteViewer(Long.parseLong(map.get("id")));
-			approvalService.deleteApprover(Long.parseLong(map.get("id")));
-
-			for(Integer i=0;i<approv.length;i++){
-				Map<String, String> appMap = new HashMap<>();
-
-				appMap.put("id", map.get("id"));
-				appMap.put("code", approv[i]);
-				appMap.put("step", stepMap.get(approv[i]));
-
-				approvalService.insertApprover(appMap);
-			}
-
-			if(view != null) {
-				for(Integer i=0;i<view.length;i++){
-					Map<String, String> viewMap = new HashMap<>();
-
-					viewMap.put("id", map.get("id"));
-					viewMap.put("code", view[i]);
-					approvalService.insertViewer(viewMap);
-				}
-			}
-
-			return "redirect:/personalDoc";
-		} else if("approval".equals(map.get("form_type"))) {
-			CommonUtil commonUtil = new CommonUtil();
-			String contentsText = commonUtil.removeTagString(map.get("contents").toString());
-
-			map.put("contents_text", contentsText);
-
-			String contents = map.get("contents").replace("'", "&#39;");
-
-			map.remove("contents");
-			map.put("contents", contents);
-
-			approvalService.update(map);
-
-			if(fileName != null){
-				for (String item : fileName) {
-					String filePath = "/files" + File.separator + item;
-
-					map.put("file_path", filePath);
-					map.put("fileName", item);
-
-					approvalService.fileUpdate(map);
-				}
-			}
-
-			approvalService.deleteViewer(Long.parseLong(map.get("id")));
-			approvalService.deleteApprover(Long.parseLong(map.get("id")));
+		if("반려".equals(map.get("status_cd"))) {
 			
-			for(Integer i=0;i<approv.length;i++){
-				Map<String, String> appMap = new HashMap<>();
-
-				appMap.put("id", map.get("id"));
-				appMap.put("code", approv[i]);
-				appMap.put("step", stepMap.get(approv[i]));
-
-				approvalService.insertApprover(appMap);
-			}
-
-			if(view != null) {
-				for(Integer i=0;i<view.length;i++){
-					Map<String, String> viewMap = new HashMap<>();
-
-					viewMap.put("id", map.get("id"));
-					viewMap.put("code", view[i]);
-					approvalService.insertViewer(viewMap);
+			Long docid = approvalService.nextDocid();
+			
+			if("update".equals(map.get("form_type"))) {
+				CommonUtil commonUtil = new CommonUtil();
+				String contentsText = commonUtil.removeTagString(map.get("contents").toString());
+	
+				map.put("contents_text", contentsText);
+	
+				String contents = map.get("contents").replace("'", "&#39;");
+	
+				map.remove("contents");
+				map.put("contents", contents);
+				map.put("docid", docid.toString());
+	
+				approvalService.insert(map);
+				
+				if(fileName != null){
+					for (String item : fileName) {
+						String filePath = "/files" + File.separator + item;
+	
+						map.put("file_path", filePath);
+						map.put("fileName", item);
+	
+						approvalService.fileUpdate(map);
+					}
 				}
+				
+				approvalService.returnKeep(map);
+	
+				return "redirect:/personalDoc";
+			} else if("approval".equals(map.get("form_type"))) {
+				CommonUtil commonUtil = new CommonUtil();
+				String contentsText = commonUtil.removeTagString(map.get("contents").toString());
+	
+				map.put("contents_text", contentsText);
+	
+				String contents = map.get("contents").replace("'", "&#39;");
+	
+				map.remove("contents");
+				map.put("contents", contents);
+	
+				approvalService.insert(map);
+	
+				if(fileName != null){
+					for (String item : fileName) {
+						String filePath = "/files" + File.separator + item;
+	
+						map.put("file_path", filePath);
+						map.put("fileName", item);
+	
+						approvalService.fileUpdate(map);
+					}
+				}
+	
+				
+				map.put("status_cd", "002");
+				approvalService.approvalDoc(map);
+	
+				return "redirect:/personalDoc";
+			} 
+			
+		} else {
+			if("update".equals(map.get("form_type"))) {
+				CommonUtil commonUtil = new CommonUtil();
+				String contentsText = commonUtil.removeTagString(map.get("contents").toString());
+	
+				map.put("contents_text", contentsText);
+	
+				String contents = map.get("contents").replace("'", "&#39;");
+	
+				map.remove("contents");
+				map.put("contents", contents);
+	
+				approvalService.update(map);
+	
+				if(fileName != null){
+					for (String item : fileName) {
+						String filePath = "/files" + File.separator + item;
+	
+						map.put("file_path", filePath);
+						map.put("fileName", item);
+	
+						approvalService.fileUpdate(map);
+					}
+				}
+	
+				approvalService.deleteViewer(Long.parseLong(map.get("id")));
+				approvalService.deleteApprover(Long.parseLong(map.get("id")));
+	
+				for(Integer i=0;i<approv.length;i++){
+					Map<String, String> appMap = new HashMap<>();
+
+					appMap.put("id", map.get("id"));
+					appMap.put("code", approv[i]);
+					appMap.put("step", stepMap.get(approv[i]));
+
+					approvalService.insertApprover(appMap);
+				}
+	
+				if(view != null) {
+					for(Integer i=0;i<view.length;i++){
+						Map<String, String> viewMap = new HashMap<>();
+	
+						viewMap.put("id", map.get("id"));
+						viewMap.put("code", view[i]);
+						approvalService.insertViewer(viewMap);
+					}
+				}
+	
+				return "redirect:/personalDoc";
+			} else if("approval".equals(map.get("form_type"))) {
+				CommonUtil commonUtil = new CommonUtil();
+				String contentsText = commonUtil.removeTagString(map.get("contents").toString());
+	
+				map.put("contents_text", contentsText);
+	
+				String contents = map.get("contents").replace("'", "&#39;");
+	
+				map.remove("contents");
+				map.put("contents", contents);
+	
+				approvalService.update(map);
+	
+				if(fileName != null){
+					for (String item : fileName) {
+						String filePath = "/files" + File.separator + item;
+	
+						map.put("file_path", filePath);
+						map.put("fileName", item);
+	
+						approvalService.fileUpdate(map);
+					}
+				}
+	
+				approvalService.deleteViewer(Long.parseLong(map.get("id")));
+				approvalService.deleteApprover(Long.parseLong(map.get("id")));
+	
+				for(Integer i=0;i<approv.length;i++){
+					Map<String, String> appMap = new HashMap<>();
+
+					appMap.put("id", map.get("id"));
+					appMap.put("code", approv[i]);
+					appMap.put("step", stepMap.get(approv[i]));
+
+					approvalService.insertApprover(appMap);
+				}
+	
+				if(view != null) {
+					for(Integer i=0;i<view.length;i++){
+						Map<String, String> viewMap = new HashMap<>();
+	
+						viewMap.put("id", map.get("id"));
+						viewMap.put("code", view[i]);
+						approvalService.insertViewer(viewMap);
+					}
+				}
+				
+				map.put("status_cd", "002");
+				approvalService.approvalDoc(map);
+	
+				return "redirect:/personalDoc";
+			} else if("delete".equals(map.get("form_type"))) {
+				approvalService.delAttach(Long.parseLong(map.get("id")));
+				approvalService.delApproval(Long.parseLong(map.get("id")));
+				approvalService.delViewer(Long.parseLong(map.get("id")));
+				approvalService.delDoc(Long.parseLong(map.get("id")));
+	
+				return "redirect:/personalDoc";
 			}
-
-			map.put("status_cd", "002");
-			approvalService.approvalDoc(map);
-
-			return "redirect:/personalDoc";
-		} else if("delete".equals(map.get("form_type"))) {
-			approvalService.delAttach(Long.parseLong(map.get("id")));
-			approvalService.delApproval(Long.parseLong(map.get("id")));
-			approvalService.delViewer(Long.parseLong(map.get("id")));
-			approvalService.delDoc(Long.parseLong(map.get("id")));
-
-			return "redirect:/personalDoc";
 		}
 
 		return "redirect:/edit/" + map.get("id");
