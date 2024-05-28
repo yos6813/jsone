@@ -204,17 +204,9 @@ public class AjaxController {
 
 	@PostMapping("/docRefer")
 	public Map<String, String> docRefer(@RequestBody Map<String, String> map, RestTemplate restTemplate) {
-		SmsUtil sms = new SmsUtil(restTemplate);
-		approvalService.docRefer(map);
-
-		Long approvCnt = approvalService.checkAppov(map);
 		map.put("id", map.get("docid"));
-
-		if(approvCnt <= 0) {
-			map.put("status_cd", "003");
-			approvalService.changeStep(Long.parseLong(map.get("docid")));
-			approvalService.approvalDoc(map);
-		}
+		map.put("status_cd", "003");
+		approvalService.docRefer(map);
 
 		Map<String, String> result = new HashMap<String, String>();
 
