@@ -653,6 +653,7 @@ public class HomeController {
 				map.remove("contents");
 				map.put("contents", contents);
 				map.put("docid", docid.toString());
+				map.put("status_cd", "001");
 				map.put("step", "0");
 	
 				approvalService.insert(map);
@@ -681,6 +682,7 @@ public class HomeController {
 	
 				map.remove("contents");
 				map.put("contents", contents);
+				map.put("status_cd", "002");
 				map.put("docid", docid.toString());
 				map.put("step", "1");
 	
