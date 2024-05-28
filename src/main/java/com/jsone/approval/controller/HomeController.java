@@ -668,6 +668,29 @@ public class HomeController {
 						approvalService.fileUpdate(map);
 					}
 				}
+
+				approvalService.deleteViewer(Long.parseLong(map.get("id")));
+				approvalService.deleteApprover(Long.parseLong(map.get("id")));
+
+				for(Integer i=0;i<approv.length;i++){
+					Map<String, String> appMap = new HashMap<>();
+
+					appMap.put("id", docid.toString());
+					appMap.put("code", approv[i]);
+					appMap.put("step", stepMap.get(approv[i]));
+
+					approvalService.insertApprover(appMap);
+				}
+
+				if(view != null) {
+					for(Integer i=0;i<view.length;i++){
+						Map<String, String> viewMap = new HashMap<>();
+
+						viewMap.put("id", docid.toString());
+						viewMap.put("code", view[i]);
+						approvalService.insertViewer(viewMap);
+					}
+				}
 				
 				approvalService.returnKeep(map);
 	
@@ -699,10 +722,13 @@ public class HomeController {
 					}
 				}
 
+				approvalService.deleteViewer(Long.parseLong(map.get("id")));
+				approvalService.deleteApprover(Long.parseLong(map.get("id")));
+
 				for(Integer i=0;i<approv.length;i++){
 					Map<String, String> appMap = new HashMap<>();
 
-					appMap.put("id", map.get("id"));
+					appMap.put("id", docid.toString());
 					appMap.put("code", approv[i]);
 					appMap.put("step", stepMap.get(approv[i]));
 
@@ -713,7 +739,7 @@ public class HomeController {
 					for(Integer i=0;i<view.length;i++){
 						Map<String, String> viewMap = new HashMap<>();
 
-						viewMap.put("id", map.get("id"));
+						viewMap.put("id", docid.toString());
 						viewMap.put("code", view[i]);
 						approvalService.insertViewer(viewMap);
 					}

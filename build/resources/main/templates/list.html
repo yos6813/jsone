@@ -66,7 +66,7 @@
                     <div th:if="${cnt != null} and ${cnt.full_cnt > 20}">
                         <input type="hidden" id="full_cnt" th:value="${cnt.full_cnt}" />
                         <input type="hidden" id="status_cd" th:value="${map['status_cd']}" />
-                        <input type="hidden" id="page" th:value="1" />
+                        <input type="hidden" id="page" th:value="20" />
                         <button type="button" class="more-btn btn secondary">더보기</button>
                     </div>
                 </div>

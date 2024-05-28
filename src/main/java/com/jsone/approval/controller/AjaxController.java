@@ -20,6 +20,7 @@ import com.jsone.approval.dto.ChatAjaxDTO;
 import com.jsone.approval.dto.ListDTO;
 import com.jsone.approval.dto.ViewDTO;
 import com.jsone.approval.service.ApprovalService;
+import com.jsone.approval.util.SessionUtil;
 import com.jsone.approval.util.SmsUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -258,7 +259,47 @@ public class AjaxController {
 	/* 리스트 페이지네이션 */
 	@PostMapping("/pagination")
 	@ResponseBody
-	public List<ListDTO> pagination(Model model, @RequestBody Map<String, String> map) {
+	public List<ListDTO> pagination(Model model, @RequestBody Map<String, String> map, HttpServletRequest request) {
+		/* 현재 필터링 되고 있는 서브메뉴 */
+		if(map.get("type_cd") != null) {
+			map.put("type", map.get("type_cd"));
+		}
+
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request, approvalService);
+		
+		if("sign".equals(map.get("path"))) {
+			/* 진행중 문서 */
+			map.put("status_cd", "'002'");
+			map.put("code", model.getAttribute("coopCd").toString());
+			map.put("title", "결재");
+		} else if("signDoc".equals(map.get("path"))) {
+			map.put("status_cd", "'002','003','999','005', '004'");
+			map.put("pid", model.getAttribute("empid").toString());
+			map.put("title", "결재문서");
+		} else if("announcementCheck".equals(map.get("path"))){
+			map.put("status_cd", "'002', '999', '003', '004'");
+			map.put("code",model.getAttribute("posCd").toString());
+			map.put("title", "공람");
+		} else if("announcementDoc".equals(map.get("path"))) {
+			map.put("status_cd", "'002','003','999','005','004'");
+			map.put("title", "공람문서");
+			map.put("pid", model.getAttribute("empid").toString());
+		} else if("personalDoc".equals(map.get("path"))) {
+			/* 현재 필터링 되고 있는 서브메뉴 */
+			if(map.get("status_cd") != null) {
+				String type = map.get("status_cd");
+				map.put("status", type);
+			}
+		} else if("prograssDoc".equals(map.get("path"))) {
+			map.put("status_cd", "'002'");
+			map.put("code", model.getAttribute("coopCd").toString());
+			map.put("title", "진행");
+		}
+
+		System.out.println(map);
+
 		List<ListDTO> listDTOList = approvalService.list(map);
 		
 		return listDTOList;

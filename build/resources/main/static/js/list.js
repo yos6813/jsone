@@ -42,12 +42,14 @@
                 data : JSON.stringify({
                     type_cd: $('#type_cd').val(),
                     page: $('#page').val(),
+                    path: $('#path').val()
                 }),
                 success : function(result) {
                     $('#page').val(parseInt($('#page').val()) + 20);
                     if(parseInt($('#page').val()) >= parseInt($('#full_cnt').val())) {
                         $('.more-btn').hide();
                     }
+                    console.log(result);
 
                     for(var i = 0; i<result.length; i++) {
                         var icon = '';
@@ -56,7 +58,7 @@
                             icon = '<i class="fa-regular fa-file-lines"></i>';
                         }
 
-                        if(result[i].type_cd == '임시저장') {
+                        if(result[i].type_cd == '임시저장' || result[i].type_cd == '반려') {
                             href = 'edit/' + result[i].docid;
                         } else {
                             href = $('#path').val() + '/' + result[i].docid;
@@ -65,7 +67,7 @@
                         $(".list-box").append(
                             '<div class="list" data-href="' + href + '">' +
                             '<span>' + result[i].title + '</span>' + icon +
-                            '<span class="second-line">' + result[i].create_date + ' / ' + result[i].type_cd + ' / ' + result[i].status_cd + ' / ' + result[i].emp_nm + ' / ' + result[i].name + '</span>' +
+                            '<span class="second-line">' + result[i].create_date + ' / ' + result[i].status_cd + ' / ' + result[i].type_cd + ' / ' + result[i].emp_nm + ' / ' + result[i].name + '</span>' +
                             '<span>' + result[i].contents_text + '</span>'
                         );
                     }

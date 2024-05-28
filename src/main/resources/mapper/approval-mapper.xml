@@ -99,7 +99,7 @@
                 </if>
         </select>
         <!-- 리스트 페이지 -->
-        <select id="list" resultType="map" parameterType="map">
+        <select id="list" resultType="sign" parameterType="map">
                 SELECT d.docid, d.empid, d.title, d.contents, d.contents_text, FORMAT(d.create_date, 'yyyy-MM-dd H:m') as create_date,
                 <if test="title != null and title != ''">
                         (SELECT e1.emp_nm FROM t_emp AS e1 JOIN t_code AS c1 ON e1.dept_cd = c1.code WHERE e1.empid = d.empid AND c1.category = '부서코드' AND isnull(c1.id_parent, '') <![CDATA[<>]]> '' AND c1.usyn = '1') AS emp_nm,
@@ -173,8 +173,14 @@
                         AND d.status_cd != '005'
                 </if>
                 order by d.create_date desc
-                OFFSET ${page ? page : 0} * 20 ROWS
-                FETCH NEXT 20 ROWS ONLY;
+                <if test="page != null and page != ''">
+                        OFFSET ${page} ROWS
+                        FETCH NEXT 20 ROWS ONLY;
+                </if>
+                <if test="page == null">
+                        OFFSET 0 ROWS
+                        FETCH NEXT 20 ROWS ONLY;
+                </if>
         </select>
         <!-- 파라미터 포함 리스트 갯수 -->
         <select id="cnt" resultType="map" parameterType="map">
@@ -574,10 +580,10 @@
         </insert>
         <!-- 반려 문서에서 저장 및 결재 할때 문서번호 생성 -->
         <select id="nextDocid" resultType="Long">
-        SELECT max(docid)+1 FROM t_approval_document
+                SELECT max(docid)+1 FROM t_approval_document
         </select>
         <!-- 반려 문서에서 저장 및 결재 할때 기존 반려문서 반려보관상태로 변경 -->
         <update id="returnKeep" parameterType="map">
-        UPDATE t_approval_document SET status_cd = '004' WHERE docid = '${id}'
+                UPDATE t_approval_document SET status_cd = '004' WHERE docid = '${id}'
         </update>
 </mapper>

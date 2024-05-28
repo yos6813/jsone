@@ -19,6 +19,7 @@ public class ListDTO {
     private String search;
     private String status_cd;
     private String type_cd;
+    private String cnt;
     private String emp_nm;
     private String name;
     private String page;
