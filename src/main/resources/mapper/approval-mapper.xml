@@ -467,7 +467,7 @@
         </update>
         <!-- 반려 -->
         <update id="docRefer" parameterType="map">
-                UPDATE t_approval_document_step SET empid = '${empid}' WHERE docid = '${docid}' AND pos_cd = '${code}'
+                UPDATE t_approval_document SET status_cd = '${status_cd}' WHERE docid = '${docid}'
         </update>
         <!-- 회수 -->
         <update id="docCollect" parameterType="map">
