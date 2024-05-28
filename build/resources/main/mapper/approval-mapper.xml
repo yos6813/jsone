@@ -467,7 +467,7 @@
         </update>
         <!-- 반려 -->
         <update id="docRefer" parameterType="map">
-                UPDATE t_approval_document_step SET empid = '${empid}' WHERE docid = '${docid}' AND pos_cd = '${code}'
+                UPDATE t_approval_document SET status_cd = '${status_cd}' WHERE docid = '${docid}'
         </update>
         <!-- 회수 -->
         <update id="docCollect" parameterType="map">
@@ -567,7 +567,7 @@
         <insert id="insert" parameterType="map">
                 SET IDENTITY_INSERT t_approval_document ON;
                 INSERT INTO t_approval_document(docid, type_cd, status_cd, empid, step, end_step, title, contents, contents_text, create_date, copy_docid)
-                SELECT  ${docid}, '${type_cd}', '001', empid, step, end_step, '${title}', '${contents}', '${contents_text}', getdate(), docid
+                SELECT  '${docid}', '${type_cd}', '001', empid, step, end_step, '${title}', '${contents}', '${contents_text}', getdate(), docid
                 FROM t_approval_document
                 WHERE docid = ${id};
                 SET IDENTITY_INSERT t_approval_document OFF;

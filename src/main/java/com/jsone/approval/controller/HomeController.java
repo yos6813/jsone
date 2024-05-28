@@ -272,7 +272,7 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
-				map.put("status_cd", "'002', '999', '003'");
+				map.put("status_cd", "'002', '999', '003', '004'");
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
@@ -325,7 +325,7 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
-				map.put("status_cd", "'002','003','999','005', '004'");
+				map.put("status_cd", "'002','003','999','005','004'");
 				map.put("title", "공람문서");
 				map.put("pid", model.getAttribute("empid").toString());
 
@@ -681,6 +681,7 @@ public class HomeController {
 	
 				map.remove("contents");
 				map.put("contents", contents);
+				map.put("docid", docid.toString());
 				map.put("step", "1");
 	
 				approvalService.insert(map);

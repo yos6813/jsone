@@ -15,9 +15,9 @@
                     <button th:if="${view.empid} == ${empid} and ${view.status_cd} == '진행중' and ${path} == 'personalDoc'" type="button" class="btn primary" id="docCollect">회수</button>
                     <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.status_cd} == '진행중' and ${path} == 'sign'" type="button" id="docCheck" class="btn primary">승인</button>
                     <button th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.status_cd} == '진행중' and ${path} == 'sign'" type="button" id="docRefer" class="btn warning">반려</button>
-                    <button th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and ${view.status_cd} == '진행중' and ${path} == 'announcementCheck'" type="button" id="viewerCheck" class="btn primary">확인</button>
+                    <button th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and (${view.status_cd} == '진행중' or ${view.status_cd} == '반려' or ${view.status_cd} == '반려보관') and ${path} == 'announcementCheck'" type="button" id="viewerCheck" class="btn primary">확인</button>
                     <input th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.status_cd} == '진행중'" type="hidden" id="pos_cd" th:value="${user['pos_cd']}"/>
-                    <input th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and ${view.status_cd} == '진행중'" type="hidden" id="coop_cd" th:value="${user['coop_cd']}"/>
+                    <input th:if="!${#lists.contains(docViewer, empid)} and ${#lists.contains(allViewer, empid)} and (${view.status_cd} == '진행중' or ${view.status_cd} == '반려' or ${view.status_cd} == '반려보관')" type="hidden" id="coop_cd" th:value="${user['coop_cd']}"/>
                     <input th:if="!${#lists.contains(docApprover, empid)} and ${#lists.contains(allApprover, empid)} and ${view.status_cd} == '진행중'" type="hidden" id="step" th:value="${step}"/>
                 </div>
                 <div class="body-top">

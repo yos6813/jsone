@@ -59,7 +59,7 @@ public class AjaxController {
 
 	@PostMapping("/sendApproval")
 	@ResponseBody
-	public ResponseEntity<String> postMethodName(RestTemplate restTemplate, @RequestBody Map<String, String> map, HttpServletRequest request) {
+	public ResponseEntity<String> sendApproval(RestTemplate restTemplate, @RequestBody Map<String, String> map, HttpServletRequest request) {
 		SmsUtil sms = new SmsUtil(restTemplate);
 		String name = map.get("name");
 		String title = map.get("title");
@@ -124,6 +124,8 @@ public class AjaxController {
 	@ResponseBody
 	public Map<String, String> viewerCheck(@RequestBody Map<String, String> map) {
 		approvalService.viewerCheck(map);
+
+		System.out.println(map);
 
 		Map<String, String> result = new HashMap<String, String>();
 
