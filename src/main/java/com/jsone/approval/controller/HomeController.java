@@ -226,7 +226,7 @@ public class HomeController {
 		if(model.getAttribute("error") != "") {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
-				map.put("status_cd", "'002','003','999','005'");
+				map.put("status_cd", "'002','003','999','005', '004'");
 				map.put("pid", model.getAttribute("empid").toString());
 				map.put("title", "결재문서");
 
@@ -272,7 +272,7 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
-				map.put("status_cd", "002");
+				map.put("status_cd", "'002', '999', '003'");
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
@@ -325,7 +325,7 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
-				map.put("status_cd", "'002','003','999','005'");
+				map.put("status_cd", "'002','003','999','005', '004'");
 				map.put("title", "공람문서");
 				map.put("pid", model.getAttribute("empid").toString());
 
@@ -512,6 +512,58 @@ public class HomeController {
 			return "redirect:/";
 		}
 	}
+
+	/* 팝업페이지 */
+	@GetMapping("/popup/{id:[0-9]+}")
+	public String popup(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+		/* 기본 정보 불러옴 */
+		SessionUtil sessionUtil = new SessionUtil();
+		sessionUtil.getSession(model, request, approvalService);
+
+		approvalService.use(model.getAttribute("dbName").toString());
+		ViewDTO view = approvalService.view(id);
+		List<ChatDTO> chat = approvalService.chat(id);
+		List<Long> docApprover = approvalService.docApprover(id);
+		List<Long> docViewer = approvalService.docViewer(id);
+		List<FileDTO> file = approvalService.file(id);
+		List<ApproverDTO> approver = approvalService.approver(id);
+		List<ApproverDTO> viewer = approvalService.viewer(id);
+
+		Map<String, String> user = approvalService.checkCd(Long.parseLong(model.getAttribute("empid").toString()));
+
+		Map<String, String> map = new HashMap<>();
+		map.put("empid", model.getAttribute("empid").toString());
+		map.put("id", id.toString());
+
+		Long step = approvalService.checkStep(map);
+
+		/* 결재자와 공람자 empid 비교를 위해 empid만 따로 저장 */
+		List<Long> allApprover = new ArrayList<Long>();
+		List<Long> allViewer = new ArrayList<Long>();
+
+		approver.forEach(a -> {
+			allApprover.add(a.getEmpid());
+		});
+
+		viewer.forEach(v -> {
+			allViewer.add(v.getEmpid());
+		});
+
+		model.addAttribute("approver", approver);
+		model.addAttribute("viewer", viewer);
+		model.addAttribute("docApprover", docApprover);
+		model.addAttribute("docViewer", docViewer);
+		model.addAttribute("allApprover", allApprover);
+		model.addAttribute("allViewer", allViewer);
+		model.addAttribute("view", view);
+		model.addAttribute("chatList", chat);
+		model.addAttribute("docid", id);
+		model.addAttribute("file", file);
+		model.addAttribute("user", user);
+		model.addAttribute("step", step);
+		
+		return "popup/popupView";
+	}
 	
 	/* 편집 페이지 */
 	@GetMapping("/edit/{id}")
@@ -568,6 +620,7 @@ public class HomeController {
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
+		String empid = model.getAttribute("empid").toString();
 
 		String codes = "";
 		for(int i=0 ; i<approv.length ; i++) {
@@ -606,7 +659,7 @@ public class HomeController {
 				
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/files" + File.separator + item;
+						String filePath = "/approval/" + empid + File.separator + item;
 	
 						map.put("file_path", filePath);
 						map.put("fileName", item);
@@ -634,7 +687,7 @@ public class HomeController {
 	
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/files" + File.separator + item;
+						String filePath = "/approval/" + empid + File.separator + item;
 	
 						map.put("file_path", filePath);
 						map.put("fileName", item);
@@ -685,7 +738,7 @@ public class HomeController {
 	
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/files" + File.separator + item;
+						String filePath = "/approval/" + empid + File.separator + item;
 	
 						map.put("file_path", filePath);
 						map.put("fileName", item);
@@ -734,7 +787,7 @@ public class HomeController {
 	
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/files" + File.separator + item;
+						String filePath = "/approval/" + empid + File.separator + item;
 	
 						map.put("file_path", filePath);
 						map.put("fileName", item);

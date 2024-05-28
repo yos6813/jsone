@@ -596,6 +596,45 @@ input[type="checkbox"]:checked + span{
     font-weight: normal;
 }
 
+#popup-modal {
+    z-index: 10;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    display: none;
+}
+
+#popup-modal .popup-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    height: 90%;
+}
+
+#popup-modal .popup-wrapper .popup-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 90%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+#popup-modal .popup-wrapper .popup-body {
+    overflow-y: auto;
+}
+
+#popup-modal .popup-wrapper .popup-footer {
+    padding: 5px;
+    text-align: right;
+}
+
 /* 편집 */
 #edit {
     margin: 0 auto;

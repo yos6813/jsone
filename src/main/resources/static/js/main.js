@@ -10,7 +10,7 @@
 
         /* 기본 닫기 버튼 */
         $('.btn-close').click(function(){
-            if(path[1] == 'edit') {
+            if(path[1] == 'edit' || path[1] == 'resetPassword') {
                 location.href = document.referrer;
             } else {
                 location.href = '/' + path[1];
@@ -19,7 +19,7 @@
 
         /* 취소 버튼 */
         $('.close-btn').click(function(){
-            if(path[1] == 'edit') {
+            if(path[1] == 'edit' || path[1] == 'resetPassword') {
                 location.href = document.referrer;
             } else {
                 location.href = '/' + path[1];

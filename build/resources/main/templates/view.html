@@ -84,11 +84,11 @@
                             </div>
                             <div>
                                 <span class="text-title">반려문서</span>
-                                <span class="yellow-txt copy_id" th:attr="data-href=${view.copy_docid} != 0 and ${view.copy_docid} != null ? ${path} + '/' + ${view.copy_docid} : 0">[[${view.copy_id}]]</span>
+                                <span class="yellow-txt copy_id" th:attr="data-id=${view.copy_docid}">[[${view.copy_id}]]</span>
                             </div>
                             <div>
                                 <span class="text-title">참고문서</span>
-                                <span class="green-txt refer_id" th:attr="data-href=${view.reference_docid} != 0 and ${view.reference_docid} != null ? ${view.reference_docid} : 0">[[${view.reference_id}]]</span>
+                                <span class="green-txt refer_id" th:attr="data-id=${view.reference_docid}">[[${view.reference_id}]]</span>
                             </div>
                         </div>
                     </div>
@@ -125,6 +125,19 @@
                             </form>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup-modal">
+        <div class="popup-wrapper">
+            <div class="popup-content">
+                <div class="popup-body">
+                    <!-- popup 내용 -->
+                </div>
+                <div class="popup-footer">
+                    <button class="btn secondary popup-close" type="button">닫기</button>
                 </div>
             </div>
         </div>

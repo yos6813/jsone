@@ -38,15 +38,20 @@
             })
         });
 
-        $('.copy_id').click(function(){
-            var href = location.origin + "/" + $(this).data('href');
-            window.open(href, 'copyView', 'width=430, height=500, location=no, status=no, scrollbars=yes');
+        $('.copy_id').on("click", function(){
+            $('#popup-modal .popup-body').load('/popup/' + $(this).data('id'));
+            $('#popup-modal').css("display", "block");
+            console.log($(this).data('id'));
         });
 
         $('.refer_id').click(function(){
-            var href = location.origin + "/" + $(this).data('href');
-            window.open(href, 'referView', 'width=430, height=500, location=no, status=no, scrollbars=yes');
-        });
+            $('#popup-modal .popup-body').load('/popup/' + $(this).data('id'));
+            $('#popup-modal').css("display", "block");
+        }); 
+
+        $('.popup-close').click(function(){
+            $('#popup-modal').css("display", "none");
+        })
 
         /* 뷰 하단 대화 전송 시 AJAX 처리 */
         $('#saveChat_submit').click(function(){
