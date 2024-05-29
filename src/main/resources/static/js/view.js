@@ -17,6 +17,7 @@
                     docid: $('#docid').val(),
                     empid: $('#empid').val(),
                     code: code,
+                    step: $("#step").val(),
                     button: JSON.stringify({
                         "button": [
                             {
