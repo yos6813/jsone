@@ -144,7 +144,7 @@
                                         WHERE p.empid = '${pid}'
                                 </if>
                                 <if test="title == '결재문서'">
-                                        WHERE (s.empid = '${pid}' OR (d.status_cd = 003 AND s.empid = 0))
+                                        WHERE (s.empid = '${pid}' OR ((d.status_cd = 003 OR d.status_cd = 004) AND s.empid = 0))
                                 </if>
                         </if>
                 </if>
@@ -224,7 +224,7 @@
                                         WHERE p.empid = '${pid}'
                                 </if>
                                 <if test="title == '결재문서'">
-                                        WHERE (s.empid = '${pid}' OR (d.status_cd = 003 AND s.empid = 0))
+                                        WHERE (s.empid = '${pid}' OR ((d.status_cd = 003 OR d.status_cd = 004) AND s.empid = 0))
                                 </if>
                         </if>
                 </if>
