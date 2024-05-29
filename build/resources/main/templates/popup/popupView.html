@@ -75,6 +75,25 @@
                         <span class="filename"><a download th:href="${file.file_path}" th:text="${file.original_file_name}"></a></span>
                     </div>
                 </div>
+                <div class="comments">
+                    <span>대화</span>
+                    <div class="comment-list">
+                        <div th:if="!${#lists.isEmpty(chatList)}" th:classappend="${list.emp_nm} != ${name} ? 'bg-gray1 left' : 'bg-yellow right'" th:each="list: ${chatList}" class="comment">
+                            <div class="chat-user">
+                                <span th:text="${list.emp_nm}"></span>
+                            </div>
+                            <div class="chat-contents">
+                                <span th:text="${list.contents}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-form">
+                        <form id="saveChat">
+                            <input type="hidden" id="docid" th:value="${docid}"/>
+                            <input type="hidden" id="empid" th:value="${empid}"/>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

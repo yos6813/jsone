@@ -564,7 +564,7 @@ input[type="checkbox"]:checked + span{
 }
 
 .view-body .body-middle .comments .comment .chat-contents span {
-    width: 150px;
+    width: 140px;
 }
 
 .view-body .body-middle .comments > span {
