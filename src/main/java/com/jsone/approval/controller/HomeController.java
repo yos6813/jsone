@@ -669,8 +669,8 @@ public class HomeController {
 					}
 				}
 
-				approvalService.deleteViewer(Long.parseLong(map.get("id")));
-				approvalService.deleteApprover(Long.parseLong(map.get("id")));
+				approvalService.deleteViewer(docid);
+				approvalService.deleteApprover(docid);
 
 				for(Integer i=0;i<approv.length;i++){
 					Map<String, String> appMap = new HashMap<>();
@@ -722,8 +722,8 @@ public class HomeController {
 					}
 				}
 
-				approvalService.deleteViewer(Long.parseLong(map.get("id")));
-				approvalService.deleteApprover(Long.parseLong(map.get("id")));
+				approvalService.deleteViewer(docid);
+				approvalService.deleteApprover(docid);
 
 				for(Integer i=0;i<approv.length;i++){
 					Map<String, String> appMap = new HashMap<>();
