@@ -573,7 +573,7 @@
         <insert id="insert" parameterType="map">
                 SET IDENTITY_INSERT t_approval_document ON;
                 INSERT INTO t_approval_document(docid, type_cd, status_cd, empid, step, end_step, title, contents, contents_text, create_date, copy_docid)
-                SELECT  '${docid}', '${type_cd}', '${status_cd}', empid, step, end_step, '${title}', '${contents}', '${contents_text}', getdate(), docid
+                SELECT  '${docid}', '${type_cd}', '${status_cd}', empid, ${step}, end_step, '${title}', '${contents}', '${contents_text}', getdate(), docid
                 FROM t_approval_document
                 WHERE docid = ${id};
                 SET IDENTITY_INSERT t_approval_document OFF;

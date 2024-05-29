@@ -174,6 +174,7 @@ public class AjaxController {
 			Map<String, String> param = new HashMap<>();
 			param.put("empid", step.toString());
 			param.put("docid", map.get("docid"));
+			param.put("step", map.get("step").toString());
 
 			List<String> nextApprover = approvalService.nextApprover(param);
 			Map<String, String> kakaoData = new HashMap<>();
