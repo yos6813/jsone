@@ -299,8 +299,6 @@ public class AjaxController {
 			map.put("title", "진행");
 		}
 
-		System.out.println(map);
-
 		List<ListDTO> listDTOList = approvalService.list(map);
 		
 		return listDTOList;

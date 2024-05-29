@@ -114,12 +114,12 @@
                 FROM t_approval_document AS d
                 <if test="title != null and title != ''">
                         <if test="title == '공람' or title == '공람문서'">
-                                JOIN t_approval_document_public AS p ON d.docid = p.docid
-                                JOIN t_emp e ON e.coop_cd = p.pub_cd
+                                JOIN (SELECT DISTINCT docid, p.empid, p.pub_cd FROM t_approval_document_public AS p
+                                JOIN t_emp e ON e.coop_cd = p.pub_cd) AS p ON d.docid = p.docid
                         </if>
                         <if test="title == '결재' or title == '결재문서' or title == '진행'">
-                                JOIN t_approval_document_step AS s ON d.docid = s.docid
-                                JOIN t_emp e ON e.pos_cd = s.pos_cd
+                                JOIN (SELECT DISTINCT docid, s.empid FROM t_approval_document_step AS s
+                                JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
                         </if>
                 </if>
                 <if test="title == null or title == ''">
@@ -194,12 +194,12 @@
                 FROM t_approval_document AS d
                 <if test="title != null and title != ''">
                         <if test="title == '공람' or title == '공람문서'">
-                                JOIN t_approval_document_public AS p ON d.docid = p.docid
-                                JOIN t_emp e ON e.coop_cd = p.pub_cd
+                                JOIN (SELECT DISTINCT docid, p.empid, p.pub_cd FROM t_approval_document_public AS p
+                                JOIN t_emp e ON e.coop_cd = p.pub_cd) AS p ON d.docid = p.docid
                         </if>
                         <if test="title == '결재' or title == '결재문서' or title == '진행'">
-                                JOIN t_approval_document_step AS s ON d.docid = s.docid
-                                JOIN t_emp e ON e.pos_cd = s.pos_cd
+                                JOIN (SELECT DISTINCT docid, s.empid, s.pos_cd, s.step FROM t_approval_document_step AS s
+                                JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
                         </if>
                 </if>
                 <if test="title == null or title == ''">

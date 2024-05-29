@@ -272,7 +272,7 @@ public class HomeController {
 			if(model.getAttribute("dbName") != null) {
 				approvalService.use(model.getAttribute("dbName").toString());
 
-				map.put("status_cd", "'002', '999', '003', '004'");
+				map.put("status_cd", "'002', '999', '003', '004', '005'");
 
 				List<UserDTO> users = approvalService.userAll();
 				model.addAttribute("users", users);
