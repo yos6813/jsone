@@ -117,8 +117,12 @@
                                 JOIN (SELECT DISTINCT docid, p.empid, p.pub_cd FROM t_approval_document_public AS p
                                 JOIN t_emp e ON e.coop_cd = p.pub_cd) AS p ON d.docid = p.docid
                         </if>
-                        <if test="title == '결재' or title == '결재문서' or title == '진행'">
+                        <if test="title == '결재' or title == '진행'">
                                 JOIN (SELECT DISTINCT docid, s.empid, s.pos_cd, s.step FROM t_approval_document_step AS s
+                                JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
+                        </if>
+                        <if test="title == '결재문서'">
+                                JOIN (SELECT DISTINCT docid, s.empid FROM t_approval_document_step AS s
                                 JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
                         </if>
                 </if>
@@ -197,8 +201,12 @@
                                 JOIN (SELECT DISTINCT docid, p.empid, p.pub_cd FROM t_approval_document_public AS p
                                 JOIN t_emp e ON e.coop_cd = p.pub_cd) AS p ON d.docid = p.docid
                         </if>
-                        <if test="title == '결재' or title == '결재문서' or title == '진행'">
+                        <if test="title == '결재' or title == '진행'">
                                 JOIN (SELECT DISTINCT docid, s.empid, s.pos_cd, s.step FROM t_approval_document_step AS s
+                                JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
+                        </if>
+                        <if test="title == '결재문서'">
+                                JOIN (SELECT DISTINCT docid, s.empid FROM t_approval_document_step AS s
                                 JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
                         </if>
                 </if>
