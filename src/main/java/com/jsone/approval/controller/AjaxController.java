@@ -67,19 +67,17 @@ public class AjaxController {
 		String button = map.get("button");
 		String telNo = map.get("telNo");
 		String id = map.get("id");
-		String step = map.get("step");
 
 		Map<String, String> param = new HashMap<>();
 
 		param.put("empid", telNo);
 		param.put("docid", id);
-		param.put("step", step);
 
-		List<String> nextApprover = approvalService.nextApprover(param);
+		List<String> checkLoginid = approvalService.checkLoginid(param);
 		Map<String, String> kakaoData = new HashMap<>();
 
-		for(Integer i = 0; i < nextApprover.size(); i++){
-			kakaoData.put("receiver_" + (i + 1), nextApprover.get(i));
+		for(Integer i = 0; i < checkLoginid.size(); i++){
+			kakaoData.put("receiver_" + (i + 1), checkLoginid.get(i));
 			kakaoData.put("message_" + (i + 1), name + "님의 \"" + title + "\" 전자결재 문서가 도착하였습니다");
 			kakaoData.put("emtitle_" + (i + 1), "전자결재 알림서비스");
 			kakaoData.put("button_" + (i + 1), button);
@@ -177,13 +175,13 @@ public class AjaxController {
 			param.put("empid", step.toString());
 			param.put("docid", map.get("docid"));
 
-			List<String> checkLoginid = approvalService.checkLoginid(param);
+			List<String> nextApprover = approvalService.nextApprover(param);
 			Map<String, String> kakaoData = new HashMap<>();
 
 			ViewDTO view = approvalService.view(Long.parseLong(map.get("docid")));
 
-			for(Integer i = 0; i < checkLoginid.size(); i++){
-				kakaoData.put("receiver_" + (i + 1), checkLoginid.get(i));
+			for(Integer i = 0; i < nextApprover.size(); i++){
+				kakaoData.put("receiver_" + (i + 1), nextApprover.get(i));
 				kakaoData.put("message_" + (i + 1), view.getEmp_nm() + "님의 \"" + view.getTitle() + "\" 전자결재 문서가 도착하였습니다");
 				kakaoData.put("emtitle_" + (i + 1), "전자결재 알림서비스");
 				kakaoData.put("button_" + (i + 1), map.get("button").toString());
