@@ -660,7 +660,7 @@ public class HomeController {
 				
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/approval/" + empid + File.separator + item;
+						String filePath = "/files" + File.separator + item;
 	
 						map.put("file_path", filePath);
 						map.put("fileName", item);
@@ -713,7 +713,7 @@ public class HomeController {
 	
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/approval/" + empid + File.separator + item;
+						String filePath = "/files" + File.separator + item;
 	
 						map.put("file_path", filePath);
 						map.put("fileName", item);
@@ -767,7 +767,7 @@ public class HomeController {
 	
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/approval/" + empid + File.separator + item;
+						String filePath = "/files" + File.separator + item;
 	
 						map.put("file_path", filePath);
 						map.put("fileName", item);
@@ -816,7 +816,7 @@ public class HomeController {
 	
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/approval/" + empid + File.separator + item;
+						String filePath = "/files" + File.separator + item;
 	
 						map.put("file_path", filePath);
 						map.put("fileName", item);
