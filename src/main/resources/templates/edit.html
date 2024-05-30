@@ -40,7 +40,7 @@
                                 <div>
                                     <span class="text-title">문서종류</span>
                                     <span>
-                                        <select class="type_cd" name="type_cd">
+                                        <select id="type_cd" class="type_cd" name="type_cd">
                                             <option value="999">선택</option>
                                             <option th:selected="${info.type_cd} == '내부기안'" value="001">내부기안</option>
                                             <option th:selected="${info.type_cd} == '외부발송'" value="002">외부발송</option>
