@@ -7,7 +7,7 @@ spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://175.126.176.188:3341;databaseName=garam_common;encrypt=true;trustServerCertificate=true;
-    username: sa
+    username: ftpuser
     password: test123!
   servlet:
     multipart:
