@@ -160,6 +160,8 @@
                         console.log(error);
                     }
                 });
+            } else if($('.type_cd').val() == '999') {
+                alert('문서종류를 선택해주세요.');
             } else {
                 alert('결재자를 선택해주세요.');
             }
