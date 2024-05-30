@@ -140,7 +140,7 @@
                                         WHERE (p.pub_cd = '${code}' AND p.empid = 0)
                                 </if>
                                 <if test="title =='진행'">
-                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.empid = 0 AND s.step = (d.step + 1)
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.empid = 0 AND s.step <![CDATA[>]]> d.step
                                 </if>
                         </if>
                         <if test="pid != null">
@@ -224,7 +224,7 @@
                                         WHERE (p.pub_cd = '${code}' AND p.empid = 0)
                                 </if>
                                 <if test="title =='진행'">
-                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = (d.step + 1)
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step <![CDATA[>]]> d.step
                                 </if>
                         </if>
                         <if test="pid != null">
