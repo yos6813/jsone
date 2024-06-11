@@ -2,6 +2,8 @@ package com.jsone.approval.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -224,7 +226,7 @@ public class AjaxController {
 	@ResponseBody
 	public Map<String, String> fileUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
-		String fileName = multipartFile.getOriginalFilename();
+		String fileName = new String(multipartFile.getOriginalFilename().getBytes("8859_1"), "UTF-8");
 		Long size = multipartFile.getSize();
 		double sizeMB = size / (1024.0 * 1024.0);
 		String uploadPath = request.getServletContext().getRealPath("/files");
@@ -311,27 +313,35 @@ public class AjaxController {
 		String uploadPath = request.getServletContext().getRealPath("/files");
 		String filePath = uploadPath + File.separator + fileName;
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> response = new HashMap<String, String>();
 
 		File file = new File(filePath);
-        if (file.exists()) {
-            if (file.delete()) {
-				map.put("status", "success");
-				map.put("msg", "파일을 삭제하였습니다.");
+        try {
+			if (file.exists()) {
+				if (file.delete()) {
+					response.put("status", "success");
+					response.put("msg", "파일을 삭제하였습니다.");
+				} else {
+					throw new IOException("파일을 삭제하지 못했습니다.");
+				}
+			} else {
+				throw new NoSuchFileException("파일경로가 올바르지 않습니다.");
+			}
+		} catch (NoSuchFileException e) {
+			response.put("status", "error");
+			response.put("msg", "파일이 존재하지 않습니다: " + fileName);
+		} catch (AccessDeniedException e) {
+			response.put("status", "error");
+			response.put("msg", "파일 삭제 권한이 없습니다: " + fileName);
+		} catch (IOException e) {
+			response.put("status", "error");
+			response.put("msg", "파일을 삭제하는 중 오류가 발생하였습니다: " + e.getMessage());
+		} catch (Exception e) {
+			response.put("status", "error");
+			response.put("msg", "예상치 못한 오류가 발생하였습니다: " + e.getMessage());
+		}
 
-                return map;
-            } else {
-				map.put("status", "error");
-				map.put("msg", "파일을 삭제하지 못했습니다.");
-
-                return map;
-            }
-        } else {
-            map.put("status", "error");
-			map.put("msg", "파일경로가 올바르지 않습니다.");
-
-			return map;
-        }
+		return response;
 	}
 	
 }

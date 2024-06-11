@@ -126,8 +126,6 @@
             $(".form_type").val('approval');
             var telNo = new Array();
 
-            alert($('#type_cd').val());
-            
             if($('#type_cd').val() != '999') {
                 if($('input[name="approver[]"]:checked').length) {
                     $('input[name="approver[]"]:checked').each(function(index) {
