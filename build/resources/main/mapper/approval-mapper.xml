@@ -414,7 +414,7 @@
         </select>
         <!-- 첨부파일 불러오기 -->
         <select id="file" resultType="file" parameterType="Long">
-                SELECT docid, file_path, original_file_name FROM t_approval_document_attach WHERE docid = ${docid}
+                SELECT attachid, docid, file_path, original_file_name FROM t_approval_document_attach WHERE docid = ${docid}
         </select>
         <!-- 뷰페이지 하단 채팅 정보 -->
         <select id="chat" resultType="chat" parameterType="Long">
@@ -549,9 +549,13 @@
         <delete id="delDoc">
                 DELETE FROM t_approval_document WHERE docid = '${id}'
         </delete>
-        <!-- 파일 삭제 -->
+        <!-- 문서 내 파일 모두 삭제 -->
         <delete id="delAttach">
                 DELETE FROM t_approval_document_attach WHERE docid = '${id}'
+        </delete>
+        <!-- 파일 모두 삭제 -->
+        <delete id="delOneAttach">
+                DELETE FROM t_approval_document_attach WHERE attachid = '${attachid}'
         </delete>
         <!-- 문서 별 결재자 삭제 -->
         <delete id="delApproval">

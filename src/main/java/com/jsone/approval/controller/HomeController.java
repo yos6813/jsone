@@ -616,7 +616,7 @@ public class HomeController {
 	
 	/* 글 저장 */
 	@PostMapping("/update")
-	public String update(@RequestParam Map<String, String> map, @RequestParam(name = "original_file_name", required = false) String[] fileName, @RequestParam("approver") String[] approv, @RequestParam(name = "viewer", required = false) String[] view, Model model, HttpServletRequest request) {
+	public String update(@RequestParam Map<String, String> map, @RequestParam(name="temp_file_name", required = false) String[] tempName, @RequestParam(name = "original_file_name", required = false) String[] fileName, @RequestParam("approver") String[] approv, @RequestParam(name = "viewer", required = false) String[] view, Model model, HttpServletRequest request) {
 		/* 기본 정보 불러옴 */
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
@@ -658,14 +658,25 @@ public class HomeController {
 	
 				approvalService.insert(map);
 				
+				ArrayList<String> file = new ArrayList<>();
+				ArrayList<String> file_path = new ArrayList<>();
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/files" + File.separator + item;
-	
-						map.put("file_path", filePath);
-						map.put("fileName", item);
-	
-						approvalService.fileUpdate(map);
+						file.add(item);
+					}
+
+					for(String path: tempName) {
+						String filePath = "/files" + File.separator + path;
+						file_path.add(filePath);
+					}
+
+					Map<String, String> files = new HashMap<>();
+					files.put("id", docid.toString());
+					for(int g=0;g<file.size();g++ ){
+						files.put("fileName", file.get(g));
+						files.put("file_path", file_path.get(g));
+
+						approvalService.fileUpdate(files);
 					}
 				}
 
@@ -711,14 +722,25 @@ public class HomeController {
 	
 				approvalService.insert(map);
 	
+				ArrayList<String> file = new ArrayList<>();
+				ArrayList<String> file_path = new ArrayList<>();
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/files" + File.separator + item;
-	
-						map.put("file_path", filePath);
-						map.put("fileName", item);
-	
-						approvalService.fileUpdate(map);
+						file.add(item);
+					}
+
+					for(String path: tempName) {
+						String filePath = "/files" + File.separator + path;
+						file_path.add(filePath);
+					}
+
+					Map<String, String> files = new HashMap<>();
+					files.put("id", docid.toString());
+					for(int g=0;g<file.size();g++ ){
+						files.put("fileName", file.get(g));
+						files.put("file_path", file_path.get(g));
+
+						approvalService.fileUpdate(files);
 					}
 				}
 
@@ -765,14 +787,25 @@ public class HomeController {
 	
 				approvalService.update(map);
 	
+				ArrayList<String> file = new ArrayList<>();
+				ArrayList<String> file_path = new ArrayList<>();
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/files" + File.separator + item;
-	
-						map.put("file_path", filePath);
-						map.put("fileName", item);
-	
-						approvalService.fileUpdate(map);
+						file.add(item);
+					}
+
+					for(String path: tempName) {
+						String filePath = "/files" + File.separator + path;
+						file_path.add(filePath);
+					}
+
+					Map<String, String> files = new HashMap<>();
+					files.put("id", map.get("id"));
+					for(int g=0;g<file.size();g++ ){
+						files.put("fileName", file.get(g));
+						files.put("file_path", file_path.get(g));
+
+						approvalService.fileUpdate(files);
 					}
 				}
 	
@@ -814,14 +847,25 @@ public class HomeController {
 	
 				approvalService.update(map);
 	
+				ArrayList<String> file = new ArrayList<>();
+				ArrayList<String> file_path = new ArrayList<>();
 				if(fileName != null){
 					for (String item : fileName) {
-						String filePath = "/files" + File.separator + item;
-	
-						map.put("file_path", filePath);
-						map.put("fileName", item);
-	
-						approvalService.fileUpdate(map);
+						file.add(item);
+					}
+
+					for(String path: tempName) {
+						String filePath = "/files" + File.separator + path;
+						file_path.add(filePath);
+					}
+
+					Map<String, String> files = new HashMap<>();
+					files.put("id", map.get("id"));
+					for(int g=0;g<file.size();g++ ){
+						files.put("fileName", file.get(g));
+						files.put("file_path", file_path.get(g));
+
+						approvalService.fileUpdate(files);
 					}
 				}
 	

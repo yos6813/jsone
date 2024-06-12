@@ -222,6 +222,10 @@ public class ApprovalRepository {
         sql.update("Approval.delAttach", id);
     }
 
+    public void delOneAttach (Long attachid) {
+        sql.update("Approval.delOneAttach", attachid);
+    }
+
     public void delApproval (Long id) {
         sql.update("Approval.delApproval", id);
     }

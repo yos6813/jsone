@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.NoSuchFileException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -226,18 +227,25 @@ public class AjaxController {
 	@ResponseBody
 	public Map<String, String> fileUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
-		String fileName = new String(multipartFile.getOriginalFilename().getBytes("8859_1"), "UTF-8");
+
+		Date date = new Date();
+		String fileName = "temp" + date.getTime(); // 파일명을 항상 temp + timemilisecond로 설정
+		String originalFname = multipartFile.getOriginalFilename();
+
+		String ext = originalFname.substring(originalFname.lastIndexOf("."));
+
 		Long size = multipartFile.getSize();
 		double sizeMB = size / (1024.0 * 1024.0);
 		String uploadPath = request.getServletContext().getRealPath("/files");
-		String filePath = uploadPath + File.separator + fileName;
+		String filePath = uploadPath + File.separator + fileName + ext;
 
 		try {
 			File dest = new File(filePath);
 			multipartFile.transferTo(dest); // 파일을 저장합니다.
 			map.put("status", "success");
 			map.put("filePath", filePath);
-			map.put("fileName", fileName);
+			map.put("fileName", fileName + ext);
+			map.put("oriFileName", originalFname);
 			map.put("size", Double.toString(sizeMB));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -309,9 +317,14 @@ public class AjaxController {
 	/* edit 페이지 내 파일 삭제 */
 	@PostMapping("/deleteFile")
 	@ResponseBody
-	public Map<String, String> deleteFile(@RequestParam String fileName, HttpServletRequest request) {
+	public Map<String, String> deleteFile(@RequestParam String fileName, @RequestParam(required = false) Long attachid, HttpServletRequest request) {
+		int lastIndex = fileName.lastIndexOf("/");
+
+        // '/'가 없는 경우 전체 파일 이름을 사용
+        String pathSub = (lastIndex != -1) ? fileName.substring(lastIndex + 1) : fileName;
+
 		String uploadPath = request.getServletContext().getRealPath("/files");
-		String filePath = uploadPath + File.separator + fileName;
+		String filePath = uploadPath + File.separator + pathSub;
 
 		Map<String, String> response = new HashMap<String, String>();
 
@@ -321,6 +334,10 @@ public class AjaxController {
 				if (file.delete()) {
 					response.put("status", "success");
 					response.put("msg", "파일을 삭제하였습니다.");
+
+					if(attachid != null){
+						approvalService.delOneAttach(attachid);
+					}
 				} else {
 					throw new IOException("파일을 삭제하지 못했습니다.");
 				}

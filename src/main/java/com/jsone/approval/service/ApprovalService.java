@@ -223,6 +223,10 @@ public class ApprovalService {
 		approvalRepository.delAttach(id);
 	}
 
+	public void delOneAttach (Long id){
+		approvalRepository.delOneAttach(id);
+	}
+
 	public void delApproval (Long id){
 		approvalRepository.delApproval(id);
 	}

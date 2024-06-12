@@ -113,6 +113,8 @@
                             <span class="title-icon file-upload"><i class="fa-solid fa-plus"></i></span>
                             <div class="file-box" th:if="${file} != null" th:each="file: ${file}">
                                 <span class="filename">[[${file.original_file_name}]]</span>
+                                <input type="hidden" class="attachid" th:value="${file.attachid}" />
+                                <input type="hidden" class="temp_file_name" th:value="${file.file_path}" />
                                 <span class="minus-icon">
                                     <i class="fa-solid fa-circle-minus"></i>
                                     <span class="file-size">0MB</span>

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @ToString
 public class FileDTO {
+    private Long attachid;
     private Long docid;
     private String file_path;
     private String original_file_name;

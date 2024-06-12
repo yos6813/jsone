@@ -65,11 +65,13 @@
                     return xhr;
                 },  success : function(result) {
                     $('.body-bottom .file-box:last-child').remove();
-
+                    
+                    console.log(result);
                     $('.body-bottom').append(
                         '<div class="file-box">' +
-                            '<span class="filename">' + result.fileName + '</span>' +
-                            '<input type="hidden" name="original_file_name[]" value="' + result.fileName + '" />' +
+                            '<span class="filename">' + result.oriFileName + '</span>' +
+                            '<input type="hidden" name="original_file_name[]" value="' + result.oriFileName + '" />' +
+                            '<input type="hidden" name="temp_file_name[]" class="temp_file_name" value="' + result.fileName + '" />' +
                             '<span class="minus-icon">' +
                                 '<i class="fa-solid fa-circle-minus"></i>' +
                                 '<span class="file-size"> ' + Math.round(result.size) + 'MB</span>' +
@@ -84,13 +86,15 @@
 
         $(document).on('click', '.minus-icon', function(){
             var that = $(this);
-            var fileName = that.prev('.filename').text();
-            if(confirm(fileName + " 파일을 삭제하시겠습니까?")) {
+            var fileName = that.prev('.temp_file_name').val();
+            var name = that.prev('.filename').text();
+            if(confirm(name + " 파일을 삭제하시겠습니까?")) {
                 $.ajax({
                     type: 'POST',
                     url: '/deleteFile',
                     data: {
-                        fileName: fileName
+                        fileName: fileName,
+                        attachid: $('.attachid').val()
                     },
                     success: function(response) {
                         if(response.status == 'success') {
