@@ -54,6 +54,10 @@
             $('#popup-modal').css("display", "none");
         })
 
+        $(document).on('click', '.file-download', function() {
+            window.open($(this).attr("href"), "_blank");
+        });
+
         /* 뷰 하단 대화 전송 시 AJAX 처리 */
         $('#saveChat_submit').click(function(){
             $.ajax({

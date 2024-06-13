@@ -28,7 +28,9 @@ import com.jsone.approval.service.ApprovalService;
 import com.jsone.approval.util.CommonUtil;
 import com.jsone.approval.util.SessionUtil;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -41,6 +43,17 @@ public class HomeController {
 	/* 로그인 */
 	@GetMapping("/")
     public String index(HttpServletRequest request, Model model) {
+		Cookie[] cookies = request.getCookies(); // 모든 쿠키 가져오기
+		if(cookies != null){
+			for (Cookie c : cookies) {
+				String name = c.getName(); // 쿠키 이름 가져오기
+				String value = c.getValue(); // 쿠키 값 가져오기
+				if (name.equals("login-id")) {
+					model.addAttribute("id", value);
+				}
+			}
+		}
+
 		HttpSession session = request.getSession(false);
 
 		if(session != null) {
@@ -53,7 +66,7 @@ public class HomeController {
     }
 	
 	@PostMapping("/login")
-	public String loginProcess(@RequestParam Map<String, String> map, HttpServletRequest request, Model model) {
+	public String loginProcess(@RequestParam Map<String, String> map, HttpServletRequest request, Model model, HttpServletResponse response) {
 		LoginDTO login = approvalService.loginProcess(map);
 
 		if(login == null) {
@@ -76,6 +89,13 @@ public class HomeController {
 
 				return "index";
 			} else {
+
+				if(map.get("login-cookie") != null && !map.get("login-cookie").toString().isEmpty()) {
+					Cookie cookie = new Cookie("login-id", map.get("loginid").toString());
+					cookie.setPath("/");
+					response.addCookie(cookie);
+				}
+
 				CustDTO cust = approvalService.customer(login.getCustid());
 
 				Map<String, String> user = new HashMap<String, String>();

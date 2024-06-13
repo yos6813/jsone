@@ -553,7 +553,7 @@
         <delete id="delAttach">
                 DELETE FROM t_approval_document_attach WHERE docid = '${id}'
         </delete>
-        <!-- 파일 모두 삭제 -->
+        <!-- 파일 삭제 -->
         <delete id="delOneAttach">
                 DELETE FROM t_approval_document_attach WHERE attachid = '${attachid}'
         </delete>

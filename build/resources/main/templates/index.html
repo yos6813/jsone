@@ -13,8 +13,12 @@
             <div class="login-body">
                 <form action="/login" id="login" method="POST">
                     <div class="input-area">
-                        <input type="text" id="loginid" name="loginid" placeholder="휴대폰번호" th:value="${loginError} ? ${loginid} : ''" class="input-text" required />
+                        <input type="text" id="loginid" name="loginid" placeholder="휴대폰번호" th:value="${id} ? ${id} : ''" class="input-text" required />
                         <input type="password" name="passwd" placeholder="비밀번호(4자이상)" class="input-text" />
+                    </div>
+                    <div class="save-id">
+                        <input type="checkbox" th:checked="${id} != null and ${id} != ''" name="login-cookie" class="login-cookie" />
+                        <span class="check"><i class="fa-regular fa-square-check fa-lg"></i></span><span>아이디 저장하기</span>
                     </div>
                     <div class="btn-area">
                         <button class="btn primary login_btn" type="submit">Login</button>

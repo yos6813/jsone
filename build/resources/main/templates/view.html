@@ -101,7 +101,7 @@
                     <div class="file-box" th:if="!${#lists.isEmpty(file)}">
                         <span class="title">첨부파일</span>
                         <div th:each="file: ${file}">
-                            <span class="filename"><a download th:href="${file.file_path}" th:text="${file.original_file_name}"></a></span>
+                            <span class="filename"><a download class="file-download" th:href="${file.file_path}" th:text="${file.original_file_name}"></a></span>
                         </div>
                     </div>
                     <div class="comments">
