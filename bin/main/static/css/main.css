@@ -18,6 +18,10 @@
     color: #FFFFFF;
 }
 
+.main-header a {
+    color: #FFFFFF;
+}
+
 .main-header .company {
     position: absolute;
     left: 15px;
@@ -32,6 +36,10 @@
 
 .main-header h1 {
     font-size: large;
+}
+
+.bg-gray1 {
+    background-color: #EEEEEE;
 }
 
 .bg-blue1 {
@@ -64,6 +72,18 @@
     color: #FFFFFF
 }
 
+.bg-yellow {
+    background-color: #FCF5A2;
+}
+
+.gray-txt {
+    color: #CCCCCC;
+}
+
+.black-txt {
+    color: black;
+}
+
 .yellow-txt {
     color: #DAA836;
 }
@@ -80,17 +100,51 @@
     border-bottom: 1px solid #EEEEEE;
     width: 100%;
     margin-bottom: 10px;
+    clear: both;
+}
+
+.left {
+    float: left;
+    clear: both;
+}
+
+.right {
+    float: right;
+    clear: both;
+}
+
+.alert-danger {
+    position: fixed;
+    width: 100vw;
+    text-align: center;
+    z-index: 10;
+}
+
+input[type="checkbox"]{
+    display: none;
+}
+
+input[type="checkbox"] + span{
+    color: #CCCCCC;
+}
+
+input[type="checkbox"]:checked + span{
+    color: #000000;
+}
+
+.hidden {
+    display: none;
 }
 
 /* 메인 메뉴 */
 .tab-nav-wrap .tab-nav {
-    display: ruby-text;
+    display: inline-flex;
     padding-top: 5px;
     border-bottom: 1px solid #EEEEEE;
 }
 
 .tab-nav-wrap .tab-nav > li {
-    padding: 0px 15px;
+    width: 25vw;
     height: 32px;
     line-height: 30px;
     text-align: center;
@@ -128,8 +182,34 @@
     color: red;
 }
 
+.save-id {
+    width: 330px;
+    text-align: left;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+.save-id span {
+    padding-left: 5px;
+}
+
 .login_btn {
     width:330px;
+}
+
+#auth {
+    margin-top: 10px;
+}
+
+#auth .auth-body .time-area {
+    width: 330px;
+    margin: 0 auto;
+    text-align: right;
+    padding-right: 20px;
+}
+
+#auth .auth-body .time-area .auth-time {
+    margin-top: -11%;
 }
 
 /* 비밀번호 재설정 */
@@ -149,9 +229,10 @@
     position: absolute;
     right: 25px;
     padding-top: 2px;
+    background: none;
 }
 
-.resetPw-body .input-area {
+.auth-body {
     margin-bottom: 50px;
 }
 
@@ -169,7 +250,7 @@
 }
 
 .dashboard-body .btn-box {
-    display: ruby;
+    display: inline-flex;
 }
 
 .dashboard-body .btn-box .approval-box {
@@ -200,13 +281,17 @@
     left: 15px;
 }
 
-.sign-head .sub-nav {
+.sign-head .list-nav {
     position: absolute;
     right: 15px;
 }
 
 .sign-body .search-box {
     padding-top: 25px;
+}
+
+.sign-body .search-box .users {
+    margin-bottom: 5px;
 }
 
 .sign-body .search-box .middle-txt {
@@ -223,19 +308,13 @@
 .sign-body .search-box .condition-box {
     height: 25px;
     padding-top: 5px;
-    text-align: center;
-    margin-left: -25vw;
+    text-align: left;
+    margin-left: 5vw;
 }
 
 .sign-body .search-box .condition-box .text {
     padding-left: 5px;
     margin-right: 35px;
-    vertical-align: 4px;
-}
-
-.sign-body .search-box .condition-box .svg-inline--fa {
-    color: #CCCCCC;
-    height: 20px;
 }
 
 .sign-body .list-box .list {
@@ -249,8 +328,16 @@
     margin: 15px auto;
 }
 
+.sign-body .more-btn {
+    margin-bottom: 10px;
+    width: 340px;
+    border: 1px solid #EEEEEE;
+    border-radius: 4px;
+}
+
 .sign-body .list-box .list span:first-child {
     color: black;
+    margin-right: 5px;
 }
 
 .sign-body .list-box .list span {
@@ -274,9 +361,9 @@
     border-radius: 50%;
 }
 
-/* 개인서류 nav */
-.personal-nav {
-    width: 75px;
+/* sub nav */
+.sub-nav {
+    width: 100px;
     position: absolute;
     z-index: 10;
     left: 23vw;
@@ -287,7 +374,7 @@
     color: black;
 }
 
-.personal-nav li {
+.sub-nav li {
     line-height: unset;
     text-align: justify;
     padding: 5px 5px;
@@ -316,12 +403,89 @@
     padding-top: 20px;
 }
 
+.view-body .body-top button {
+    font-weight: normal;
+    font-size: 12px;
+    text-align: justify;
+    padding: 0 20px;
+    width: 165px;
+}
+
+.view-body .body-top .announcement {
+    margin-left: 5px;
+}
+
+.view-body .body-top .btn-txt {
+    width: 105px;
+}
+
+.view-body .toggle-box {
+    border: 1px solid #DDDDDD;
+    padding: 10px;
+    border-radius: 4px;
+    width: 340px;
+    margin: 15px auto;
+    text-align: justify;
+}
+
+.view-body .toggle-box .title {
+    width: 100%;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.view-body .toggle-box .title .title-txt {
+    width:290px;
+}
+
+.view-body .toggle-box > div {
+    border: 1px solid #EEEEEE;
+    border-radius: 4px;
+    width: 70px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.view-body .toggle-box > div.not-found {
+    width: 100%;
+    border: unset;
+}
+
+.view-body .toggle-box div span:first-child {
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.view-body .toggle-box > div.not-found span {
+    border: unset;
+}
+
+.view-body .toggle-box div span {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.view-body .btn-box {
+    padding-bottom: 10px;
+    text-align: right;
+    width: 340px;
+    margin: 0 auto;
+}
+
+.view-body .body-top {
+    clear: both;
+    padding-top: 5px;
+}
+
 .view-body .body-middle .info-box {
     border: 1px solid #DDDDDD;
     padding: 10px;
     border-radius: 4px;
     width: 340px;
-    margin: 25px auto;
+    margin: 15px auto;
 }
 
 .view-body .body-middle .info-box .title {
@@ -342,7 +506,7 @@
 .view-body .body-middle .info-box .info .text-title {
     color: #999999;
     margin-right: 10px;
-    width: 50px;
+    width: 60px;
 }
 
 .view-body .body-middle .info-box .info .half-width {
@@ -368,6 +532,27 @@
     padding-bottom: 10px;
 }
 
+.view-body .body-middle .file-box {
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    width: 340px;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: justify;
+}
+
+.view-body .body-middle .file-box .title {
+    border-bottom: 1px solid #EEEEEE;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.view-body .body-middle .file-box .filename {
+    width: 100%;
+    text-align: justify;
+    padding-top: 10px;
+}
+
 .view-body .body-middle .comments {
     border: 1px solid #DDDDDD;
     padding: 10px;
@@ -377,6 +562,22 @@
     text-align: justify;
 }
 
+.view-body .body-middle .comments .comment {
+    width: 150px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+    padding: 5px;
+}
+
+.view-body .body-middle .comments .comment .chat-contents {
+    word-wrap: break-word;
+}
+
+.view-body .body-middle .comments .comment .chat-contents span {
+    width: 140px;
+}
+
 .view-body .body-middle .comments > span {
     border-bottom: 1px solid #EEEEEE;
     width: 100%;
@@ -384,21 +585,76 @@
 }
 
 .view-body .body-middle .comments .comment-list {
-    height: 100px;
+    height: auto;
+    padding-bottom: 5px;
 }
 
 .view-body .body-middle .comments .comment-list span {
     padding-top: 5px;
 }
 
-.view-body .body-middle .comments button {
+.view-body .body-middle .comments .chat-form {
+    clear: both;
+    padding-top: 10px;
+}
+
+.view-body .body-middle .comments .chat-form input {
+    width: 258px;
+}
+
+.view-body .body-middle .comments .chat-form button {
     padding: 0 15px;
     font-weight: normal;
 }
 
+#popup-modal {
+    z-index: 10;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    display: none;
+}
+
+#popup-modal .popup-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    height: 90%;
+}
+
+#popup-modal .popup-wrapper .popup-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 90%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+#popup-modal .popup-wrapper .popup-body {
+    overflow-y: auto;
+}
+
+#popup-modal .popup-wrapper .popup-footer {
+    padding: 5px;
+    text-align: right;
+}
+
 /* 편집 */
+#edit {
+    margin: 0 auto;
+}
+
 .edit-head {
     padding-top: 20px;
+    text-align: right;
+    width: 340px;
 }
 
 .edit-head button {
@@ -437,27 +693,34 @@
     width: 70px;
 }
 
-.edit-body .body-middle .approval-box button {
+.edit-body .body-top .info-box .info .status_cd {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #CCCCCC;
+    height: 30px;
+}
+
+.edit-body .body-middle .btn-box button {
     font-weight: normal;
     font-size: 12px;
     text-align: justify;
     padding: 0 20px;
 }
 
-.edit-body .body-middle .approval-box .approval {
+.edit-body .body-middle .btn-box .approval {
     width: 125px;
 }
 
-.edit-body .body-middle .approval-box .announcement {
+.edit-body .body-middle .btn-box .announcement {
     width: 200px;
     margin-left: 5px;
 }
 
-.edit-body .body-middle .approval-box .approval .btn-txt {
+.edit-body .body-middle .btn-box .approval .btn-txt {
     width: 65px;
 }
 
-.edit-body .body-middle .approval-box .announcement .btn-txt {
+.edit-body .body-middle .btn-box .announcement .btn-txt {
     width: 140px;
 }
 
@@ -481,7 +744,7 @@
     width:290px;
 }
 
-.edit-body .body-middle .toggle-box div {
+.edit-body .body-middle .toggle-box > div {
     border: 1px solid #EEEEEE;
     border-radius: 4px;
     width: 70px;
@@ -493,10 +756,6 @@
 
 .edit-body .body-middle .toggle-box div span:first-child {
     border-bottom: 1px solid #EEEEEE;
-}
-
-.edit-body .body-middle .toggle-box div span:last-child {
-    color: #CCCCCC;
 }
 
 .edit-body .body-middle .toggle-box div span {
@@ -542,8 +801,9 @@
 }
 
 .edit-body .body-bottom .file-box {
-    border-bottom: 1px solid #EEEEEE;
+    border-top: 1px solid #EEEEEE;
     padding-bottom: 5px;
+    margin-top: 10px;
     padding-top: 10px;
 }
 
@@ -553,6 +813,13 @@
 }
 
 .edit-body .body-bottom .plus-icon {
+    position: absolute;
+    margin-left: -50px;
+    width: 50px;
+    text-align: right;
+}
+
+.edit-body .body-bottom .minus-icon {
     position: absolute;
     margin-left: -50px;
     width: 50px;

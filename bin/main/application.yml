@@ -2,17 +2,29 @@
 server:
   port: 8080
 
-# database
+# database and resources
 spring:
+  web:
+    resources:
+      static-locations: 
+        - classpath:/static/
+        - file:/absolute/path/to/files/
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://175.126.176.188:3341;databaseName=demo;encrypt=true;trustServerCertificate=true;
+    url: jdbc:sqlserver://175.126.176.188:3341;databaseName=garam_common;encrypt=true;trustServerCertificate=true;
     username: sa
     password: test123!
-
+  servlet:
+    multipart:
+      enabled: true
+      
+      
 # mybatis
 mybatis:
   mapper-locations: classpath:mapper/approval-mapper.xml
   config-location: classpath:mybatis-config.xml
+
+
+
 
 

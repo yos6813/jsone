@@ -163,43 +163,48 @@ a:active {
 
 /* NanumBarunGothic */
 @font-face {
-  font-family: "NanumBarunGothic";
-  src: url("../fonts/NanumBarunGothic.ttf") format("truetype");
+  font-family: 'NanumBarunGothic';
+  font-style: normal;
   font-weight: 400;
-  font-style: normal;
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
 }
+
 @font-face {
-  font-family: "NanumBarunGothic";
-  src: url("../fonts/NanumBarunGothicBold.ttf") format("truetype");
-  font-weight: 700;
+  font-family: 'NanumBarunGothic';
   font-style: normal;
+  font-weight: 700;
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebBold.eot');
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebBold.eot?#iefix') format('embedded-opentype'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebBold.woff') format('woff'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebBold.ttf') format('truetype')
 }
+
+@font-face {
+  font-family: 'NanumBarunGothic';
+  font-style: normal;
+  font-weight: 300;
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot');
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot?#iefix') format('embedded-opentype'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.woff') format('woff'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.ttf') format('truetype');
+}
+
+ .nanumbarungothic * {
+  font-family: 'NanumBarunGothic', sans-serif;
+ }
+ 
 /* noto sans korean */
+
 @font-face {
   font-family: "Noto Sans Korean";
-  src: url("../fonts/NotoSansKR-Medium.ttf") format("truetype");
+  src: url("//fonts.google.com/noto/specimen/Noto+Sans+KR") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
   font-family: "Noto Sans Korean";
-  src: url("../fonts/NotoSansKR-Bold.ttf") format("truetype");
+  src: url("//fonts.google.com/noto/specimen/Noto+Sans+KR") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 /* noto sans poppins */
-@font-face {
-  font-family: "Noto Sans Poppins";
-  src: url("../fonts/Poppins-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Noto Sans Poppins";
-  src: url("../fonts/Poppins-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-}
 body {
   font-family: "Noto Sans Poppins", sans-serif;
   font-size: 14px;
@@ -299,6 +304,11 @@ body {
   color: #fff;
   border: 1px solid var(--color-gray);
   background-color: var(--color-background-black);
+}
+.btn.warning {
+  color: #fff;
+  border: 1px solid #DAA836;
+  background-color: #DAA836;
 }
 .btn.icon {
   padding: 0;

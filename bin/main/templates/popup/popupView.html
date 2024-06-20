@@ -1,0 +1,100 @@
+<div class="wrapper">
+    <div id="view">
+        <div class="view-body">
+            <div class="approval-toggle toggle-box">
+                <span class="title">
+                    <span class="title-txt">결재</span>
+                    <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                </span>
+                <div th:if="!${#lists.isEmpty(approver)}" th:each="list: ${approver}">
+                    <div>
+                        <span th:text="${list.emp_nm}"></span>
+                        <span class="check" th:classappend="!${#lists.isEmpty(docApprover)} and ${#lists.contains(docApprover, list.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                    </div>
+                </div>
+                <div class="not-found" th:unless="!${#lists.isEmpty(approver)}">
+                    <span>선택된 결재자가 없습니다.</span>
+                </div>
+            </div>
+            <div class="announcement-toggle toggle-box">
+                <span class="title">
+                    <span class="title-txt">공람</span>
+                    <span class="title-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                </span>
+                <div th:if="!${#lists.isEmpty(viewer)}" th:each="viewer: ${viewer}">
+                    <div>
+                        <span th:text="${viewer.emp_nm}"></span>
+                        <span class="check" th:classappend="!${#lists.isEmpty(docViewer)} and ${#lists.contains(docViewer, viewer.empid)} ? '' : 'gray-txt'"><i class="fa-regular fa-square-check fa-lg"></i></span>
+                    </div>
+                </div>
+                <div class="not-found" th:unless="!${#lists.isEmpty(viewer)}">
+                    <span>선택된 공람자가 없습니다.</span>
+                </div>
+            </div>
+            <div class="body-middle">
+                <div class="info-box">
+                    <span class="title">[[${view.title}]]</span>
+                    <div class="info">
+                        <div>
+                            <span class="text-title">문서번호</span>
+                            <span>[[${view.doc_num}]]</span>
+                        </div>
+                        <div>
+                            <span class="text-title">작성일자</span>
+                            <span>[[${view.create_date}]]</span>
+                        </div>
+                        <div>
+                            <span class="text-title">작성자</span>
+                            <span>[[${view.emp_nm}]]</span>
+                        </div>
+                        <div>
+                            <span class="text-title">문서종류</span>
+                            <span class="half-width">[[${view.type_cd}]]</span>
+                            <span class="text-title">문서상태</span>
+                            <span>[[${view.status_cd}]]</span>
+                        </div>
+                        <div>
+                            <span class="text-title">반려문서</span>
+                            <a class="yellow-txt copy_id" data-toggle="modal" data-target="#moaModal">[[${view.copy_id}]]</a>
+                        </div>
+                        <div>
+                            <span class="text-title">참고문서</span>
+                            <a class="green-txt refer_id" data-toggle="modal" data-target="#moaModal">[[${view.reference_id}]]</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <span>내용</span>
+                    <div>
+                        [(${view.contents})]
+                    </div>
+                </div>
+                <div class="file-box" th:if="!${#lists.isEmpty(file)}">
+                    <span class="title">첨부파일</span>
+                    <div th:each="file: ${file}">
+                        <span class="filename"><a download th:href="${file.file_path}" th:text="${file.original_file_name}"></a></span>
+                    </div>
+                </div>
+                <div class="comments">
+                    <span>대화</span>
+                    <div class="comment-list">
+                        <div th:if="!${#lists.isEmpty(chatList)}" th:classappend="${list.emp_nm} != ${name} ? 'bg-gray1 left' : 'bg-yellow right'" th:each="list: ${chatList}" class="comment">
+                            <div class="chat-user">
+                                <span th:text="${list.emp_nm}"></span>
+                            </div>
+                            <div class="chat-contents">
+                                <span th:text="${list.contents}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-form">
+                        <form id="saveChat">
+                            <input type="hidden" id="docid" th:value="${docid}"/>
+                            <input type="hidden" id="empid" th:value="${empid}"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

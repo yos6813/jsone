@@ -3,41 +3,599 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Approval">
-        <select id="login" resultType="map">
-                SELECT emp_id FROM t_emp WHERE mbl_tel_no = '#{mbl_tel_no}' AND passwd = '#{passwd}'
+        <!-- 로그인 -->
+        <select id="login" resultType="login" parameterType="map">
+                SELECT empid, custid, authyn, loginid FROM t_login WHERE loginid = '${loginid}' AND passwd = '${passwd}'
         </select>
-        <select id="list" resultType="map" parameterType="map">
-                SELECT docid, empid, title, contents, contents_text, create_date
-                FROM t_approval_document WHERE 1=1
-                <if test="startDate != null">
-                        <if test="startDate != ''">
-                                AND create_date <![CDATA[>=]]> '${startDate}'
-                        </if>
-                </if>
-                <if test="endDate != null">
-                        <if test="endDate != ''">
-                                AND create_date <![CDATA[<=]]> '${endDate}'
-                        </if>
-                </if>
-                <if test="search != null">
-                        <if test="search != ''">
-                                AND (title LIKE '%${search}%' OR contents_text LIKE '%${search}%')
-                        </if>
-                </if>
-                order by create_date desc
+        <!-- 인증여부 확인 -->
+        <select id="authCheck" resultType="login" parameterType="map">
+                SELECT authyn FROM t_login WHERE loginid = '${loginid}'
         </select>
+        <!-- 비밀번호, 인증확인 여부 설정 -->
+        <update id="setAuth" parameterType="map">
+                UPDATE t_login SET passwd = '${passwd}', authyn = 'Y' WHERE loginid = '${loginid}' AND RTRIM(authyn) != 'Y';
+        </update>
+        <!-- 비밀번호 재설정 전 유저 정보 찾기 -->
+        <select id="findUser" resultType="Long" parameterType="map">
+                SELECT empid FROM t_login WHERE loginid = '${loginid}'
+        </select>
+        <!-- 비밀번호 재설정 -->
+        <update id="resetPw" parameterType="map">
+                UPDATE t_login SET passwd = '${passwd}' WHERE loginid = '${loginid}'
+        </update>
+        <!-- 로그인, 로그아웃 후 디비 지정 -->
+        <select id="use" parameterType="String">
+                USE ${dbname}
+        </select>
+        <!-- 로그인 후 고객의 디비 정보 확인 -->
+        <select id="customer" resultType="customer" parameterType="Long">
+                SELECT custid, manager_nm, telno, db_nm FROM t_customer WHERE custid = '${custid}'
+        </select>
+        <!-- 현재 로그인한 사람의 정보 조회 -->
+        <select id="user" resultType="user" parameterType="map">
+                SELECT empid, emp_nm, coop_cd, pos_cd FROM t_emp WHERE empid = '${empid}'
+        </select>
+        <!-- 해당 회사의 회원 모두 조회 -->
+        <select id="allUser" resultType="user" parameterType="map">
+                SELECT distinct d.empid,
+                (SELECT e1.emp_nm FROM t_emp AS e1 JOIN t_code AS c1 ON e1.dept_cd = c1.code WHERE e1.empid = d.empid AND c1.category = '부서코드' AND isnull(c1.id_parent, '') <![CDATA[<>]]> '' AND c1.usyn = '1') AS emp_nm
+                FROM t_approval_document AS d
+                <if test="title != null and title != ''">
+                        <if test="title == '공람' or title == '공람문서'">
+                                JOIN t_approval_document_public AS p ON d.docid = p.docid
+                                JOIN t_emp e ON e.coop_cd = p.pub_cd
+                        </if>
+                        <if test="title == '결재' or title == '결재문서'">
+                                JOIN t_approval_document_step AS s ON d.docid = s.docid
+                                JOIN t_emp e ON e.pos_cd = s.pos_cd
+                        </if>
+                </if>
+                <if test="title == null or title == ''">
+                        JOIN t_emp e ON e.empid = d.empid
+                        JOIN t_code AS c ON e.dept_cd = c.code
+                        WHERE c.category = '부서코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1'
+                </if>
+                <if test="title != null and title != ''">
+                        <if test="code != null and code != ''">
+                                <if test="title =='결재'">
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0)
+                                </if>
+                                <if test="title =='공람'">
+                                        WHERE (p.pub_cd = '${code}' AND p.empid = 0)
+                                </if>
+                        </if>
+                        <if test="pid != null">
+                                <if test="title == '공람문서'">
+                                        WHERE p.empid = '${pid}'
+                                </if>
+                                <if test="title == '결재문서'">
+                                        WHERE s.empid = '${pid}'
+                                </if>
+                        </if>
+                </if>
+                <if test="status_cd != null">
+                        AND d.status_cd in (${status_cd})
+                </if>
+                <if test="type_cd != null and type_cd != ''">
+                        AND d.type_cd = ${type_cd}
+                </if>
+                <if test="startDate != null and startDate != '' and new_msg == null">
+                        AND d.create_date <![CDATA[>=]]> '${startDate}'
+                </if>
+                <if test="endDate != null and endDate != '' and new_msg == null">
+                        AND d.create_date <![CDATA[<=]]> '${endDate}'
+                </if>
+                <if test="search != null and search != ''">
+                        AND (d.title LIKE '%${search}%')
+                </if>
+                <if test="empid != null and empid gt 0">
+                        AND d.empid <![CDATA[=]]> '${empid}'
+                </if>
+                <if test="new_msg != null and new_msg != ''">
+                        AND (d.create_date <![CDATA[>=]]> DATEADD(DAY,-1, GETDATE()) AND d.create_date <![CDATA[<=]]> GETDATE())
+                </if>
+                <if test="end_msg != null and end_msg != ''">
+                        AND d.status_cd != '005'
+                </if>
+        </select>
+        <!-- 리스트 페이지 -->
+        <select id="list" resultType="sign" parameterType="map">
+                SELECT d.docid, d.empid, d.title, d.contents, d.contents_text, FORMAT(d.create_date, 'yyyy-MM-dd H:m') as create_date,
+                <if test="title != null and title != ''">
+                        (SELECT e1.emp_nm FROM t_emp AS e1 JOIN t_code AS c1 ON e1.dept_cd = c1.code WHERE e1.empid = d.empid AND c1.category = '부서코드' AND isnull(c1.id_parent, '') <![CDATA[<>]]> '' AND c1.usyn = '1') AS emp_nm,
+                        (SELECT c1.name FROM t_emp AS e1 JOIN t_code AS c1 ON e1.dept_cd = c1.code WHERE e1.empid = d.empid AND c1.category = '부서코드' AND isnull(c1.id_parent, '') <![CDATA[<>]]> '' AND c1.usyn = '1') AS name,
+                </if>
+                <if test="title == null or title == ''">
+                        e.emp_nm, c.name,
+                </if>
+                CASE WHEN d.status_cd = '001' THEN '임시저장' WHEN d.status_cd = '002' THEN '진행중' WHEN d.status_cd = '003' THEN '반려' WHEN d.status_cd = '004' THEN '반려보관' ELSE '완료' END as status_cd,
+                CASE WHEN d.type_cd = '001' THEN '내부기안' WHEN d.type_cd = '002' THEN '외부발송' WHEN d.type_cd = '003' THEN '접수문서' WHEN d.type_cd = '004' THEN '보고문서' WHEN d.type_cd = '005' THEN '업무일지' WHEN d.type_cd = '006' THEN '연차신청' WHEN d.type_cd = '007' THEN '지출결의' ELSE '선택' END as type_cd,
+                (SELECT count(*) as cnt FROM t_approval_document_chat as c WHERE c.docid = d.docid) as cnt
+                FROM t_approval_document AS d
+                <if test="title != null and title != ''">
+                        <if test="title == '공람' or title == '공람문서'">
+                                JOIN (SELECT DISTINCT docid, p.empid, p.pub_cd FROM t_approval_document_public AS p
+                                JOIN t_emp e ON e.coop_cd = p.pub_cd) AS p ON d.docid = p.docid
+                        </if>
+                        <if test="title == '결재' or title == '진행'">
+                                JOIN (SELECT DISTINCT docid, s.empid, s.pos_cd, s.step FROM t_approval_document_step AS s
+                                JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
+                        </if>
+                        <if test="title == '결재문서'">
+                                JOIN (SELECT DISTINCT docid, s.empid FROM t_approval_document_step AS s
+                                JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
+                        </if>
+                </if>
+                <if test="title == null or title == ''">
+                        JOIN t_emp e ON e.empid = d.empid
+                        JOIN t_code AS c ON e.dept_cd = c.code
+                        WHERE c.category = '부서코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1'
+                </if>
+                <if test="title != null and title != ''">
+                        <if test="code != null and code != ''">
+                                <if test="title =='결재'">
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = d.step
+                                </if>
+                                <if test="title =='공람'">
+                                        WHERE (p.pub_cd = '${code}' AND p.empid = 0)
+                                </if>
+                                <if test="title =='진행'">
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.empid = 0 AND s.step <![CDATA[>]]> d.step
+                                </if>
+                        </if>
+                        <if test="pid != null">
+                                <if test="title == '공람문서'">
+                                        WHERE p.empid = '${pid}'
+                                </if>
+                                <if test="title == '결재문서'">
+                                        WHERE (s.empid = '${pid}' OR ((d.status_cd = 003 OR d.status_cd = 004) AND s.empid = 0))
+                                </if>
+                        </if>
+                </if>
+                <if test="status_cd != null">
+                        AND d.status_cd in (${status_cd})
+                </if>
+                <if test="type_cd != null and type_cd != ''">
+                        AND d.type_cd = ${type_cd}
+                </if>
+                <if test="startDate != null and startDate != '' and new_msg == null">
+                        AND d.create_date <![CDATA[>=]]> '${startDate}'
+                </if>
+                <if test="endDate != null and endDate != '' and new_msg == null">
+                        AND d.create_date <![CDATA[<=]]> '${endDate}'
+                </if>
+                <if test="search != null and search != ''">
+                        AND (d.title LIKE '%${search}%')
+                </if>
+                <if test="empid != null and empid gt 0">
+                        AND d.empid <![CDATA[=]]> '${empid}'
+                </if>
+                <if test="new_msg != null and new_msg != ''">
+                        AND (d.create_date <![CDATA[>=]]> DATEADD(DAY,-1, GETDATE()) AND d.create_date <![CDATA[<=]]> GETDATE())
+                </if>
+                <if test="end_msg != null and end_msg != ''">
+                        AND d.status_cd != '005'
+                </if>
+                order by d.create_date desc
+                <if test="page != null and page != ''">
+                        OFFSET ${page} ROWS
+                        FETCH NEXT 20 ROWS ONLY;
+                </if>
+                <if test="page == null">
+                        OFFSET 0 ROWS
+                        FETCH NEXT 20 ROWS ONLY;
+                </if>
+        </select>
+        <!-- 파라미터 포함 리스트 갯수 -->
+        <select id="cnt" resultType="map" parameterType="map">
+                SELECT count(*) as full_cnt
+                <if test="type != null and type != ''">
+                        , (SELECT CASE WHEN '${type}' = '001' THEN '임시저장' WHEN '${type}' = '002' THEN '진행중' WHEN '${type}' = '003' THEN '반려' WHEN '${type}' = '004' THEN '반려보관' ELSE '완료' END) as type_cd
+                </if>
+                <if test="status != null and status != ''">
+                        , (SELECT CASE WHEN '${status}' = '001' THEN '내부기안' WHEN '${status}' = '002' THEN '외부발송' WHEN '${status}' = '003' THEN '접수문서' WHEN '${status}' = '004' THEN '보고문서' WHEN '${status}' = '005' THEN '업무일지' WHEN '${status}' = '006' THEN '연차신청' WHEN '${status}' = '007' THEN '지출결의' ELSE '선택' END) as status_cd
+                </if>
+                FROM t_approval_document AS d
+                <if test="title != null and title != ''">
+                        <if test="title == '공람' or title == '공람문서'">
+                                JOIN (SELECT DISTINCT docid, p.empid, p.pub_cd FROM t_approval_document_public AS p
+                                JOIN t_emp e ON e.coop_cd = p.pub_cd) AS p ON d.docid = p.docid
+                        </if>
+                        <if test="title == '결재' or title == '진행'">
+                                JOIN (SELECT DISTINCT docid, s.empid, s.pos_cd, s.step FROM t_approval_document_step AS s
+                                JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
+                        </if>
+                        <if test="title == '결재문서'">
+                                JOIN (SELECT DISTINCT docid, s.empid FROM t_approval_document_step AS s
+                                JOIN t_emp AS e ON e.pos_cd = s.pos_cd) AS s ON d.docid = s.docid
+                        </if>
+                </if>
+                <if test="title == null or title == ''">
+                        JOIN t_emp e ON e.empid = d.empid
+                        JOIN t_code AS c ON e.dept_cd = c.code
+                        WHERE c.category = '부서코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1'
+                </if>
+                <if test="title != null and title != ''">
+                        <if test="code != null and code != ''">
+                                <if test="title =='결재'">
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step = d.step
+                                </if>
+                                <if test="title =='공람'">
+                                        WHERE (p.pub_cd = '${code}' AND p.empid = 0)
+                                </if>
+                                <if test="title =='진행'">
+                                        WHERE (s.pos_cd = '${code}' AND s.empid = 0) AND s.step <![CDATA[>]]> d.step
+                                </if>
+                        </if>
+                        <if test="pid != null">
+                                <if test="title == '공람문서'">
+                                        WHERE p.empid = '${pid}'
+                                </if>
+                                <if test="title == '결재문서'">
+                                        WHERE (s.empid = '${pid}' OR ((d.status_cd = 003 OR d.status_cd = 004) AND s.empid = 0))
+                                </if>
+                        </if>
+                </if>
+                <if test="status_cd != null">
+                        AND d.status_cd in (${status_cd})
+                </if>
+                <if test="type_cd != null and type_cd != ''">
+                        AND d.type_cd = ${type_cd}
+                </if>
+                <if test="startDate != null and startDate != '' and new_msg == null">
+                        AND d.create_date <![CDATA[>=]]> '${startDate}'
+                </if>
+                <if test="endDate != null and endDate != '' and new_msg == null">
+                        AND d.create_date <![CDATA[<=]]> '${endDate}'
+                </if>
+                <if test="search != null and search != ''">
+                        AND (d.title LIKE '%${search}%')
+                </if>
+                <if test="empid != null and empid gt 0">
+                        AND d.empid <![CDATA[=]]> '${empid}'
+                </if>
+                <if test="new_msg != null and new_msg != ''">
+                        AND (d.create_date <![CDATA[>=]]> DATEADD(DAY,-1, GETDATE()) AND d.create_date <![CDATA[<=]]> GETDATE())
+                </if>
+                <if test="end_msg != null and end_msg != ''">
+                        AND d.status_cd != '005'
+                </if>
+        </select>
+        <!-- 파라미터 미포함 갯수(sub_nav용) -->
+        <select id="subCnt" parameterType="map" resultType="subCnt">
+                SELECT
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd})) AS 'all',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '001') AS 'internal',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '002') AS 'external',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '003') AS 'apply',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '004') AS 'report',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '005') AS 'work',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '006') AS 'annual',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_emp AS e ON e.empid = d.empid
+                WHERE e.empid = '${pid}' AND d.status_cd in (${status_cd}) AND d.type_cd = '007') AS 'spend'
+        </select>
+        <!-- 파라미터 미포함 갯수(sub_nav용) 진행서류 -->
+        <select id="progressSubCnt" parameterType="map" resultType="subCnt">
+                SELECT
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0') AS 'all',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '001') AS 'internal',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '002') AS 'external',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '003') AS 'apply',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '004') AS 'report',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '005') AS 'work',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '006') AS 'annual',
+                (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                WHERE s.pos_cd = '${code}' AND s.step = (d.step + 2) AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '007') AS 'spend'
+        </select>
+        <!-- 파라미터 미포함 갯수(sub_nav용) 전자결재 & 결재문서 -->
+        <select id="stepSubCnt" parameterType="map" resultType="subCnt">
+                <if test="(title != null and title == '결재') or title == '진행' ">
+                        SELECT
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0') AS 'all',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '001') AS 'internal',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '002') AS 'external',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '003') AS 'apply',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '004') AS 'report',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '005') AS 'work',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '006') AS 'annual',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE s.pos_cd = '${code}' AND d.status_cd in (${status_cd}) AND s.empid = '0' AND d.type_cd = '007') AS 'spend'
+                </if>
+                <if test="title != null and title == '결재문서'">
+                        SELECT
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND s.empid = '${pid}') AS 'all',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '001' AND s.empid = '${pid}') AS 'internal',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '002' AND s.empid = '${pid}') AS 'external',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '003' AND s.empid = '${pid}') AS 'apply',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '004' AND s.empid = '${pid}') AS 'report',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '005' AND s.empid = '${pid}') AS 'work',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '006' AND s.empid = '${pid}') AS 'annual',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_step AS s ON s.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '007' AND s.empid = '${pid}') AS 'spend'
+                </if>
+        </select>
+        <!-- 파라미터 미포함 갯수(sub_nav용) 공람문서 & 공람확인 -->
+        <select id="publicSubCnt" parameterType="map" resultType="subCnt">
+                <if test="title != null and title == '공람'">
+                        SELECT
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0') AS 'all',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '001') AS 'internal',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '002') AS 'external',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '003') AS 'apply',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '004') AS 'report',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '005') AS 'work',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '006') AS 'annual',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE p.pub_cd = '${code}' AND d.status_cd in (${status_cd}) AND p.empid = '0' AND d.type_cd = '007') AS 'spend'
+                </if>
+                <if test="title != null and title == '공람문서'">
+                        SELECT
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid 
+                        WHERE d.status_cd in (${status_cd}) AND p.empid = '${pid}') AS 'all',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '001' AND p.empid = '${pid}') AS 'internal',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '002' AND p.empid = '${pid}') AS 'external',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '003' AND p.empid = '${pid}') AS 'apply',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '004' AND p.empid = '${pid}') AS 'report',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '005' AND p.empid = '${pid}') AS 'work',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '006' AND p.empid = '${pid}') AS 'annual',
+                        (SELECT count(*) AS cnt FROM t_approval_document AS d JOIN t_approval_document_public AS p ON p.docid = d.docid
+                        WHERE d.status_cd in (${status_cd}) AND d.type_cd = '007' AND p.empid = '${pid}') AS 'spend'
+                </if>
+        </select>
+        <!-- 파라미터 미포함 갯수(sub_nav용) 개인서류 -->
+        <select id="personalSubCnt" parameterType="string" resultType="subCnt">
+                SELECT
+                (SELECT count(*) AS cnt FROM t_approval_document
+                WHERE empid = '${empid}') AS 'all',
+                (SELECT count(*) AS cnt FROM t_approval_document
+                WHERE status_cd = '001' AND empid = '${empid}') AS 'draft',
+                (SELECT count(*) AS cnt FROM t_approval_document
+                WHERE status_cd = '002' AND empid = '${empid}') AS 'ongoing',
+                (SELECT count(*) AS cnt FROM t_approval_document
+                WHERE status_cd = '003' AND empid = '${empid}') AS 'refer',
+                (SELECT count(*) AS cnt FROM t_approval_document
+                WHERE status_cd = '004' AND empid = '${empid}') AS 'storage',
+                (SELECT count(*) AS cnt FROM t_approval_document
+                WHERE status_cd = '005' AND empid = '${empid}') AS 'complete'
+        </select>
+        <!-- 뷰페이지 -->
         <select id="view" resultType="view" parameterType="Long">
-                SELECT e.emp_nm, d.docid, d.empid, d.title, d.contents, d.contents_text, d.reference_docid,
+                SELECT e.emp_nm, d.docid, d.empid, d.title, d.contents, d.contents_text, d.copy_docid, d.reference_docid,
                 FORMAT(d.create_date, 'yyyy-MM-dd H:m:s') as create_date,
-                CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.docid) as doc_num,
-                CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.status_cd, '-', d.reference_docid) as reference_id,
-                (CASE d.type_cd  WHEN 001 THEN '임시저장' WHEN 002 THEN '진행중' WHEN 003 THEN '반려' WHEN 004 THEN '반려보관' ELSE '완료' END) as type_cd,
-                (CASE d.status_cd  WHEN 001 THEN '내부기안' WHEN 002 THEN '외부발송' WHEN 003 THEN '접수문서' WHEN 004 THEN '보고문서' WHEN 005 THEN '업무일지' WHEN 006 THEN '연차신청' WHEN 007 THEN '지출결의' ELSE '선택' END) as status_cd
+                CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.type_cd, '-', d.docid) as doc_num,
+                CASE WHEN d.copy_docid IS NULL or d.copy_docid = 0 THEN '-' ELSE CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.type_cd, '-', d.copy_docid) END as copy_id,
+                CASE WHEN d.reference_docid IS NULL or d.reference_docid = 0 THEN '-' ELSE CONCAT(FORMAT(d.create_date, 'yyyyMM'), '-', d.type_cd, '-', d.reference_docid) END as reference_id,
+                CASE WHEN d.status_cd = '001' THEN '임시저장' WHEN d.status_cd = '002' THEN '진행중' WHEN d.status_cd = '003' THEN '반려' WHEN d.status_cd = '004' THEN '반려보관' ELSE '완료' END as status_cd,
+                CASE WHEN d.type_cd = '001' THEN '내부기안' WHEN d.type_cd = '002' THEN '외부발송' WHEN d.type_cd = '003' THEN '접수문서' WHEN d.type_cd = '004' THEN '보고문서' WHEN d.type_cd = '005' THEN '업무일지' WHEN d.type_cd = '006' THEN '연차신청' WHEN d.type_cd = '007' THEN '지출결의' ELSE '선택' END as type_cd
                 FROM t_approval_document as d
-                LEFT OUTER JOIN t_emp as e ON d.empid = e.emp_id
+                LEFT OUTER JOIN t_emp as e ON d.empid = e.empid
                 WHERE d.docid = ${id}
         </select>
-        <select id="chat" resultType="chat" parameterType="Long">
-                SELECT * FROM t_approval_document_chat WHERE docid = ${id}
+        <!-- 첨부파일 불러오기 -->
+        <select id="file" resultType="file" parameterType="Long">
+                SELECT attachid, docid, file_path, original_file_name FROM t_approval_document_attach WHERE docid = ${docid}
         </select>
+        <!-- 뷰페이지 하단 채팅 정보 -->
+        <select id="chat" resultType="chat" parameterType="Long">
+                SELECT c.chatid, c.docid, c.empid, c.contents, e.emp_nm FROM t_approval_document_chat c JOIN t_emp e ON c.empid = e.empid WHERE docid = ${id} ORDER BY c.create_date ASC
+        </select>
+        <!-- 채팅 저장 -->
+        <insert id="chatSave" parameterType="chatAjax" useGeneratedKeys="true" keyProperty="chatid">
+                INSERT INTO t_approval_document_chat values ('${docid}', '${empid}', null, '${chatContents}', getDate());
+        </insert>
+        <!-- ajax로 채팅 insert한 것 불러오기 -->
+        <select id="chatOne" resultType="chatAjax" parameterType="string">
+                SELECT c.docid, c.chatid, c.empid, c.contents as chatContents, e.emp_nm FROM t_approval_document_chat c JOIN t_emp e ON c.empid = e.empid WHERE c.chatid = ${chatid}
+        </select>
+        <!-- 문서 별 결재자 조회 -->
+        <select id="approver" resultType="approver" parameterType="Long">
+                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code AS c
+                JOIN t_approval_document_step AS s ON s.pos_cd = c.code
+                JOIN t_emp AS e ON c.code = e.pos_cd
+                WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND s.docid = '${docid}'
+                ORDER BY c.seq
+        </select>
+        <!-- 문서 별 공람자 조회 -->
+        <select id="viewer" resultType="approver" parameterType="Long">
+                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code AS c
+                JOIN t_approval_document_public AS p ON p.pub_cd = c.code
+                JOIN t_emp AS e ON c.code = e.coop_cd
+                WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND p.docid = '${docid}'
+                ORDER BY c.seq
+        </select>
+        <!-- 모든 결재자 조회 -->
+        <select id="allApprover" resultType="approver" parameterType="Long">
+                SELECT c.id, c.name, e.empid, e.emp_nm, c.code, c.seq FROM t_code AS c
+                JOIN t_emp AS e ON c.code = e.pos_cd
+                WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND (e.pos_cd != 0 AND e.pos_cd IS NOT NULL)
+                ORDER BY c.seq
+        </select>
+        <!-- 모든 공람자 조회 -->
+        <select id="allViewer" resultType="approver" parameterType="Long">
+                SELECT c.id, c.name, e.empid, e.emp_nm, c.code FROM t_code AS c
+                JOIN t_emp AS e ON c.code = e.coop_cd
+                WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND (e.coop_cd != 0 AND e.coop_cd IS NOT NULL)
+                AND e.empid != '${empid}'
+                ORDER BY c.seq
+        </select>
+        <!-- 문서 별 결재 완료자 -->
+        <select id="docApprover" resultType="Long">
+                SELECT e.empid FROM t_code AS c
+                JOIN t_approval_document_step AS s ON s.pos_cd = c.code
+                JOIN t_emp AS e ON c.code = e.pos_cd
+                WHERE c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND s.docid = '${docid}' AND s.empid != 0
+                ORDER BY c.seq
+        </select>
+        <!-- 문서 별 공람 확인자 -->
+        <select id="docViewer" parameterType="Long" resultType="Long">
+                SELECT e.empid FROM t_code AS c
+                JOIN t_approval_document_public AS p ON p.pub_cd = c.code
+                JOIN t_emp AS e ON c.code = e.coop_cd
+                WHERE c.category = '공람분류' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1' AND p.docid = '${docid}' AND p.empid != 0
+                ORDER BY c.seq
+        </select>
+        <!-- 결재체크 -->
+        <update id="docCheck" parameterType="map">
+                UPDATE t_approval_document_step SET empid = '${empid}', end_date = getDate() WHERE docid = '${docid}' AND pos_cd = '${code}'
+        </update>
+        <!-- 반려 -->
+        <update id="docRefer" parameterType="map">
+                UPDATE t_approval_document SET status_cd = '${status_cd}' WHERE docid = '${docid}'
+        </update>
+        <!-- 회수 -->
+        <update id="docCollect" parameterType="map">
+                UPDATE t_approval_document SET status_cd = '001' WHERE docid = '${docid}'
+        </update>
+        <!-- 공람체크 -->
+        <update id="viewerCheck" parameterType="map">
+                UPDATE t_approval_document_public SET empid = '${empid}' WHERE docid = '${docid}' AND pub_cd = '${code}'
+        </update>
+        <!-- 글 편집 후 저장 -->
+        <update id="update" parameterType="map">
+                UPDATE t_approval_document
+                SET title = '${title}', step = '${step}', type_cd = '${type_cd}', contents = '${contents}', reference_docid = '${reference_docid}', contents_text = '${contents_text}'
+                WHERE docid = '${id}'
+        </update>
+        <!-- 파일 데이터 업데이트 -->
+        <insert id="fileUpdate" parameterType="map">
+                INSERT t_approval_document_attach VALUES ('${id}', '${file_path}', '${fileName}', getDate())
+        </insert>
+        <select id="checkSeq" parameterType="String" resultType="code">
+                SELECT RANK() OVER(ORDER BY seq ASC) as step, code FROM t_code
+                WHERE category = '결재직위코드' AND isnull(id_parent, '') <![CDATA[<>]]> '' AND usyn = '1' AND code IN (${code})
+        </select>
+        <!-- 결재자 추가 -->
+        <insert id="insertApprover" parameterType="map">
+                INSERT t_approval_document_step VALUES ('${id}', ${step}, '${code}', 0, '', getDATE(), null, null)
+        </insert>
+        <!-- 공람자 추가 -->
+        <insert id="insertViewer" parameterType="map">
+                INSERT t_approval_document_public VALUES ('${id}', '${code}', 0, getDATE(), null, null)
+        </insert>
+        <!-- 결재자 모두 삭제 -->
+        <delete id="deleteApprover" parameterType="Long">
+                DELETE FROM t_approval_document_step WHERE docid = '${id}'
+        </delete>
+        <!-- 공람자 모두 삭제 -->
+        <delete id="deleteViewer" parameterType="Long">
+                DELETE FROM t_approval_document_public WHERE docid = '${id}'
+        </delete>
+        <!-- 공람자, 결재자 코드 조회 coop_cd: 공람자, pos_cd: 결재자 -->
+        <select id="checkCd" parameterType="map" resultType="map">
+                SELECT coop_cd, pos_cd FROM t_emp WHERE empid = '${empid}'
+        </select>
+        <!-- 현재 결재자의 결재 순서 검색 -->
+        <select id="checkStep" parameterType="map" resultType="Long">
+                SELECT s.step FROM t_approval_document_step AS s JOIN t_emp AS e ON s.pos_cd = e.pos_cd WHERE e.empid = ${empid} AND s.docid = ${id}
+        </select>
+        <!-- 같은 결재라인의 사람이 결재 승인을 했는지 체크 -->
+        <select id="checkStepLine" parameterType="map" resultType="Long">
+                SELECT COUNT(*) cnt FROM t_approval_document_step AS s JOIN t_emp AS e ON s.pos_cd = e.pos_cd WHERE s.step = ${step} AND s.docid = ${id} AND s.empid = 0
+        </select>
+        <!-- 결재자가 모두 체크했는지 확인 -->
+        <select id="checkAppov" parameterType="map" resultType="Long">
+                SELECT COUNT(*) AS cnt FROM t_approval_document_step WHERE docid = '${docid}' AND empid = '0'
+        </select>
+        <!-- 문서 상태 변경 -->
+        <update id="approvalDoc" parameterType="map">
+                UPDATE t_approval_document SET status_cd = '${status_cd}' WHERE docid = '${id}'
+        </update>
+        <!-- 문서 결재 단계 변경 -->
+        <update id="changeStep" parameterType="Long">
+                UPDATE t_approval_document SET step = (step + 1) WHERE docid = '${id}'
+        </update>
+        <!-- 글 삭제 -->
+        <delete id="delDoc">
+                DELETE FROM t_approval_document WHERE docid = '${id}'
+        </delete>
+        <!-- 문서 내 파일 모두 삭제 -->
+        <delete id="delAttach">
+                DELETE FROM t_approval_document_attach WHERE docid = '${id}'
+        </delete>
+        <!-- 파일 삭제 -->
+        <delete id="delOneAttach">
+                DELETE FROM t_approval_document_attach WHERE attachid = '${attachid}'
+        </delete>
+        <!-- 문서 별 결재자 삭제 -->
+        <delete id="delApproval">
+                DELETE FROM t_approval_document_step WHERE docid = '${id}'
+        </delete>
+        <!-- 문서 별 공람자 삭제 -->
+        <delete id="delViewer">
+                DELETE FROM t_approval_document_public WHERE docid = '${id}'
+        </delete>
+        <!-- 결재 올렸을 때 첫 차례 결재자 검색 -->
+        <select id="checkLoginid" parameterType="map" resultType="String">
+                SELECT loginid FROM 
+                (SELECT REPlACE(e.mbl_tel_no, '-', '') as loginid, RANK() OVER(ORDER BY c.seq ASC) AS rank
+                FROM t_code AS c JOIN t_emp AS e ON e.pos_cd = c.code
+                JOIN t_approval_document_step AS s ON s.pos_cd = e.pos_cd
+                WHERE e.empid IN (${empid}) AND s.docid = ${docid} AND c.category = '결재직위코드' AND isnull(c.id_parent, '') <![CDATA[<>]]> '' AND c.usyn = '1') AS r
+                WHERE r.rank = 1
+        </select>
+        <!-- 이전 결재자가 승인했을 때 그 다음 결재자 검색 -->
+        <select id="nextApprover" parameterType="map" resultType="String">
+                SELECT loginid FROM (SELECT REPlACE(e.mbl_tel_no, '-', '') as loginid, RANK() OVER(ORDER BY s.step ASC) AS rank
+                FROM t_emp AS e JOIN t_approval_document_step AS s ON s.pos_cd = e.pos_cd
+                WHERE s.docid = ${docid} AND s.step  <![CDATA[>]]> ${step} AND s.empid = 0) AS r
+                WHERE r.rank = 1
+        </select>
+        <!-- 반려 문서에서 저장 및 결재 -->
+        <insert id="insert" parameterType="map">
+                SET IDENTITY_INSERT t_approval_document ON;
+                INSERT INTO t_approval_document(docid, type_cd, status_cd, empid, step, end_step, title, contents, contents_text, create_date, copy_docid)
+                SELECT  '${docid}', '${type_cd}', '${status_cd}', empid, ${step}, end_step, '${title}', '${contents}', '${contents_text}', getdate(), docid
+                FROM t_approval_document
+                WHERE docid = ${id};
+                SET IDENTITY_INSERT t_approval_document OFF;
+        </insert>
+        <!-- 반려 문서에서 저장 및 결재 할때 문서번호 생성 -->
+        <select id="nextDocid" resultType="Long">
+                SELECT max(docid)+1 FROM t_approval_document
+        </select>
+        <!-- 반려 문서에서 저장 및 결재 할때 기존 반려문서 반려보관상태로 변경 -->
+        <update id="returnKeep" parameterType="map">
+                UPDATE t_approval_document SET status_cd = '004' WHERE docid = '${id}'
+        </update>
 </mapper>

@@ -89,7 +89,7 @@ public class AjaxController {
         kakaoData.put("userid", "jsoftone");
         kakaoData.put("apikey", "xg7d36hj0xavo5a40vq98ch7pu9339za");
 		kakaoData.put("senderkey", "7b7f39a82a33c7d0069be9ecb4df9a477df974a6");
-		kakaoData.put("tpl_code", "TS_9675"); //템플릿 코드
+		kakaoData.put("tpl_code", "TT_4348"); //템플릿 코드
         kakaoData.put("sender", "0220384812");
         //kakaoData.put("testmode_yn", "Y");
 
@@ -194,7 +194,7 @@ public class AjaxController {
 			kakaoData.put("userid", "jsoftone");
 			kakaoData.put("apikey", "xg7d36hj0xavo5a40vq98ch7pu9339za");
 			kakaoData.put("senderkey", "7b7f39a82a33c7d0069be9ecb4df9a477df974a6");
-			kakaoData.put("tpl_code", "TS_9675"); //템플릿 코드
+			kakaoData.put("tpl_code", "TT_4348"); //템플릿 코드
 			kakaoData.put("sender", "0220384812");
 			//kakaoData.put("testmode_yn", "Y");
 
@@ -226,6 +226,7 @@ public class AjaxController {
 	@PostMapping("/fileUpload")
 	@ResponseBody
 	public Map<String, String> fileUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+		HttpSession session = request.getSession();
 		Map<String, String> map = new HashMap<String, String>();
 
 		Date date = new Date();
@@ -236,7 +237,7 @@ public class AjaxController {
 
 		Long size = multipartFile.getSize();
 		double sizeMB = size / (1024.0 * 1024.0);
-		String uploadPath = request.getServletContext().getRealPath("/files");
+		String uploadPath = request.getServletContext().getRealPath("/approval/" + session.getAttribute("custid"));
 		String filePath = uploadPath + File.separator + fileName + ext;
 
 		try {
@@ -318,12 +319,13 @@ public class AjaxController {
 	@PostMapping("/deleteFile")
 	@ResponseBody
 	public Map<String, String> deleteFile(@RequestParam String fileName, @RequestParam(required = false) Long attachid, HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		int lastIndex = fileName.lastIndexOf("/");
 
         // '/'가 없는 경우 전체 파일 이름을 사용
         String pathSub = (lastIndex != -1) ? fileName.substring(lastIndex + 1) : fileName;
 
-		String uploadPath = request.getServletContext().getRealPath("/files");
+		String uploadPath = request.getServletContext().getRealPath("/approval/" + session.getAttribute("custid"));
 		String filePath = uploadPath + File.separator + pathSub;
 
 		Map<String, String> response = new HashMap<String, String>();

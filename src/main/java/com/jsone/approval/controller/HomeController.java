@@ -115,6 +115,7 @@ public class HomeController {
 				session.setAttribute("dbName", cust.getDb_nm());
 				session.setAttribute("coop_cd", userDTO.getPos_cd());
 				session.setAttribute("pos_cd", userDTO.getCoop_cd());
+				session.setAttribute("custid", cust.getCustid());
 				session.setMaxInactiveInterval(-1);
 
 				return "redirect:/dashboard";
