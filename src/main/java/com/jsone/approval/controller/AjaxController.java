@@ -243,7 +243,7 @@ public class AjaxController {
 		File folder = new File(uploadPath);
 
 		if(!folder.exists()){
-			folder.mkdir();
+			folder.mkdirs();
 		}
 
 		try {
@@ -324,7 +324,7 @@ public class AjaxController {
 	/* edit 페이지 내 파일 삭제 */
 	@PostMapping("/deleteFile")
 	@ResponseBody
-	public Map<String, String> deleteFile(@RequestParam String fileName, @RequestParam(required = false) Long attachid, HttpServletRequest request) {
+	public Map<String, String> deleteFile(@RequestParam("fileName") String fileName, @RequestParam(name = "attachid" ,required = false) Long attachid, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		int lastIndex = fileName.lastIndexOf("/");
 
@@ -347,9 +347,13 @@ public class AjaxController {
 						approvalService.delOneAttach(attachid);
 					}
 				} else {
+					response.put("status", "error");
+					response.put("msg", "파일을 삭제하지 못했습니다: " + fileName);
 					throw new IOException("파일을 삭제하지 못했습니다.");
 				}
 			} else {
+				response.put("status", "error");
+				response.put("msg", "파일경로가 올바르지 않습니다: " + fileName);
 				throw new NoSuchFileException("파일경로가 올바르지 않습니다.");
 			}
 		} catch (NoSuchFileException e) {

@@ -86,9 +86,13 @@
         $(document).on('click', '.minus-icon', function(){
             var that = $(this);
             var fileName = that.prevAll('.temp_file_name').val();
+
+            if(!fileName) {
+                var fileName = that.prevAll('.temp_file_name[]').val();
+            }
+            console.log(fileName);
             var attachid = that.prevAll('.attachid').val();
             var name = that.prevAll('.filename').text();
-            console.log(attachid);
             if(confirm(name + " 파일을 삭제하시겠습니까?")) {
                 $.ajax({
                     type: 'POST',
@@ -105,6 +109,8 @@
                         }
                     },
                     error: function(xhr, status, error) {
+                        console.error(xhr);
+                        console.error(status);
                         console.error('파일 삭제 실패:', error);
                     }
                 });

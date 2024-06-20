@@ -23,7 +23,7 @@ repositories {
 }
 
 compileJava {
-    options.compilerArgs << "-parameters"
+    options.compilerArgs << '-parameters'
 }
 
 dependencies {

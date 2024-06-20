@@ -86,9 +86,13 @@
         $(document).on('click', '.minus-icon', function(){
             var that = $(this);
             var fileName = that.prevAll('.temp_file_name').val();
+
+            if(!fileName) {
+                var fileName = that.prevAll('.temp_file_name[]').val();
+            }
+            console.log(fileName);
             var attachid = that.prevAll('.attachid').val();
             var name = that.prevAll('.filename').text();
-            console.log(attachid);
             if(confirm(name + " 파일을 삭제하시겠습니까?")) {
                 $.ajax({
                     type: 'POST',
@@ -153,8 +157,8 @@
                                         "name": "결재문서 확인하기",
                                         "linkType": "WL",
                                         "linkTypeName": "웹링크",
-                                        "linkMo": "http://jsoftone4.cafe24.com",
-                                        "linkPc": "http://m.jsoftone.com"
+                                        "linkMo": "http://m.jsoftone.com",
+                                        "linkPc": "http://jsoftone.com"
                                     }
                                 ]
                             })
