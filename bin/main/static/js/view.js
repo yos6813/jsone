@@ -25,7 +25,7 @@
                                 "linkType": "WL",
                                 "linkTypeName": "웹링크",
                                 "linkMo": "http://m.jsoftone.com",
-                                "linkPc": "http://m.jsoftone.com"
+                                "linkPc": "http://jsoftone.com"
                             }
                         ]
                     })
