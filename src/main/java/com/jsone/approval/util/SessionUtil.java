@@ -22,6 +22,7 @@ public class SessionUtil {
             model.addAttribute("dbName", session.getAttribute("dbName"));
             model.addAttribute("coopCd", session.getAttribute("coop_cd")); //공람자 코드
             model.addAttribute("posCd", session.getAttribute("pos_cd")); //결재자 코드
+            model.addAttribute("custid", session.getAttribute("custid")); 
         }
     }
 }

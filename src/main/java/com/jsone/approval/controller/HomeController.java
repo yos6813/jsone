@@ -115,7 +115,7 @@ public class HomeController {
 				session.setAttribute("dbName", cust.getDb_nm());
 				session.setAttribute("coop_cd", userDTO.getPos_cd());
 				session.setAttribute("pos_cd", userDTO.getCoop_cd());
-				session.setAttribute("custid", cust.getCustid());
+				session.setAttribute("custid", login.getCustid());
 				session.setMaxInactiveInterval(-1);
 
 				return "redirect:/dashboard";
@@ -642,6 +642,7 @@ public class HomeController {
 		SessionUtil sessionUtil = new SessionUtil();
 		sessionUtil.getSession(model, request, approvalService);
 		String empid = model.getAttribute("empid").toString();
+		String custid = model.getAttribute("custid").toString();
 
 		String codes = "";
 		for(int i=0 ; i<approv.length ; i++) {
@@ -687,7 +688,7 @@ public class HomeController {
 					}
 
 					for(String path: tempName) {
-						String filePath = "/files" + File.separator + path;
+						String filePath = "/approval/" + custid  + File.separator + path;
 						file_path.add(filePath);
 					}
 
@@ -751,7 +752,7 @@ public class HomeController {
 					}
 
 					for(String path: tempName) {
-						String filePath = "/files" + File.separator + path;
+						String filePath = "/approval/" + custid + File.separator + path;
 						file_path.add(filePath);
 					}
 
@@ -816,7 +817,7 @@ public class HomeController {
 					}
 
 					for(String path: tempName) {
-						String filePath = "/files" + File.separator + path;
+						String filePath = "/approval/" + custid + File.separator + path;
 						file_path.add(filePath);
 					}
 
@@ -876,7 +877,7 @@ public class HomeController {
 					}
 
 					for(String path: tempName) {
-						String filePath = "/files" + File.separator + path;
+						String filePath = "/approval/" + custid + File.separator + path;
 						file_path.add(filePath);
 					}
 
