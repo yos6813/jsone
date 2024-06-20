@@ -240,6 +240,12 @@ public class AjaxController {
 		String uploadPath = request.getServletContext().getRealPath("/approval/" + session.getAttribute("custid"));
 		String filePath = uploadPath + File.separator + fileName + ext;
 
+		File folder = new File(uploadPath);
+
+		if(!folder.exists()){
+			folder.mkdir();
+		}
+
 		try {
 			File dest = new File(filePath);
 			multipartFile.transferTo(dest); // 파일을 저장합니다.
