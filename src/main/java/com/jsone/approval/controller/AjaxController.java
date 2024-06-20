@@ -1,7 +1,9 @@
 package com.jsone.approval.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.NoSuchFileException;
 import java.util.Date;
@@ -9,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -240,26 +244,73 @@ public class AjaxController {
 		String uploadPath = request.getServletContext().getRealPath("/approval/" + session.getAttribute("custid"));
 		String filePath = uploadPath + File.separator + fileName + ext;
 
-		File folder = new File(uploadPath);
+		// 파일을 먼저 로컬에 저장
+        try {
+            File dest = new File(filePath);
+            multipartFile.transferTo(dest); // 파일을 저장합니다.
+            map.put("status", "success");
+            map.put("filePath", filePath);
+            map.put("fileName", fileName + ext);
+            map.put("oriFileName", originalFname);
+            map.put("size", Double.toString(sizeMB));
+        } catch (IOException e) {
+            e.printStackTrace();
+            map.put("status", "error");
+            return map; // 파일 저장 실패 시 바로 반환
+        }
 
-		if(!folder.exists()){
-			folder.mkdirs();
-		}
+        // FTP 서버에 파일 업로드
+        String server = "ftp.jsoftone.co.kr";
+        int port = 21;
+        String user = "upload";
+        String pass = "garam@019";
 
-		try {
-			File dest = new File(filePath);
-			multipartFile.transferTo(dest); // 파일을 저장합니다.
-			map.put("status", "success");
-			map.put("filePath", filePath);
-			map.put("fileName", fileName + ext);
-			map.put("oriFileName", originalFname);
-			map.put("size", Double.toString(sizeMB));
-		} catch (IOException e) {
-			e.printStackTrace();
-			map.put("status", "error");
-		}
+        FTPClient ftpClient = new FTPClient();
+        try {
+            ftpClient.connect(server, port);
+            boolean loggedIn = ftpClient.login(user, pass);
+            if (!loggedIn) {
+                map.put("status", "error");
+                map.put("msg", "FTP 서버에 로그인할 수 없습니다.");
+                return map; // FTP 서버 로그인 실패 시 바로 반환
+            }
 
-		return map;
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+            // FTP 서버에 업로드할 파일 경로 설정
+            String remoteFilePath = "/approval/" + session.getAttribute("custid") + "/" + fileName + ext;
+
+            try (InputStream inputStream = new FileInputStream(filePath)) {
+                boolean uploaded = ftpClient.storeFile(remoteFilePath, inputStream);
+                if (uploaded) {
+                    System.out.println("File is uploaded to FTP server successfully.");
+                } else {
+                    map.put("status", "error");
+                    map.put("msg", "FTP 서버에 파일을 업로드하지 못했습니다.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                map.put("status", "error");
+                map.put("msg", "FTP 서버와의 파일 업로드 중 오류가 발생했습니다.");
+            }
+
+            ftpClient.logout();
+        } catch (IOException e) {
+            e.printStackTrace();
+            map.put("status", "error");
+            map.put("msg", "FTP 서버와의 연결 중 오류가 발생했습니다.");
+        } finally {
+            try {
+                if (ftpClient.isConnected()) {
+                    ftpClient.disconnect();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return map;
 	}
 
 	/* 뷰 하단 대화 */
@@ -369,6 +420,42 @@ public class AjaxController {
 			response.put("status", "error");
 			response.put("msg", "예상치 못한 오류가 발생하였습니다: " + e.getMessage());
 		}
+
+		String server = "ftp.jsoftone.co.kr";
+        int port = 21;
+        String user = "upload";
+        String pass = "garam@019";
+
+        FTPClient ftpClient = new FTPClient();
+
+        try {
+            ftpClient.connect(server, port);
+            boolean loggedIn = ftpClient.login(user, pass);
+            if (!loggedIn) {
+                System.out.println("FTP 서버에 로그인할 수 없습니다.");
+            }
+
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+            // FTP 서버에서 삭제할 파일 경로 설정
+            String remoteFilePath = "/approval/" + session.getAttribute("custid") + "/" + fileName;
+
+            boolean deleted = ftpClient.deleteFile(remoteFilePath);
+            if (!deleted) {
+                System.out.println("FTP 서버에서 파일을 삭제하지 못했습니다.");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                ftpClient.logout();
+                ftpClient.disconnect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
 		return response;
 	}
